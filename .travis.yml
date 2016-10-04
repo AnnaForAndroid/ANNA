@@ -12,11 +12,11 @@ android:
     - extra-google-m2repository
     - addon-google_apis-google-18
 before_install:
-  - chmod +x gradlew
+  - chmod +x ./ANNA/gradlew
   - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
   - export JAVA_HOME=$JAVA8_HOME
 after_success:
   - chmod +x ./upload-gh-pages.sh
   - ./upload-apk.sh
 script:
-  - ./gradlew build
+  - ./ANNA/gradlew build
