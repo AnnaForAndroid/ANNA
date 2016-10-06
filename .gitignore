@@ -1,4 +1,4 @@
-/ANNA/*.iml
+*.iml
 /ANNA/.gradle
 /ANNA/local.properties
 /ANNA/.idea/workspace.xml
