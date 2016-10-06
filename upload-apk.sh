@@ -1,7 +1,7 @@
 #create a new directory that will contain out generated apk
 mkdir $HOME/buildApk/ 
 #copy generated apk from build folder to the folder just created
-cp -R ./ANNA/mobile/build/outputs/apk/mobile-debug.apk $HOME/android/
+cp -R ./ANNA/mobile/build/outputs/apk/app-debug.apk $HOME/android/
 #go to home and setup git
 cd $HOME
 git config --global user.email "aram.parsegyan@gmail.com"
