@@ -7,6 +7,10 @@ android:
     - tools
     - build-tools-24.0.3
     - android-24
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
 before_install:
   - chmod +x ./ANNA/gradlew
   - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
