@@ -14,5 +14,5 @@ cp -Rf $HOME/buildApk/* ./ANNA/
 #add, commit and push files
 git add -f .
 git commit -m "[skip ci] Travis build $TRAVIS_BUILD_NUMBER pushed"
-git push -fq origin master > /dev/null
+git push
 echo -e "Donen"
