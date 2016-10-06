@@ -9,7 +9,8 @@ git config --global user.name "Aaper"
 #clone the repository in the buildApk folder
 git clone --quiet https://Aaper:$GITHUB_API_KEY@github.com/AnnaForAndroid/ANNA
 #go into directory and copy data we're interested
-cp -Rf $HOME/buildApk/* ./ANNA/
+cd $HOME/ANNA
+cp -Rf $HOME/buildApk/* .
 #add, commit and push files
 git add -f .
 git commit -m "[skip ci] Travis build $TRAVIS_BUILD_NUMBER pushed"
