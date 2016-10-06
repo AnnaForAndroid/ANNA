@@ -8,13 +8,13 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class IntroScreen extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private ArrayList<String> arrayList;
     private ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.intro_screen);
+        setContentView(R.layout.activity_main);
         ListView listView = (ListView) findViewById(R.id.list);
         String[] items = {"WhatsApp", "Google Maps"};
         arrayList = new ArrayList<String>(Arrays.asList(items));
