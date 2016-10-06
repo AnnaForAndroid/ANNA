@@ -8,8 +8,10 @@ cd $HOME/repo
 git config --global user.email "aram.parsegyan@gmail.com"
 git config --global user.name "Aaper" 
 #clone the repository in the buildApk folder
+echo -e "clone Project"
 git clone --quiet https://Aaper:$GITHUB_API_KEY@github.com/AnnaForAndroid/ANNA
 #go into directory and copy data we're interested
+echo -e "clone done"
 cp -Rf $HOME/buildApk/* ./ANNA/
 #add, commit and push files
 git add -f .
