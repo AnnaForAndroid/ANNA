@@ -12,7 +12,8 @@ echo -e "clone Project"
 git clone --quiet https://Aaper:$GITHUB_API_KEY@github.com/AnnaForAndroid/ANNA
 #go into directory and copy data we're interested
 echo -e "clone done"
-cp -Rf $HOME/buildApk/* ./ANNA/
+cd $HOME/repo/ANNA
+cp -Rf $HOME/buildApk/* .
 #add, commit and push files
 git add -f .
 git commit -m "[skip ci] Travis build $TRAVIS_BUILD_NUMBER pushed"
