@@ -8,8 +8,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class initial extends AppCompatActivity {
+
+    private ArrayList<String> arrayList;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +25,13 @@ public class initial extends AppCompatActivity {
         setContentView(R.layout.activity_initial);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        ListView listView = (ListView) findViewById(R.id.list);
+        String[] items = {"WhatsApp", "Google Maps"};
+        arrayList = new ArrayList<String>(Arrays.asList(items));
+        adapter = new ArrayAdapter<String>(this,R.layout.listitem, R.id.textitem, arrayList);
+        listView.setAdapter(adapter);
 
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
