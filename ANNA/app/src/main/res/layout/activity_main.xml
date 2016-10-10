@@ -13,13 +13,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="\nHi There,\n\nI am ANNA your driving assistant!\n\nPlease select modules to personalize me:" />
+        android:text="\nHi There,\n\n\nI am ANNA your driving assistant!\n\nPlease select modules to personalize me:"
+        android:textSize="24sp" />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginBottom="86dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"></ListView>
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="86dp"
+        android:theme="@style/AppTheme" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="Next" />
+
 </RelativeLayout>

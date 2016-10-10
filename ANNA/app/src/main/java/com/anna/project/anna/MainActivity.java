@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list);
         String[] items = {"WhatsApp", "Google Maps"};
         arrayList = new ArrayList<String>(Arrays.asList(items));
-        adapter = new ArrayAdapter<String>(this,R.layout.listitem, R.id.textitem, arrayList);
+        adapter = new ArrayAdapter<String>(this,R.layout.listitem, R.id.checkBox, arrayList);
         listView.setAdapter(adapter);
     }
 }
