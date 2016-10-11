@@ -32,7 +32,8 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_initial" />
+    <include layout="@layout/content_initial"
+        android:id="@+id/include" />
 
     <!--android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

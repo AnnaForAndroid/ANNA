@@ -24,9 +24,16 @@
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="187dp"
+            android:layout_height="43dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="86dp" />
+
+        <Button
+            android:text="Button"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button" />
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

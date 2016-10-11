@@ -28,9 +28,13 @@ public class initial extends AppCompatActivity {
 
 
         ListView listView = (ListView) findViewById(R.id.list);
-        String[] items = {"WhatsApp", "Google Maps"};
-        arrayList = new ArrayList<String>(Arrays.asList(items));
-        adapter = new ArrayAdapter<String>(this,R.layout.listitem, R.id.textitem, arrayList);
+
+        Model[] modelItems = new Model[2];
+        modelItems[0] = new Model("WhatsApp",0);
+        modelItems[1] = new Model("Google Maps",0);
+
+        CheckboxAdapter adapter = new CheckboxAdapter(this,modelItems);
+
         listView.setAdapter(adapter);
 
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
