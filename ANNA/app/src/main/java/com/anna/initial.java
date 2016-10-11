@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -158,7 +159,6 @@ public class initial extends AppCompatActivity {
 
     private void checkButtonClick() {
 
-
         Button myButton = (Button) findViewById(R.id.button);
         myButton.setOnClickListener(new OnClickListener() {
 
@@ -168,17 +168,22 @@ public class initial extends AppCompatActivity {
                 StringBuffer responseText = new StringBuffer();
                 responseText.append("The following were selected...\n");
 
+                SharedPreferences preferences = getSharedPreferences(prefFileName,0);
+                SharedPreferences.Editor editor = preferences.edit();
+
                 ArrayList<Module> moduleList = adapter.moduleList;
                 for (int i = 0; i < moduleList.size(); i++) {
                     Module module = moduleList.get(i);
+                    editor.putBoolean(module.getName(),module.isEnabled());
                     if (module.isEnabled()) {
                         responseText.append("\n" + module.getName());
                     }
                 }
 
+                editor.commit();
+
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
-
             }
         });
 
