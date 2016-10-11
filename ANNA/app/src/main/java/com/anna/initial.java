@@ -2,8 +2,8 @@ package com.anna;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -168,13 +168,13 @@ public class initial extends AppCompatActivity {
                 StringBuffer responseText = new StringBuffer();
                 responseText.append("The following were selected...\n");
 
-                SharedPreferences preferences = getSharedPreferences(prefFileName,0);
+                SharedPreferences preferences = getSharedPreferences(prefFileName, 0);
                 SharedPreferences.Editor editor = preferences.edit();
 
                 ArrayList<Module> moduleList = adapter.moduleList;
                 for (int i = 0; i < moduleList.size(); i++) {
                     Module module = moduleList.get(i);
-                    editor.putBoolean(module.getName(),module.isEnabled());
+                    editor.putBoolean(module.getName(), module.isEnabled());
                     if (module.isEnabled()) {
                         responseText.append("\n" + module.getName());
                     }
@@ -184,6 +184,9 @@ public class initial extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(initial.this, WhatsAppScreen.class);
+                initial.this.startActivity(intent);
             }
         });
 

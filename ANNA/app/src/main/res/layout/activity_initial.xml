@@ -29,6 +29,15 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/logo_without_letters"
+                android:id="@+id/imageView2"
+                android:paddingLeft="280dp"
+                android:scaleType="center"
+                android:paddingTop="20dp" />
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

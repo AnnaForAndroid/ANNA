@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Anna</string>
+    <string name="app_name">ANNA</string>
     <string name="init_stmt">\nHi There,\n\nI am ANNA your driving assistant!\n\nPlease select modules to personalize me:</string>
 
     <string name="action_settings">Settings</string>
+    <string name="title_activity_whats_app_screen">Chat Overview</string>
 </resources>
