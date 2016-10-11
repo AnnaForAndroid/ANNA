@@ -19,21 +19,26 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:text="@string/init_stmt"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:layout_marginBottom="10dp" />
 
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="43dp"
+            android:layout_height="125dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="86dp" />
+            android:layout_marginBottom="86dp"
+            android:layout_weight="0.23"
+            android:layout_marginTop="10dp" />
 
         <Button
-            android:text="Button"
-            android:layout_width="135dp"
+            android:text="Apply"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button" />
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.75" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
