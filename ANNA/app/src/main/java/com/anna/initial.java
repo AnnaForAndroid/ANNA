@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -28,14 +26,11 @@ import com.anna.modules.GoogleMaps;
 import com.anna.modules.Module;
 import com.anna.modules.WhatsApp;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class initial extends AppCompatActivity {
 
     private ModuleAdapter adapter;
     private final String prefFileName = "modules";
+    private boolean finished = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +45,12 @@ public class initial extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_initial, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void onResume() {
+        super.onResume();
+        if (finished) {
+            Intent intent = new Intent(initial.this, WhatsAppScreen.class);
+            initial.this.startActivity(intent);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private void displayListView() {
@@ -146,7 +129,6 @@ public class initial extends AppCompatActivity {
             }
 
             Module module = moduleList.get(position);
-            //holder.code.setText(" (" + module.getCode() + ")");
             holder.name.setText(module.getName());
             holder.name.setChecked(module.isEnabled());
             holder.name.setTag(module);
@@ -184,9 +166,13 @@ public class initial extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
-
-                Intent intent = new Intent(initial.this, WhatsAppScreen.class);
-                initial.this.startActivity(intent);
+                if (preferences.getBoolean("WhatsApp", false)) {
+                    finished = true;
+                    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                } else {
+                    Intent intent = new Intent(initial.this, WhatsAppScreen.class);
+                    initial.this.startActivity(intent);
+                }
             }
         });
 
