@@ -117,10 +117,10 @@ public class initial extends AppCompatActivity {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v;
                         Module module = (Module) cb.getTag();
-                        Toast.makeText(getApplicationContext(),
-                                "Clicked on Checkbox: " + cb.getText() +
-                                        " is " + cb.isChecked(),
-                                Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),
+//                                "Clicked on Checkbox: " + cb.getText() +
+//                                        " is " + cb.isChecked(),
+//                                Toast.LENGTH_LONG).show();
                         module.setSelected(cb.isChecked());
                     }
                 });
@@ -166,7 +166,7 @@ public class initial extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
-                if (preferences.getBoolean("WhatsApp", false)) {
+                if (preferences.getBoolean("WhatsApp", false) && !(NotificationService.isNotificationAccessEnabled)) {
                     finished = true;
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
