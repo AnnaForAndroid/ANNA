@@ -1,5 +1,7 @@
 package com.anna.modules;
 
+import com.anna.Module;
+
 /**
  * Created by PARSEA on 11.10.2016.
  */
