@@ -1,10 +1,13 @@
 package com.anna;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +26,6 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.anna.modules.GoogleMaps;
-import com.anna.modules.Module;
 import com.anna.modules.WhatsApp;
 
 public class initial extends AppCompatActivity {
@@ -56,10 +58,22 @@ public class initial extends AppCompatActivity {
     private void displayListView() {
 
         ArrayList<Module> moduleList = new ArrayList<Module>();
-        Module module = new WhatsApp();
-        moduleList.add(module);
-        module = new GoogleMaps();
-        moduleList.add(module);
+
+        PackageManager pm = getApplicationContext().getPackageManager();
+        List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        ArrayList<String> appNames = new ArrayList<String>();
+
+        for (ApplicationInfo info : appsInfos) {
+            appNames.add(pm.getApplicationLabel(info).toString());
+        }
+
+        if (appNames.contains("WhatsApp")) {
+            moduleList.add(new WhatsApp());
+        }
+
+        if (appNames.contains("Maps")) {
+            moduleList.add(new GoogleMaps());
+        }
 
         adapter = new ModuleAdapter(this,
                 R.layout.listitem, moduleList);

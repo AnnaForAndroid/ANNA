@@ -1,4 +1,4 @@
-package com.anna.modules;
+package com.anna;
 
 /**
  * Created by PARSEA on 11.10.2016.
