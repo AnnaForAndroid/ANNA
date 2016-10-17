@@ -71,6 +71,7 @@ public class initial extends AppCompatActivity {
             moduleList.add(new WhatsApp());
         }
 
+        if (appNames.contains("Maps")) {
             moduleList.add(new GoogleMaps());
         }
 
