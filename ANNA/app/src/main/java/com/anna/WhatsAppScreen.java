@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -19,7 +20,7 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-public class WhatsAppScreen extends Activity {
+public class WhatsAppScreen extends AppCompatActivity {
 
     TableLayout tab;
 

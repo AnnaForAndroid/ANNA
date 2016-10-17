@@ -48,7 +48,7 @@ public class initial extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (finished) {
-            Intent intent = new Intent(initial.this, WhatsAppScreen.class);
+            Intent intent = new Intent(initial.this, CardViewActivity.class);
             initial.this.startActivity(intent);
         }
     }
@@ -170,7 +170,7 @@ public class initial extends AppCompatActivity {
                     finished = true;
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
-                    Intent intent = new Intent(initial.this, WhatsAppScreen.class);
+                    Intent intent = new Intent(initial.this, CardViewActivity.class);
                     initial.this.startActivity(intent);
                 }
             }
