@@ -1,6 +1,11 @@
 language: android 
 jdk:
   - oraclejdk8
+notifications:
+  email: false
+  slack: annaforandroid:$SLACK_TOKEN
+    on_success: change
+    on_failure: change
 android:
   components:
     - platform-tools
