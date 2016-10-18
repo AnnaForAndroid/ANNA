@@ -9,8 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,8 +38,9 @@ public class initial extends AppCompatActivity {
     private ModuleAdapter adapter;
     private final String prefFileName = "modules";
     private boolean finished = false;
-    private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    private final int PERMISSIONS_REQUEST_AUDIO = 123;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,16 +48,13 @@ public class initial extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BIND_VOICE_INTERACTION)
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.BIND_VOICE_INTERACTION},
-                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
-        } else {
-            //readContacts();
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSIONS_REQUEST_AUDIO);
         }
+
         displayListView();
 
         checkButtonClick();
@@ -65,17 +64,17 @@ public class initial extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (finished) {
-            Intent intent = new Intent(initial.this, CardViewActivity.class);
+            Intent intent = new Intent(initial.this, WhatsAppScreen.class);
             initial.this.startActivity(intent);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+                                           String[] permissions, int[] grantResults) {
 
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS:
+            case PERMISSIONS_REQUEST_AUDIO:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
@@ -84,18 +83,18 @@ public class initial extends AppCompatActivity {
                 } else {
 
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            Manifest.permission.READ_CONTACTS)) {
+                            Manifest.permission.RECORD_AUDIO)) {
                         new AlertDialog.Builder(this).
-                                setTitle("Read Contacts permission").
-                                setMessage("You need to grant read contacts permission to use read" +
-                                        " contacts feature. Retry and grant it !").show();
+                                setTitle("Record Audio").
+                                setMessage("You need to grant record audio permission to use speach" +
+                                        " recognition feature. Retry and grant it !").show();
                     } else {
                         new AlertDialog.Builder(this).
-                                setTitle("Read Contacts permission denied").
-                                setMessage("You denied read contacts permission." +
+                                setTitle("Record Audio permission denied").
+                                setMessage("You denied record audio permission." +
                                         " So, the feature will be disabled. To enable it" +
                                         ", go on settings and " +
-                                        "grant read contacts for the application").show();
+                                        "grant record audio for the application").show();
                     }
 
                 }
@@ -233,7 +232,7 @@ public class initial extends AppCompatActivity {
                     finished = true;
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
-                    Intent intent = new Intent(initial.this, CardViewActivity.class);
+                    Intent intent = new Intent(initial.this, WhatsAppScreen.class);
                     initial.this.startActivity(intent);
                 }
             }
