@@ -1,6 +1,5 @@
 package com.anna;
 
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,19 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import com.anna.util.IndexedHashMap;
+
 
 public class MyRecyclerViewAdapter extends RecyclerView
         .Adapter<MyRecyclerViewAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
-    private LinkedHashMap<String,DataObject> mDataset;
+    private IndexedHashMap<String,DataObject> mDataset;
     private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
@@ -47,7 +41,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerViewAdapter(LinkedHashMap<String,DataObject> myDataset) {
+    public MyRecyclerViewAdapter(IndexedHashMap<String,DataObject> myDataset) {
         mDataset = myDataset;
     }
 
@@ -69,15 +63,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     public void addItem(DataObject dataObj, String index) {
         mDataset.put(index, dataObj);
-
-        int i=0;
-        for(DataObject dobj:mDataset.values()){
-            if(dobj.equals(dataObj)){
-                break;
-            }
-            i++;
-        }
-        notifyItemInserted(i);
+        notifyItemInserted(mDataset.getPositionOfValue(dataObj));
     }
 
     public void deleteItem(int index) {
