@@ -3,10 +3,12 @@ package com.anna;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,12 +22,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 
 public class CardViewActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MyRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
 
@@ -38,9 +41,8 @@ public class CardViewActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //mAdapter = new MyRecyclerViewAdapter(getDataSet());
-        //mRecyclerView.setAdapter(mAdapter);
-
+        mAdapter = new MyRecyclerViewAdapter(new LinkedHashMap<String,DataObject>());
+        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
         // Code to Add an item with default animation
         //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
 
@@ -61,9 +63,10 @@ public class CardViewActivity extends AppCompatActivity {
         });
     }
 
-    private DataObject setDataSet(String title, String text,Icon icon, Date time, String app) {
-            DataObject obj = new DataObject(title,text);
-        return obj;
+
+
+    public DataObject getDataSet(String title, String text, Icon icon, Date time, String app) {
+        return new DataObject(title, text, icon, time, app);
     }
 
     private BroadcastReceiver onNotice = new BroadcastReceiver() {
@@ -77,7 +80,8 @@ public class CardViewActivity extends AppCompatActivity {
             Icon icon = intent.getParcelableExtra("icon");
             Date time = new Date(intent.getLongExtra("time", 0));
             String app = intent.getStringExtra("app");
-            setDataSet(title,text,icon,time,app);
+            mAdapter.addItem(getDataSet(title, text, icon, time, app),title);
+            mRecyclerView.setAdapter(mAdapter);
         }
     };
 }

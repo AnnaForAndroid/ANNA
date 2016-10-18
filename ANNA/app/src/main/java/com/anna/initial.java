@@ -3,12 +3,16 @@ package com.anna;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,6 +37,7 @@ public class initial extends AppCompatActivity {
     private ModuleAdapter adapter;
     private final String prefFileName = "modules";
     private boolean finished = false;
+    private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,16 @@ public class initial extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BIND_VOICE_INTERACTION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.BIND_VOICE_INTERACTION},
+                    MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+        } else {
+            //readContacts();
+        }
         displayListView();
 
         checkButtonClick();
@@ -52,6 +67,40 @@ public class initial extends AppCompatActivity {
         if (finished) {
             Intent intent = new Intent(initial.this, CardViewActivity.class);
             initial.this.startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    //readContacts();
+
+                } else {
+
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.READ_CONTACTS)) {
+                        new AlertDialog.Builder(this).
+                                setTitle("Read Contacts permission").
+                                setMessage("You need to grant read contacts permission to use read" +
+                                        " contacts feature. Retry and grant it !").show();
+                    } else {
+                        new AlertDialog.Builder(this).
+                                setTitle("Read Contacts permission denied").
+                                setMessage("You denied read contacts permission." +
+                                        " So, the feature will be disabled. To enable it" +
+                                        ", go on settings and " +
+                                        "grant read contacts for the application").show();
+                    }
+
+                }
+
+                break;
         }
     }
 

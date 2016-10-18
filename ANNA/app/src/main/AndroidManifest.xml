@@ -37,7 +37,14 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".CardViewActivity"></activity>
+        <activity
+            android:name=".CardViewActivity"
+            android:label="@string/title_activity_whats_app_screen"
+            android:parentActivityName=".initial">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.anna.initial" />
+        </activity>
     </application>
 
 </manifest>

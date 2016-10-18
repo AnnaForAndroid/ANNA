@@ -1,5 +1,6 @@
 package com.anna;
 
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,13 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MyRecyclerViewAdapter extends RecyclerView
         .Adapter<MyRecyclerViewAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
-    private ArrayList<DataObject> mDataset;
+    private LinkedHashMap<String,DataObject> mDataset;
     private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
@@ -40,7 +47,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerViewAdapter(ArrayList<DataObject> myDataset) {
+    public MyRecyclerViewAdapter(LinkedHashMap<String,DataObject> myDataset) {
         mDataset = myDataset;
     }
 
@@ -56,13 +63,21 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getmText1());
-        holder.dateTime.setText(mDataset.get(position).getmText2());
+        holder.label.setText(mDataset.get(position).getTitle());
+        holder.dateTime.setText(mDataset.get(position).getText());
     }
 
-    public void addItem(DataObject dataObj, int index) {
-        mDataset.add(index, dataObj);
-        notifyItemInserted(index);
+    public void addItem(DataObject dataObj, String index) {
+        mDataset.put(index, dataObj);
+
+        int i=0;
+        for(DataObject dobj:mDataset.values()){
+            if(dobj.equals(dataObj)){
+                break;
+            }
+            i++;
+        }
+        notifyItemInserted(i);
     }
 
     public void deleteItem(int index) {

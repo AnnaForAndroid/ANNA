@@ -1,27 +1,61 @@
 package com.anna;
 
+import android.graphics.drawable.Icon;
+
+import java.util.Date;
+
 public class DataObject {
-    private String mText1;
-    private String mText2;
+    private String title;
+    private String text;
+    private Icon icon;
+    private Date time;
+    private String app;
 
-    DataObject (String text1, String text2){
-        mText1 = text1;
-        mText2 = text2;
+    DataObject(String title, String text, Icon icon, Date time, String app) {
+        this.title = title;
+        this.text = text;
+        this.icon = icon;
+        this.time = time;
+        this.app = app;
     }
 
-    public String getmText1() {
-        return mText1;
+    public String getTitle() {
+        return title;
     }
 
-    public void setmText1(String mText1) {
-        this.mText1 = mText1;
+    public String getText() {
+        return text;
     }
 
-    public String getmText2() {
-        return mText2;
+    public Icon getIcon() {
+        return icon;
     }
 
-    public void setmText2(String mText2) {
-        this.mText2 = mText2;
+    public Date getTime() {
+        return time;
+    }
+
+    public String getApp() {
+        return app;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public void setApp(String app) {
+        this.app = app;
     }
 }
