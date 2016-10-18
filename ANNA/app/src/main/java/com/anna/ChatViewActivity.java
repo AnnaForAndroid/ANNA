@@ -4,35 +4,27 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.anna.util.IndexedHashMap;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 
 
-public class CardViewActivity extends AppCompatActivity {
+public class ChatViewActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private MyRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private static String LOG_TAG = "CardViewActivity";
+    private static String LOG_TAG = "ChatViewActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +35,7 @@ public class CardViewActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyRecyclerViewAdapter(new IndexedHashMap<String,DataObject>());
+        mAdapter = new MyRecyclerViewAdapter(new IndexedHashMap<String, NotificationData>());
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
         // Code to Add an item with default animation
         //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
@@ -65,12 +57,6 @@ public class CardViewActivity extends AppCompatActivity {
         });
     }
 
-
-
-    public DataObject getDataSet(String title, String text, Icon icon, Date time, String app) {
-        return new DataObject(title, text, icon, time, app);
-    }
-
     private BroadcastReceiver onNotice = new BroadcastReceiver() {
 
         @RequiresApi(api = 23)
@@ -82,7 +68,7 @@ public class CardViewActivity extends AppCompatActivity {
             Icon icon = intent.getParcelableExtra("icon");
             Date time = new Date(intent.getLongExtra("time", 0));
             String app = intent.getStringExtra("app");
-            mAdapter.addItem(getDataSet(title, text, icon, time, app),title);
+            mAdapter.addItem(new NotificationData(title, text, icon, time, app), title);
             mRecyclerView.setAdapter(mAdapter);
         }
     };

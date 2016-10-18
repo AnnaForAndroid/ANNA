@@ -4,14 +4,14 @@ import android.graphics.drawable.Icon;
 
 import java.util.Date;
 
-public class DataObject {
+public class NotificationData {
     private String title;
     private String text;
     private Icon icon;
     private Date time;
     private String app;
 
-    DataObject(String title, String text, Icon icon, Date time, String app) {
+    NotificationData(String title, String text, Icon icon, Date time, String app) {
         this.title = title;
         this.text = text;
         this.icon = icon;

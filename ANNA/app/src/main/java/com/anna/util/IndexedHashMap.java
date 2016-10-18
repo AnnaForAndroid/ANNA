@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class IndexedHashMap<K, V> extends LinkedHashMap<K, V> {
 
-    public int getPositionOfValue(V value){
-        int i=0;
-        for(Map.Entry<K, V> entry:this.entrySet()){
+    public int getPositionOfValue(V value) {
+        int i = 0;
+        for (Map.Entry<K, V> entry : this.entrySet()) {
             V obj = entry.getValue();
-            if(obj.equals(value)){
+            if (obj.equals(value)) {
                 break;
             }
             i++;
@@ -17,15 +17,26 @@ public class IndexedHashMap<K, V> extends LinkedHashMap<K, V> {
         return i;
     }
 
-    public int getPositionOfKey(K key){
-        int i=0;
-        for(Map.Entry<K, V> entry:this.entrySet()){
+    public int getPositionOfKey(K key) {
+        int i = 0;
+        for (Map.Entry<K, V> entry : this.entrySet()) {
             K obj = entry.getKey();
-            if(obj.equals(key)){
+            if (obj.equals(key)) {
                 break;
             }
             i++;
         }
         return i;
+    }
+
+    public V getValueAt(int position) {
+        int i = 0;
+        for (Map.Entry<K, V> entry : this.entrySet()) {
+            if (i == position) {
+                return entry.getValue();
+            }
+            i++;
+        }
+        return null;
     }
 }

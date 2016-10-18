@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.anna.initial">
+    tools:context="com.anna.InitialView">
 
     <include layout="@layout/content_initial"
         android:id="@+id/include" />

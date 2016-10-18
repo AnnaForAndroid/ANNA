@@ -33,7 +33,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.anna.modules.GoogleMaps;
 import com.anna.modules.WhatsApp;
 
-public class initial extends AppCompatActivity {
+public class InitialView extends AppCompatActivity {
 
     private ModuleAdapter adapter;
     private final String prefFileName = "modules";
@@ -64,8 +64,8 @@ public class initial extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (finished) {
-            Intent intent = new Intent(initial.this, WhatsAppScreen.class);
-            initial.this.startActivity(intent);
+            Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
+            InitialView.this.startActivity(intent);
         }
     }
 
@@ -232,8 +232,8 @@ public class initial extends AppCompatActivity {
                     finished = true;
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
-                    Intent intent = new Intent(initial.this, WhatsAppScreen.class);
-                    initial.this.startActivity(intent);
+                    Intent intent = new Intent(InitialView.this,ChatViewActivity.class);
+                    InitialView.this.startActivity(intent);
                 }
             }
         });

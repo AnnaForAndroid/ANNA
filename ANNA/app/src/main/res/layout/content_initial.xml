@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.anna.initial"
+    tools:context="com.anna.InitialView"
     tools:showIn="@layout/activity_initial">
 
     <LinearLayout

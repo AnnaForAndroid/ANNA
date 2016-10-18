@@ -9,43 +9,40 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".initial"
+            android:name=".InitialView"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".WhatsAppScreen"
             android:label="@string/title_activity_whats_app_screen"
-            android:parentActivityName=".initial"
+            android:parentActivityName=".InitialView"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.anna.initial" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
-        <service
-            android:name=".NotificationService"
+        <activity
+            android:name=".ChatViewActivity"
+            android:label="@string/title_activity_whats_app_screen"
+            android:parentActivityName=".InitialView">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service android:name="com.anna.NotificationService"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
-
-        <activity
-            android:name=".CardViewActivity"
-            android:label="@string/title_activity_whats_app_screen"
-            android:parentActivityName=".initial">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.anna.initial" />
-        </activity>
     </application>
-    <uses-permission android:name="android.permission.BIND_VOICE_INTERACTION"/>
-    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 </manifest>

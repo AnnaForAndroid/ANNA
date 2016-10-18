@@ -14,7 +14,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         .Adapter<MyRecyclerViewAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
-    private IndexedHashMap<String,DataObject> mDataset;
+    private IndexedHashMap<String,NotificationData> mDataset;
     private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
@@ -41,7 +41,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerViewAdapter(IndexedHashMap<String,DataObject> myDataset) {
+    public MyRecyclerViewAdapter(IndexedHashMap<String,NotificationData> myDataset) {
         mDataset = myDataset;
     }
 
@@ -57,13 +57,13 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getTitle());
-        holder.dateTime.setText(mDataset.get(position).getText());
+        holder.label.setText(mDataset.getValueAt(position).getTitle());
+        holder.dateTime.setText(mDataset.getValueAt(position).getText());
     }
 
-    public void addItem(DataObject dataObj, String index) {
+    public void addItem(NotificationData dataObj, String index) {
         mDataset.put(index, dataObj);
-        notifyItemInserted(mDataset.getPositionOfValue(dataObj));
+        notifyItemInserted(mDataset.getPositionOfKey(index));
     }
 
     public void deleteItem(int index) {
