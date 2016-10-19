@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -20,27 +21,30 @@
 
             <ImageView
                 android:id="@+id/profileImg"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:adjustViewBounds="true"/>
             <TextView
                 android:id="@+id/sender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:layout_alignParentTop="true"/>
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="75dp" />
 
             <TextView
                 android:id="@+id/message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/sender"/>
+                android:layout_below="@+id/sender"
+                android:layout_marginLeft="75dp" />
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/message"/>
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
