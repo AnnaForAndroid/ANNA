@@ -4,10 +4,10 @@ mkdir $HOME/buildApk/
 cp -R ./ANNA/app/build/outputs/apk/* $HOME/buildApk/
 #go to home and setup git
 cd $HOME
-git config --global user.email "aram.parsegyan@gmail.com"
-git config --global user.name "Aaper" 
+git config --global user.email "anna.studienarbeit@gmail.com"
+git config --global user.name "ProjectAnna" 
 #clone the repository in the buildApk folder
-git clone --quiet https://Aaper:$GITHUB_API_KEY@github.com/AnnaForAndroid/ANNA
+git clone --quiet https://ProjectAnna:$GITHUB_API_KEY@github.com/AnnaForAndroid/ANNA
 #go into directory and copy data we're interested
 cd $HOME/ANNA
 cp -Rf $HOME/buildApk/* .
