@@ -32,12 +32,13 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.anna.modules.GoogleMaps;
 import com.anna.modules.WhatsApp;
+import com.anna.util.PreferencesHelper;
 
 public class InitialView extends AppCompatActivity {
 
     private ModuleAdapter adapter;
-    private final String prefFileName = "modules";
-    private boolean finished = false;
+    private PreferencesHelper sharedPrefs;
+    private boolean setupFinished;
     private final int PERMISSIONS_REQUEST_AUDIO = 123;
 
     @Override
@@ -46,20 +47,31 @@ public class InitialView extends AppCompatActivity {
         setContentView(R.layout.activity_initial);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        sharedPrefs = new PreferencesHelper(getApplicationContext(), "annaPreferences");
+        setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", "boolean");
+        checkForFirstUse();
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            accessPermissions();
+    public void checkForFirstUse() {
+        if (setupFinished) {
+            Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
+            InitialView.this.startActivity(intent);
+        } else {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                accessPermissions();
+            }
+
+            displayListView();
+
+            checkButtonClick();
         }
-
-        displayListView();
-
-        checkButtonClick();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (finished) {
+        if (setupFinished) {
             Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
             InitialView.this.startActivity(intent);
         }
@@ -73,11 +85,8 @@ public class InitialView extends AppCompatActivity {
             case PERMISSIONS_REQUEST_AUDIO:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     //readContacts();
-
                 } else {
-
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                             Manifest.permission.RECORD_AUDIO)) {
                         new AlertDialog.Builder(this).
@@ -92,9 +101,7 @@ public class InitialView extends AppCompatActivity {
                                         ", go on settings and " +
                                         "grant record audio for the application").show();
                     }
-
                 }
-
                 break;
         }
     }
@@ -175,10 +182,6 @@ public class InitialView extends AppCompatActivity {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v;
                         Module module = (Module) cb.getTag();
-//                        Toast.makeText(getApplicationContext(),
-//                                "Clicked on Checkbox: " + cb.getText() +
-//                                        " is " + cb.isChecked(),
-//                                Toast.LENGTH_LONG).show();
                         module.setSelected(cb.isChecked());
                     }
                 });
@@ -208,24 +211,20 @@ public class InitialView extends AppCompatActivity {
                 StringBuffer responseText = new StringBuffer();
                 responseText.append("The following were selected...\n");
 
-                SharedPreferences preferences = getSharedPreferences(prefFileName, 0);
-                SharedPreferences.Editor editor = preferences.edit();
-
                 ArrayList<Module> moduleList = adapter.moduleList;
                 for (int i = 0; i < moduleList.size(); i++) {
                     Module module = moduleList.get(i);
-                    editor.putBoolean(module.getName(), module.isEnabled());
+                    sharedPrefs.savePreferences(module.getName(), module.isEnabled(), "boolean");
                     if (module.isEnabled()) {
                         responseText.append("\n" + module.getName());
                     }
                 }
 
-                editor.commit();
-
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
-                if (preferences.getBoolean("WhatsApp", false) && !(NotificationService.isNotificationAccessEnabled)) {
-                    finished = true;
+                setupFinished = true;
+                sharedPrefs.savePreferences("setupFinished", setupFinished, "boolean");
+                if ((boolean) (sharedPrefs.getPreferences("WhatsApp", "boolean")) && !(NotificationService.isNotificationAccessEnabled)) {
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
                     Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
