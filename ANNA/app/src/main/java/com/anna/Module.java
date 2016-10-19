@@ -1,17 +1,21 @@
 package com.anna;
 
+import java.util.ArrayList;
+
 /**
  * Created by PARSEA on 11.10.2016.
  */
 
-public abstract class Module {
+public class Module {
 
+    public static ArrayList<Module> modules = new ArrayList<Module>();
     private boolean active;
     private String name;
 
     public Module(String name) {
         this.name = name;
         this.active = false;
+        Module.modules.add(this);
     }
 
     public boolean isEnabled() {

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.support.v4.content.LocalBroadcastManager;
 

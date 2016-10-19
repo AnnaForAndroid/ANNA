@@ -6,7 +6,6 @@ import java.util.List;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -30,8 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.anna.modules.GoogleMaps;
-import com.anna.modules.WhatsApp;
 import com.anna.util.PreferencesHelper;
 
 public class InitialView extends AppCompatActivity {
@@ -40,6 +37,7 @@ public class InitialView extends AppCompatActivity {
     private PreferencesHelper sharedPrefs;
     private boolean setupFinished;
     private final int PERMISSIONS_REQUEST_AUDIO = 123;
+    private final String[] modules = {"Maps", "WhatsApp", "Hangouts"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +52,13 @@ public class InitialView extends AppCompatActivity {
 
     public void checkForFirstUse() {
         if (setupFinished) {
-            Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
+            Intent intent = new Intent(InitialView.this, MapsActivity.class);
             InitialView.this.startActivity(intent);
         } else {
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 accessPermissions();
             }
-
             displayListView();
-
             checkButtonClick();
         }
     }
@@ -108,8 +103,6 @@ public class InitialView extends AppCompatActivity {
 
     private void displayListView() {
 
-        ArrayList<Module> moduleList = new ArrayList<Module>();
-
         PackageManager pm = getApplicationContext().getPackageManager();
         List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
         ArrayList<String> appNames = new ArrayList<String>();
@@ -118,16 +111,14 @@ public class InitialView extends AppCompatActivity {
             appNames.add(pm.getApplicationLabel(info).toString());
         }
 
-        if (appNames.contains("WhatsApp")) {
-            moduleList.add(new WhatsApp());
-        }
-
-        if (appNames.contains("Maps")) {
-            moduleList.add(new GoogleMaps());
+        for (String module : modules) {
+            if (appNames.contains(module)) {
+                new Module(module);
+            }
         }
 
         adapter = new ModuleAdapter(this,
-                R.layout.listitem, moduleList);
+                R.layout.listitem, Module.modules);
         ListView listView = (ListView) findViewById(R.id.list);
 
         listView.setAdapter(adapter);
@@ -195,7 +186,6 @@ public class InitialView extends AppCompatActivity {
             holder.name.setTag(module);
 
             return convertView;
-
         }
 
     }
@@ -224,7 +214,7 @@ public class InitialView extends AppCompatActivity {
                         responseText, Toast.LENGTH_LONG).show();
                 setupFinished = true;
                 sharedPrefs.savePreferences("setupFinished", setupFinished, "boolean");
-                if ((boolean) (sharedPrefs.getPreferences("WhatsApp", "boolean")) && !(NotificationService.isNotificationAccessEnabled)) {
+                if (!(NotificationService.isNotificationAccessEnabled)) {
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
                     Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
