@@ -1,10 +1,12 @@
 package com.anna;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.anna.util.IndexedHashMap;
@@ -20,13 +22,18 @@ public class MyRecyclerViewAdapter extends RecyclerView
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label;
-        TextView dateTime;
+        ImageView img;
+        TextView sender;
+        TextView message;
+        TextView time;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.textView);
-            dateTime = (TextView) itemView.findViewById(R.id.textView2);
+            img = (ImageView) itemView.findViewById(R.id.profileImg);
+            sender = (TextView) itemView.findViewById(R.id.sender);
+            message = (TextView) itemView.findViewById(R.id.message);
+            time = (TextView) itemView.findViewById(R.id.time);
+
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -57,8 +64,12 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.getValueAt(position).getTitle());
-        holder.dateTime.setText(mDataset.getValueAt(position).getText());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            holder.img.setImageIcon(mDataset.getValueAt(position).getIcon());
+        }
+        holder.sender.setText(mDataset.getValueAt(position).getTitle());
+        holder.message.setText(mDataset.getValueAt(position).getText());
+        holder.time.setText(mDataset.getValueAt(position).getTime());
     }
 
     public void addItem(NotificationData dataObj, String index) {

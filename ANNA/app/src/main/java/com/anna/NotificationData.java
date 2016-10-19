@@ -2,6 +2,7 @@ package com.anna;
 
 import android.graphics.drawable.Icon;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NotificationData {
@@ -31,8 +32,10 @@ public class NotificationData {
         return icon;
     }
 
-    public Date getTime() {
-        return time;
+    public String getTime() {
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
+        String currentTime = localDateFormat.format(time);
+        return currentTime;
     }
 
     public String getApp() {
