@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
@@ -25,7 +26,6 @@ public class NotificationService extends NotificationListenerService {
         context = getApplicationContext();
     }
 
-    @RequiresApi(api = 23)
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
 
@@ -34,7 +34,10 @@ public class NotificationService extends NotificationListenerService {
         Bundle extras = sbn.getNotification().extras;
         String title = extras.getString("android.title");
         String text = extras.getCharSequence("android.text").toString();
-        Icon icon = sbn.getNotification().getLargeIcon();
+        Icon icon = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            icon = sbn.getNotification().getLargeIcon();
+        }
         long time = sbn.getPostTime();
 
         Intent msgrcv = new Intent("Msg");
@@ -42,7 +45,9 @@ public class NotificationService extends NotificationListenerService {
         msgrcv.putExtra("ticker", ticker);
         msgrcv.putExtra("title", title);
         msgrcv.putExtra("text", text);
-        msgrcv.putExtra("icon", icon);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            msgrcv.putExtra("icon", icon);
+        }
         msgrcv.putExtra("time", time);
 
         PackageManager pm = getApplicationContext().getPackageManager();

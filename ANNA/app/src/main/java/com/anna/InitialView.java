@@ -40,7 +40,6 @@ public class InitialView extends AppCompatActivity {
     private boolean finished = false;
     private final int PERMISSIONS_REQUEST_AUDIO = 123;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +47,8 @@ public class InitialView extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                    PERMISSIONS_REQUEST_AUDIO);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            accessPermissions();
         }
 
         displayListView();
@@ -232,11 +228,21 @@ public class InitialView extends AppCompatActivity {
                     finished = true;
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
-                    Intent intent = new Intent(InitialView.this,ChatViewActivity.class);
+                    Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
                     InitialView.this.startActivity(intent);
                 }
             }
         });
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void accessPermissions() {
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSIONS_REQUEST_AUDIO);
+        }
     }
 }
