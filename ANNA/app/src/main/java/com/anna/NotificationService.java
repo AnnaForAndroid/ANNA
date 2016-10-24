@@ -29,6 +29,9 @@ public class NotificationService extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
 
         String pack = sbn.getPackageName();
+        if(pack.equals("WhatsApp")){
+            return;
+        }
         String ticker = sbn.getNotification().tickerText.toString();
         Bundle extras = sbn.getNotification().extras;
         String title = extras.getString("android.title");
