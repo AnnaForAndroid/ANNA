@@ -28,7 +28,8 @@
         <activity
             android:name=".ChatViewActivity"
             android:label="@string/title_activity_whats_app_screen"
-            android:parentActivityName=".InitialView" />
+            android:parentActivityName=".InitialView"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <service
             android:name=".NotificationService"
             android:label="@string/app_name"
