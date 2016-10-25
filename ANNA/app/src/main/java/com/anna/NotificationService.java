@@ -29,16 +29,21 @@ public class NotificationService extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
 
         String pack = sbn.getPackageName();
-        if(pack.equals("WhatsApp")){
-            return;
+        String ticker = null;
+        if (sbn.getNotification().tickerText != null) {
+            ticker = sbn.getNotification().tickerText.toString();
         }
-        String ticker = sbn.getNotification().tickerText.toString();
         Bundle extras = sbn.getNotification().extras;
         String title = extras.getString("android.title");
         String text = extras.getCharSequence("android.text").toString();
         Icon icon = null;
+        icon = sbn.getNotification().getSmallIcon();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            icon = sbn.getNotification().getLargeIcon();
+            if (sbn.getNotification().getLargeIcon() != null) {
+                icon = sbn.getNotification().getLargeIcon();
+            } else if (sbn.getNotification().getSmallIcon() != null) {
+                icon = sbn.getNotification().getSmallIcon();
+            }
         }
         long time = sbn.getPostTime();
 
