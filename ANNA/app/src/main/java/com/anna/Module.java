@@ -1,9 +1,5 @@
 package com.anna;
 
-import android.service.carrier.MessagePdu;
-
-import com.anna.util.PreferencesHelper;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,10 +11,10 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<Module>();
-    public static final List<String> moduleNames = Arrays.asList("Maps", "WhatsApp", "Hangouts", "Pushbullet");
+    public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Pushbullet"));
     public static List<String> packageNames = new ArrayList<String>();
     public static List<String> enabledAppNames = new ArrayList<String>();
-    public static List<String> disabledAppNames = Module.moduleNames;
+    public static List<String> disabledAppNames = moduleNames;
     private boolean active;
     private final String name;
     private final String packageName;
