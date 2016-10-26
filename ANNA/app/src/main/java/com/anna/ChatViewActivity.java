@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Icon;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,13 +59,19 @@ public class ChatViewActivity extends AppCompatActivity {
 
     private BroadcastReceiver onNotice = new BroadcastReceiver() {
 
-        @RequiresApi(api = 23)
         @Override
         public void onReceive(Context context, Intent intent) {
             String pack = intent.getStringExtra("package");
             String title = intent.getStringExtra("title");
             String text = intent.getStringExtra("text");
-            Icon icon = intent.getParcelableExtra("icon");
+            Drawable icon = null;
+            try {
+                Context appContext = createPackageContext(pack, CONTEXT_IGNORE_SECURITY);
+                icon = appContext.getResources().getDrawable(intent.getIntExtra("icon", 0));
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
             Date time = new Date(intent.getLongExtra("time", 0));
             String app = intent.getStringExtra("app");
             mAdapter.addItem(new NotificationData(title, text, icon, time, app), title);

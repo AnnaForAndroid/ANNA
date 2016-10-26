@@ -1,5 +1,6 @@
 package com.anna;
 
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 
 import java.text.SimpleDateFormat;
@@ -8,11 +9,11 @@ import java.util.Date;
 public class NotificationData {
     private String title;
     private String text;
-    private Icon icon;
+    private Drawable icon;
     private Date time;
     private String app;
 
-    NotificationData(String title, String text, Icon icon, Date time, String app) {
+    NotificationData(String title, String text, Drawable icon, Date time, String app) {
         this.title = title;
         this.text = text;
         this.icon = icon;
@@ -28,7 +29,7 @@ public class NotificationData {
         return text;
     }
 
-    public Icon getIcon() {
+    public Drawable getIcon() {
         return icon;
     }
 
@@ -50,7 +51,7 @@ public class NotificationData {
         this.text = text;
     }
 
-    public void setIcon(Icon icon) {
+    public void setIcon(Drawable icon) {
         this.icon = icon;
     }
 

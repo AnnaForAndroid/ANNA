@@ -1,6 +1,12 @@
 package com.anna;
 
+import android.service.carrier.MessagePdu;
+
+import com.anna.util.PreferencesHelper;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by PARSEA on 11.10.2016.
@@ -8,13 +14,25 @@ import java.util.ArrayList;
 
 public class Module {
 
-    public static ArrayList<Module> modules = new ArrayList<Module>();
+    public static List<Module> modules = new ArrayList<Module>();
+    public static final List<String> moduleNames = Arrays.asList("Maps", "WhatsApp", "Hangouts", "Pushbullet");
+    public static List<String> packageNames = new ArrayList<String>();
+    public static List<String> enabledAppNames = new ArrayList<String>();
+    public static List<String> disabledAppNames = Module.moduleNames;
     private boolean active;
-    private String name;
+    private final String name;
+    private final String packageName;
 
-    public Module(String name) {
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public Module(String name, String packageName) {
         this.name = name;
+        this.packageName = packageName;
+        Module.packageNames.add(packageName);
         this.active = false;
+
         Module.modules.add(this);
     }
 
@@ -28,13 +46,21 @@ public class Module {
 
     public void enable() {
         this.active = true;
+        Module.enabledAppNames.add(this.getName());
+        Module.disabledAppNames.remove(this.getName());
     }
 
     public void disable() {
         this.active = false;
+        Module.disabledAppNames.add(this.getName());
+        Module.enabledAppNames.remove(this.getName());
     }
 
     public void setSelected(boolean selected) {
-        this.active = selected;
+        if (selected) {
+            enable();
+        } else {
+            disable();
+        }
     }
 }

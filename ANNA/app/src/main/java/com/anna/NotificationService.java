@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
@@ -29,45 +27,37 @@ public class NotificationService extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
 
         String pack = sbn.getPackageName();
-        String ticker = null;
-        if (sbn.getNotification().tickerText != null) {
-            ticker = sbn.getNotification().tickerText.toString();
-        }
-        Bundle extras = sbn.getNotification().extras;
-        String title = extras.getString("android.title");
-        String text = extras.getCharSequence("android.text").toString();
-        Icon icon = null;
-        icon = sbn.getNotification().getSmallIcon();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (sbn.getNotification().getLargeIcon() != null) {
-                icon = sbn.getNotification().getLargeIcon();
-            } else if (sbn.getNotification().getSmallIcon() != null) {
-                icon = sbn.getNotification().getSmallIcon();
-            }
-        }
-        long time = sbn.getPostTime();
-
-        Intent msgrcv = new Intent("Msg");
-        msgrcv.putExtra("package", pack);
-        msgrcv.putExtra("ticker", ticker);
-        msgrcv.putExtra("title", title);
-        msgrcv.putExtra("text", text);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            msgrcv.putExtra("icon", icon);
-        }
-        msgrcv.putExtra("time", time);
-
-        PackageManager pm = getApplicationContext().getPackageManager();
-        ApplicationInfo ai;
+        String appName = null;
         try {
-            ai = pm.getApplicationInfo(pack, 0);
-            msgrcv.putExtra("app", pm.getApplicationLabel(ai));
+            PackageManager pm = getApplicationContext().getPackageManager();
+            ApplicationInfo ai = pm.getApplicationInfo(pack, 0);
+            appName = pm.getApplicationLabel(ai).toString();
         } catch (final PackageManager.NameNotFoundException e) {
-            ai = null;
+            e.printStackTrace();
         }
 
-        LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+        if (Module.enabledAppNames.contains(appName)) {
+            String ticker = null;
+            if (sbn.getNotification().tickerText != null) {
+                ticker = sbn.getNotification().tickerText.toString();
+            }
+            Bundle extras = sbn.getNotification().extras;
+            String title = extras.getString("android.title");
+            String text = extras.getCharSequence("android.text").toString();
+            int icon = sbn.getNotification().icon;
+            long time = sbn.getPostTime();
 
+            Intent msgrcv = new Intent("Msg");
+            msgrcv.putExtra("package", pack);
+            msgrcv.putExtra("ticker", ticker);
+            msgrcv.putExtra("title", title);
+            msgrcv.putExtra("text", text);
+            msgrcv.putExtra("icon", icon);
+            msgrcv.putExtra("time", time);
+            msgrcv.putExtra("app", appName);
+
+            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+        }
 
     }
 

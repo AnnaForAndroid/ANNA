@@ -1,6 +1,5 @@
 package com.anna;
 
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         .Adapter<MyRecyclerViewAdapter
         .DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
-    private IndexedHashMap<String,NotificationData> mDataset;
+    private IndexedHashMap<String, NotificationData> mDataset;
     private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
@@ -48,7 +47,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerViewAdapter(IndexedHashMap<String,NotificationData> myDataset) {
+    public MyRecyclerViewAdapter(IndexedHashMap<String, NotificationData> myDataset) {
         mDataset = myDataset;
     }
 
@@ -64,9 +63,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            holder.img.setImageIcon(mDataset.getValueAt(position).getIcon());
-        }
+        holder.img.setImageDrawable(mDataset.getValueAt(position).getIcon());
         holder.sender.setText(mDataset.getValueAt(position).getTitle());
         holder.message.setText(mDataset.getValueAt(position).getText());
         holder.time.setText(mDataset.getValueAt(position).getTime());

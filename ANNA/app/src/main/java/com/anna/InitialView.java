@@ -37,7 +37,6 @@ public class InitialView extends AppCompatActivity {
     private PreferencesHelper sharedPrefs;
     private boolean setupFinished;
     private final int PERMISSIONS_REQUEST_AUDIO = 123;
-    private final String[] modules = {"Maps", "WhatsApp", "Hangouts"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +50,7 @@ public class InitialView extends AppCompatActivity {
     }
 
     public void checkForFirstUse() {
-        //if (setupFinished) {
-        if (false) {
+        if (setupFinished) {
             Intent intent = new Intent(InitialView.this, MapsActivity.class);
             InitialView.this.startActivity(intent);
         } else {
@@ -106,15 +104,11 @@ public class InitialView extends AppCompatActivity {
 
         PackageManager pm = getApplicationContext().getPackageManager();
         List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        ArrayList<String> appNames = new ArrayList<String>();
 
         for (ApplicationInfo info : appsInfos) {
-            appNames.add(pm.getApplicationLabel(info).toString());
-        }
-
-        for (String module : modules) {
-            if (appNames.contains(module)) {
-                new Module(module);
+            String appLabel = pm.getApplicationLabel(info).toString();
+            if (Module.moduleNames.contains(appLabel)) {
+                new Module(appLabel, info.packageName);
             }
         }
 
@@ -123,7 +117,6 @@ public class InitialView extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list);
 
         listView.setAdapter(adapter);
-
 
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -135,7 +128,6 @@ public class InitialView extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     private class ModuleAdapter extends ArrayAdapter<Module> {
@@ -143,7 +135,7 @@ public class InitialView extends AppCompatActivity {
         private ArrayList<Module> moduleList;
 
         public ModuleAdapter(Context context, int textViewResourceId,
-                             ArrayList<Module> moduleList) {
+                             List<Module> moduleList) {
             super(context, textViewResourceId, moduleList);
             this.moduleList = new ArrayList<Module>();
             this.moduleList.addAll(moduleList);
