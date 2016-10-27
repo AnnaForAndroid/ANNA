@@ -25,20 +25,21 @@
         <ListView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="86dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="0.23"
             android:layout_marginTop="10dp" />
 
         <Button
             android:text="Apply"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
             android:id="@+id/button"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.75" />
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
