@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.anna.util.LayoutConfig;
 import com.anna.util.PreferencesHelper;
 
 public class InitialView extends AppCompatActivity {
@@ -128,6 +129,7 @@ public class InitialView extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
+        LayoutConfig.setListViewHeightBasedOnChildren(listView);
     }
 
     private class ModuleAdapter extends ArrayAdapter<Module> {
