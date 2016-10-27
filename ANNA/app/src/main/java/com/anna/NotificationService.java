@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
@@ -44,7 +45,7 @@ public class NotificationService extends NotificationListenerService {
             Bundle extras = sbn.getNotification().extras;
             String title = extras.getString("android.title");
             String text = extras.getCharSequence("android.text").toString();
-            int icon = sbn.getNotification().icon;
+            Bitmap icon = sbn.getNotification().largeIcon;
             long time = sbn.getPostTime();
 
             Intent msgrcv = new Intent("Msg");

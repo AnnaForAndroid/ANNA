@@ -63,7 +63,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.img.setImageDrawable(mDataset.getValueAt(position).getIcon());
+        holder.img.setImageBitmap(mDataset.getValueAt(position).getIcon());
         holder.sender.setText(mDataset.getValueAt(position).getTitle());
         holder.message.setText(mDataset.getValueAt(position).getText());
         holder.time.setText(mDataset.getValueAt(position).getTime());

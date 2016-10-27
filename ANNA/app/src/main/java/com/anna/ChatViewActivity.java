@@ -4,8 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -64,14 +63,7 @@ public class ChatViewActivity extends AppCompatActivity {
             String pack = intent.getStringExtra("package");
             String title = intent.getStringExtra("title");
             String text = intent.getStringExtra("text");
-            Drawable icon = null;
-            try {
-                Context appContext = createPackageContext(pack, CONTEXT_IGNORE_SECURITY);
-                icon = appContext.getResources().getDrawable(intent.getIntExtra("icon", 0));
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-
+            Bitmap icon = intent.getParcelableExtra("icon");
             Date time = new Date(intent.getLongExtra("time", 0));
             String app = intent.getStringExtra("app");
             mAdapter.addItem(new NotificationData(title, text, icon, time, app), title);
