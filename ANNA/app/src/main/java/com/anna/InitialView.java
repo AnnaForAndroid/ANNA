@@ -51,8 +51,8 @@ public class InitialView extends AppCompatActivity {
     }
 
     public void checkForFirstUse() {
-        if (setupFinished) {
-            Intent intent = new Intent(InitialView.this, MapsActivity.class);
+        if (true) {
+            Intent intent = new Intent(InitialView.this, VoiceActivity.class);
             InitialView.this.startActivity(intent);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
