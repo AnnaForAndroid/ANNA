@@ -47,7 +47,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".VoiceActivity"></activity>
+        <activity android:name=".util.Voice"></activity>
     </application>
 
 </manifest>

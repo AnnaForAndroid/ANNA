@@ -6,8 +6,8 @@
     <string name="title_activity_whats_app_screen">Chat Overview</string>
     <string name="title_activity_card_view">CardViewActivity</string>
     <string name="title_activity_maps">Map</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_prompt">Say something...</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
-    <string name="tap_on_mic">Tap on mic to speak</string>
+    <string name="read_message">Soll die Nachricht vorgelesen werden?</string>
+    <string name="audio_record_permission_denied">You denied record audio permission. So, the feature will be disabled. To enable it, go on settings and grant record audio for the application</string>
 </resources>

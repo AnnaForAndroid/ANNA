@@ -31,6 +31,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.anna.util.LayoutConfig;
 import com.anna.util.PreferencesHelper;
+import com.anna.util.Voice;
 
 public class InitialView extends AppCompatActivity {
 
@@ -38,6 +39,7 @@ public class InitialView extends AppCompatActivity {
     private PreferencesHelper sharedPrefs;
     private boolean setupFinished;
     private final int PERMISSIONS_REQUEST_AUDIO = 123;
+    private Voice voice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,13 @@ public class InitialView extends AppCompatActivity {
         setSupportActionBar(toolbar);
         sharedPrefs = new PreferencesHelper(getApplicationContext(), "annaPreferences");
         setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", "boolean");
+        this.voice = new Voice(this);
         checkForFirstUse();
     }
 
     public void checkForFirstUse() {
-        if (true) {
-            Intent intent = new Intent(InitialView.this, VoiceActivity.class);
+        if (setupFinished) {
+            Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
             InitialView.this.startActivity(intent);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -91,10 +94,7 @@ public class InitialView extends AppCompatActivity {
                     } else {
                         new AlertDialog.Builder(this).
                                 setTitle("Record Audio permission denied").
-                                setMessage("You denied record audio permission." +
-                                        " So, the feature will be disabled. To enable it" +
-                                        ", go on settings and " +
-                                        "grant record audio for the application").show();
+                                setMessage(getString(R.string.audio_record_permission_denied)).show();
                     }
                 }
                 break;
@@ -130,6 +130,7 @@ public class InitialView extends AppCompatActivity {
             }
         });
         LayoutConfig.setListViewHeightBasedOnChildren(listView);
+        voice.read(getString(R.string.init_stmt));
     }
 
     private class ModuleAdapter extends ArrayAdapter<Module> {

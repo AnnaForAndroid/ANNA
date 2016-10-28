@@ -1,45 +1,32 @@
-package com.anna;
+package com.anna.util;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class VoiceActivity extends Activity implements TextToSpeech.OnInitListener {
+import com.anna.R;
 
-    private TextView txtSpeechInput;
-    private ImageButton btnSpeak;
+public class Voice implements TextToSpeech.OnInitListener {
+
     private TextToSpeech tts;
     private final int REQ_CODE_SPEECH_INPUT = 100;
+    private Context context;
+    private String voiceInput;
+    private boolean isIdle;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_voice);
+    public Voice(Context context) {
 
-        tts = new TextToSpeech(this, this);
-
-        txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
-        btnSpeak = (ImageButton) findViewById(R.id.btnSpeak);
-
-        btnSpeak.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                promptSpeechInput();
-            }
-        });
-
+        tts = new TextToSpeech(context, this);
+        this.context = context;
+        this.isIdle = true;
     }
 
     @Override
@@ -51,10 +38,7 @@ public class VoiceActivity extends Activity implements TextToSpeech.OnInitListen
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "This Language is not supported");
-            } else {
-                btnSpeak.setEnabled(true);
             }
-
         } else {
             Log.e("TTS", "Initilization Failed!");
         }
@@ -63,18 +47,18 @@ public class VoiceActivity extends Activity implements TextToSpeech.OnInitListen
     /**
      * Showing google speech input dialog
      */
-    private void promptSpeechInput() {
+    public void promptSpeechInput() {
+        setStatus(false);
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                getString(R.string.speech_prompt));
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, context.getString(R.string.speech_prompt));
         try {
-            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+            ((Activity) context).startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
-            Toast.makeText(getApplicationContext(),
-                    getString(R.string.speech_not_supported),
+            Toast.makeText(context,
+                    context.getString(R.string.speech_not_supported),
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -82,25 +66,41 @@ public class VoiceActivity extends Activity implements TextToSpeech.OnInitListen
     /**
      * Receiving speech input
      */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case REQ_CODE_SPEECH_INPUT: {
-                if (resultCode == RESULT_OK && null != data) {
-
+                if (resultCode == Activity.RESULT_OK && null != data) {
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    txtSpeechInput.setText(result.get(0));
-                    tts.speak(result.get(0), TextToSpeech.QUEUE_FLUSH, null);
-
-
+                    voiceInput = result.get(0);
+                    setStatus(true);
                 }
                 break;
             }
 
         }
+    }
+
+    public void read(String text) {
+        while (tts.isSpeaking()) {
+            //do nothing
+        }
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+    public String getVoiceInput() {
+        while (!isIdle()) {
+            //do nothing
+        }
+        return voiceInput;
+    }
+
+    public synchronized boolean isIdle(){
+        return isIdle;
+    }
+
+    public synchronized void setStatus(boolean status){
+        this.isIdle=status;
     }
 
 }
