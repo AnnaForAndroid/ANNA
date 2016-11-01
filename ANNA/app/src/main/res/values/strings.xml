@@ -10,4 +10,6 @@
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
     <string name="read_message">Soll die Nachricht vorgelesen werden?</string>
     <string name="audio_record_permission_denied">You denied record audio permission. So, the feature will be disabled. To enable it, go on settings and grant record audio for the application</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
