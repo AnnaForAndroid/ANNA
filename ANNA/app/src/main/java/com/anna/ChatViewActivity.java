@@ -65,6 +65,14 @@ public class ChatViewActivity extends AppCompatActivity {
         });
     }
 
+    public void answerMessage(String text, String packageName) {
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.setPackage(packageName);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(sendIntent);
+    }
+
     private BroadcastReceiver onNotice = new BroadcastReceiver() {
 
         @Override
@@ -75,7 +83,7 @@ public class ChatViewActivity extends AppCompatActivity {
             final Bitmap icon = intent.getParcelableExtra("icon");
             final Date time = new Date(intent.getLongExtra("time", 0));
             final String app = intent.getStringExtra("app");
-            mAdapter.addItem(new NotificationData(title, text, icon, time, app), title);
+            mAdapter.addItem(new NotificationData(title, text, icon, time, app, pack), title);
             mRecyclerView.setAdapter(mAdapter);
             voice.read(title);
             voice.read(getString(R.string.read_message));
@@ -84,9 +92,18 @@ public class ChatViewActivity extends AppCompatActivity {
             new Thread() {
                 @Override
                 public void run() {
-                        if (voice.getVoiceInput().toLowerCase().equals("ja")) {
-                            voice.read(text);
-                        }
+                    if (voice.getVoiceInput().toLowerCase().equals("ja")) {
+                        voice.read(text);
+                        voice.read(getString(R.string.ask_to_answer));
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                if (voice.getVoiceInput().toLowerCase().equals("ja")) {
+                                    answerMessage(text, pack);
+                                }
+                            }
+                        }.start();
+                    }
                 }
             }.start();
         }

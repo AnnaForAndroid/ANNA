@@ -11,13 +11,15 @@ public class NotificationData {
     private Bitmap icon;
     private Date time;
     private String app;
+    private String packageName;
 
-    NotificationData(String title, String text, Bitmap icon, Date time, String app) {
+    NotificationData(String title, String text, Bitmap icon, Date time, String app, String packageName) {
         this.title = title;
         this.text = text;
         this.icon = icon;
         this.time = time;
         this.app = app;
+        this.packageName = packageName;
     }
 
     public String getTitle() {
@@ -56,6 +58,14 @@ public class NotificationData {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public void setApp(String app) {

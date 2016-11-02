@@ -3,11 +3,7 @@ jdk:
   - oraclejdk8
 notifications:
   email: false
-  slack:
-    rooms:
-      - annaforandroid:$SLACK_TOKEN#general
-    on_success: change
-    on_failure: change
+  slack: annaforandroid:$SLACK_TOKEN
 android:
   components:
     - platform-tools

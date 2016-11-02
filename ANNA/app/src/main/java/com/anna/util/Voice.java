@@ -1,6 +1,7 @@
 package com.anna.util;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -21,12 +22,16 @@ public class Voice implements TextToSpeech.OnInitListener {
     private Context context;
     private String voiceInput;
     private boolean isIdle;
+    private boolean initialized;
+    private List<String> textToSpeech;
 
     public Voice(Context context) {
 
         tts = new TextToSpeech(context, this);
         this.context = context;
         this.isIdle = true;
+        this.initialized = false;
+        this.textToSpeech = new ArrayList<String>();
     }
 
     @Override
@@ -39,9 +44,14 @@ public class Voice implements TextToSpeech.OnInitListener {
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "This Language is not supported");
             }
+            this.initialized = true;
         } else {
             Log.e("TTS", "Initilization Failed!");
         }
+        for (String text : textToSpeech) {
+            read(text);
+        }
+        setInitialized(true);
     }
 
     /**
@@ -49,6 +59,9 @@ public class Voice implements TextToSpeech.OnInitListener {
      */
     public void promptSpeechInput() {
         setStatus(false);
+        while (tts.isSpeaking()) {
+            //do nothing
+        }
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -82,10 +95,11 @@ public class Voice implements TextToSpeech.OnInitListener {
     }
 
     public void read(String text) {
-        while (tts.isSpeaking()) {
-            //do nothing
+        if (isInitialized()) {
+            tts.speak(text, TextToSpeech.QUEUE_ADD, null);
+        } else {
+            textToSpeech.add(text);
         }
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     public String getVoiceInput() {
@@ -95,12 +109,20 @@ public class Voice implements TextToSpeech.OnInitListener {
         return voiceInput;
     }
 
-    public synchronized boolean isIdle(){
+    public synchronized boolean isIdle() {
         return isIdle;
     }
 
-    public synchronized void setStatus(boolean status){
-        this.isIdle=status;
+    public synchronized void setStatus(boolean status) {
+        this.isIdle = status;
+    }
+
+    private synchronized void setInitialized(boolean status) {
+        this.initialized = status;
+    }
+
+    private synchronized boolean isInitialized() {
+        return this.initialized;
     }
 
 }

@@ -130,7 +130,6 @@ public class InitialView extends AppCompatActivity {
             }
         });
         LayoutConfig.setListViewHeightBasedOnChildren(listView);
-        voice.read(getString(R.string.init_stmt));
     }
 
     private class ModuleAdapter extends ArrayAdapter<Module> {
@@ -218,6 +217,8 @@ public class InitialView extends AppCompatActivity {
                 }
             }
         });
+
+        voice.read(getString(R.string.init_stmt));
 
     }
 
