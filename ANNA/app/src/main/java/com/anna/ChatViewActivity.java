@@ -77,7 +77,7 @@ public class ChatViewActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final NotificationData notificationData = (NotificationData) intent.getSerializableExtra("notificationData");
+            final NotificationData notificationData = (NotificationData) intent.getParcelableExtra("notificationData");
             mAdapter.addItem(notificationData, notificationData.getTitle());
             mRecyclerView.setAdapter(mAdapter);
             voice.read(notificationData.getTitle());
