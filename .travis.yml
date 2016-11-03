@@ -8,13 +8,13 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-24.0.3
-    - android-24
+    - build-tools-25.0.0
+    - android-25
     - extra-android-support
     - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    - addon-google_apis-google-24
+    - addon-google_apis-google-25
 before_install:
   - chmod +x ./ANNA/gradlew
   - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
