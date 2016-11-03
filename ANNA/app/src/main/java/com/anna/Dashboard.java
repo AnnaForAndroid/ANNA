@@ -8,19 +8,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Dashboard extends AppCompatActivity {
+    public static List<String> tabOrder = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Messenger"));
-        tabLayout.addTab(tabLayout.newTab().setText("Maps"));
-        //tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+        boolean messenger = true;
+        for (String name:Module.moduleNames) {
+            if(name.equals("Maps")){
+                tabLayout.addTab(tabLayout.newTab().setText(name));
+                tabOrder.add(name);
+            }
+            if (messenger){
+                tabLayout.addTab(tabLayout.newTab().setText("Messenger"));
+                messenger = false;
+                tabOrder.add("Messenger");
+            }
+        }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
