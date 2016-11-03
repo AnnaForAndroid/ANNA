@@ -12,6 +12,8 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.util.Date;
+
 
 public class NotificationService extends NotificationListenerService {
 
@@ -38,24 +40,17 @@ public class NotificationService extends NotificationListenerService {
         }
 
         if (Module.enabledAppNames.contains(appName)) {
-            String ticker = null;
-            if (sbn.getNotification().tickerText != null) {
-                ticker = sbn.getNotification().tickerText.toString();
-            }
+
             Bundle extras = sbn.getNotification().extras;
             String title = extras.getString("android.title");
             String text = extras.getCharSequence("android.text").toString();
             Bitmap icon = sbn.getNotification().largeIcon;
             long time = sbn.getPostTime();
 
+            NotificationData notificationData = new NotificationData(title, text, icon, new Date(time), appName, pack);
+
             Intent msgrcv = new Intent("Msg");
-            msgrcv.putExtra("package", pack);
-            msgrcv.putExtra("ticker", ticker);
-            msgrcv.putExtra("title", title);
-            msgrcv.putExtra("text", text);
-            msgrcv.putExtra("icon", icon);
-            msgrcv.putExtra("time", time);
-            msgrcv.putExtra("app", appName);
+            msgrcv.putExtra("notificationData", notificationData);
 
             LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
         }

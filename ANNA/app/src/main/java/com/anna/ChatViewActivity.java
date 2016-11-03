@@ -77,15 +77,10 @@ public class ChatViewActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final String pack = intent.getStringExtra("package");
-            final String title = intent.getStringExtra("title");
-            final String text = intent.getStringExtra("text");
-            final Bitmap icon = intent.getParcelableExtra("icon");
-            final Date time = new Date(intent.getLongExtra("time", 0));
-            final String app = intent.getStringExtra("app");
-            mAdapter.addItem(new NotificationData(title, text, icon, time, app, pack), title);
+            final NotificationData notificationData = (NotificationData) intent.getSerializableExtra("notificationData");
+            mAdapter.addItem(notificationData, notificationData.getTitle());
             mRecyclerView.setAdapter(mAdapter);
-            voice.read(title);
+            voice.read(notificationData.getTitle());
             voice.read(getString(R.string.read_message));
             voice.setStatus(false);
             voice.promptSpeechInput();
@@ -93,13 +88,13 @@ public class ChatViewActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (voice.getVoiceInput().toLowerCase().equals("ja")) {
-                        voice.read(text);
+                        voice.read(notificationData.getText());
                         voice.read(getString(R.string.ask_to_answer));
                         new Thread() {
                             @Override
                             public void run() {
                                 if (voice.getVoiceInput().toLowerCase().equals("ja")) {
-                                    answerMessage(text, pack);
+                                    answerMessage(notificationData.getText(), notificationData.getPackageName());
                                 }
                             }
                         }.start();
