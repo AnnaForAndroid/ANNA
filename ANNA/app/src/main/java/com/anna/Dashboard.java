@@ -34,9 +34,6 @@ public class Dashboard extends AppCompatActivity {
                 tabOrder.add("Messenger");
             }
         }
-        //tabLayout.addTab(tabLayout.newTab().setText("Messenger"));
-        //tabLayout.addTab(tabLayout.newTab().setText("Maps"));
-        //tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
