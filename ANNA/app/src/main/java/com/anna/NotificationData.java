@@ -2,10 +2,11 @@ package com.anna;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class NotificationData {
+public class NotificationData implements Serializable{
     private String title;
     private String text;
     private Bitmap icon;
