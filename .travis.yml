@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 notifications:
   email: false
-  slack: annaforandroid:$SLACK_TOKEN
+  slack: annaforandroid:ULrbK43z266SCMhYr471J9hF
 android:
   components:
     - platform-tools
