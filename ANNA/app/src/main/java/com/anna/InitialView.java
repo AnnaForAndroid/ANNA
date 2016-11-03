@@ -55,7 +55,7 @@ public class InitialView extends AppCompatActivity {
 
     public void checkForFirstUse() {
         if (setupFinished) {
-            Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
+            Intent intent = new Intent(InitialView.this, Dashboard.class);
             InitialView.this.startActivity(intent);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -70,7 +70,7 @@ public class InitialView extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (setupFinished) {
-            Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
+            Intent intent = new Intent(InitialView.this, Dashboard.class);
             InitialView.this.startActivity(intent);
         }
     }
@@ -212,7 +212,7 @@ public class InitialView extends AppCompatActivity {
                 if (!(NotificationService.isNotificationAccessEnabled)) {
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
-                    Intent intent = new Intent(InitialView.this, ChatViewActivity.class);
+                    Intent intent = new Intent(InitialView.this, Dashboard.class);
                     InitialView.this.startActivity(intent);
                 }
             }
