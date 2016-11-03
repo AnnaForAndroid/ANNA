@@ -17,17 +17,13 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
-        switch (position) {
-            case 0:
+        switch (Dashboard.tabOrder.get(position)) {
+            case "Messenger":
                 ChatFragment tab1 = new ChatFragment();
                 return tab1;
-            case 1:
+            case "Maps":
                 MapsFragment tab2 = new MapsFragment();
                 return tab2;
-            //case 2:
-              //  TabFragment3 tab3 = new TabFragment3();
-              //  return tab3;
             default:
                 return null;
         }
