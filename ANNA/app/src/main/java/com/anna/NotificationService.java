@@ -49,10 +49,11 @@ public class NotificationService extends NotificationListenerService {
 
             NotificationData notificationData = new NotificationData(title, text, icon, new Date(time), appName, pack);
 
-            Intent msgrcv = new Intent("Msg");
+            Intent msgrcv = new Intent("com.anna.Msg");
             msgrcv.putExtra("notificationData", notificationData);
 
-            LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+            //LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
+            sendBroadcast(msgrcv);
         }
 
     }

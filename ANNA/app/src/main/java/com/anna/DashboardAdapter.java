@@ -19,7 +19,7 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (Dashboard.tabOrder.get(position)) {
             case "Messenger":
-                ChatFragment tab1 = new ChatFragment();
+                ChatViewActivity tab1 = new ChatViewActivity();
                 return tab1;
             case "Maps":
                 MapsFragment tab2 = new MapsFragment();

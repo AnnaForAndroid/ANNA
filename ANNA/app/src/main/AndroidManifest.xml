@@ -25,11 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ChatViewActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_whats_app_screen"
-            android:parentActivityName=".InitialView" />
 
         <service
             android:name=".NotificationService"
@@ -40,6 +35,13 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".ChatViewActivity$NotificationDataReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.anna.Msg"/>
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -47,7 +49,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".util.Voice" />
+
         <activity
             android:name=".Dashboard"
             android:label="@string/title_activity_dashboard"

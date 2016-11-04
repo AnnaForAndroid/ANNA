@@ -3,58 +3,56 @@ package com.anna;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.anna.util.IndexedHashMap;
 import com.anna.util.Voice;
 
-import java.util.Date;
 
-
-public class ChatViewActivity extends AppCompatActivity {
+public class ChatViewActivity extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private MyRecyclerViewAdapter mAdapter;
+    private MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(new IndexedHashMap<String, NotificationData>());
     private RecyclerView.LayoutManager mLayoutManager;
     private Voice voice;
     private static String LOG_TAG = "ChatViewActivity";
+    public static ChatViewActivity chatViewActivity;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_view);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        FragmentActivity faActivity = (FragmentActivity) super.getActivity();
+        RelativeLayout llLayout = (RelativeLayout) inflater.inflate(R.layout.activity_card_view, container, false);
+
+        mRecyclerView = (RecyclerView) llLayout.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(super.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyRecyclerViewAdapter(new IndexedHashMap<String, NotificationData>());
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
-        voice = new Voice(this);
-        // Code to Add an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).addItem(obj, index);
+        ChatViewActivity.chatViewActivity = this;
+        voice = new Voice(super.getActivity());
 
-        // Code to remove an item with default animation
-        //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
+        return llLayout;
     }
 
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         ChatViewActivity.super.onActivityResult(requestCode, resultCode, data);
         voice.onActivityResult(requestCode, resultCode, data);
     }
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
                 .MyClickListener() {
@@ -73,34 +71,36 @@ public class ChatViewActivity extends AppCompatActivity {
         startActivity(sendIntent);
     }
 
-    private BroadcastReceiver onNotice = new BroadcastReceiver() {
+    public static class NotificationDataReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final NotificationData notificationData = (NotificationData) intent.getParcelableExtra("notificationData");
-            mAdapter.addItem(notificationData, notificationData.getTitle());
-            mRecyclerView.setAdapter(mAdapter);
-            voice.read(notificationData.getTitle());
-            voice.read(getString(R.string.read_message));
-            voice.setStatus(false);
-            voice.promptSpeechInput();
-            new Thread() {
-                @Override
-                public void run() {
-                    if (voice.getVoiceInput().toLowerCase().equals("ja")) {
-                        voice.read(notificationData.getText());
-                        voice.read(getString(R.string.ask_to_answer));
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                if (voice.getVoiceInput().toLowerCase().equals("ja")) {
-                                    answerMessage(notificationData.getText(), notificationData.getPackageName());
+            if (chatViewActivity != null) {
+                final NotificationData notificationData = (NotificationData) intent.getParcelableExtra("notificationData");
+                chatViewActivity.mAdapter.addItem(notificationData, notificationData.getTitle());
+                chatViewActivity.mRecyclerView.setAdapter(chatViewActivity.mAdapter);
+                chatViewActivity.voice.read(notificationData.getTitle());
+                chatViewActivity.voice.read(chatViewActivity.getString(R.string.read_message));
+                chatViewActivity.voice.setStatus(false);
+                chatViewActivity.voice.promptSpeechInput();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
+                            chatViewActivity.voice.read(notificationData.getText());
+                            chatViewActivity.voice.read(chatViewActivity.getString(R.string.ask_to_answer));
+                            new Thread() {
+                                @Override
+                                public void run() {
+                                    if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
+                                        chatViewActivity.answerMessage(notificationData.getText(), notificationData.getPackageName());
+                                    }
                                 }
-                            }
-                        }.start();
+                            }.start();
+                        }
                     }
-                }
-            }.start();
+                }.start();
+            }
         }
-    };
+    }
 }

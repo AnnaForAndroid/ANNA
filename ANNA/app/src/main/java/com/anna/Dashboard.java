@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class Dashboard extends AppCompatActivity {
         setSupportActionBar(toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         boolean messenger = true;
-        for (String name:Module.moduleNames) {
+        for (String name:Module.enabledAppNames) {
             if(name.equals("Maps")){
                 tabLayout.addTab(tabLayout.newTab().setText(name));
                 tabOrder.add(name);
