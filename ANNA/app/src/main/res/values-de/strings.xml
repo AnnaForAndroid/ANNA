@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ANNA</string>
+    <string name="init_stmt">\nHallo ,\n\nIch bin ANNA dein Fahrassistent!\n\nBitte wähle eins der folgenden Module aus, um mich zu personalisieren:</string>
+
+    <string name="action_settings">Einstellungen</string>
+    <string name="title_activity_whats_app_screen">Chat Übersicht</string>
+    <string name="title_activity_card_view">CardViewActivity</string>
+    <string name="title_activity_maps">Karte</string>
+    <string name="speech_prompt">Sag etwas...</string>
+    <string name="speech_not_supported">Tut mir leid! Leider unterstützt dein Gerät keine Spracheingabe</string>
+    <string name="read_message">Soll die Nachricht vorgelesen werden?</string>
+    <string name="ask_to_answer">Möchtest du darauf antworten?</string>
+    <string name="audio_record_permission_denied">Du hast die Audio Aufnahme Berechtigung verweigert. Daher wird dieses Feature nicht unterstützt. Um es zu nutzen, gehe in die Einstellungen und gib der Applikation die entsprechenden Rechte.</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+</resources>
