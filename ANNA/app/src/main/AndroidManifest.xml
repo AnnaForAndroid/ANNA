@@ -35,13 +35,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".ChatViewActivity$NotificationDataReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.anna.Msg"/>
-            </intent-filter>
-        </receiver>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

@@ -125,4 +125,8 @@ public class Voice implements TextToSpeech.OnInitListener {
         return this.initialized;
     }
 
+    public void killService() {
+        this.tts.shutdown();
+    }
+
 }

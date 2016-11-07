@@ -231,4 +231,12 @@ public class InitialView extends AppCompatActivity {
                     PERMISSIONS_REQUEST_AUDIO);
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (setupFinished) {
+            voice.killService();
+        }
+    }
 }
