@@ -8,8 +8,8 @@
     <string name="title_activity_maps">Map</string>
     <string name="speech_prompt">Say something...</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
-    <string name="read_message">Soll die Nachricht vorgelesen werden?</string>
-    <string name="ask_to_answer">Möchtest du darauf antworten?</string>
+    <string name="read_message">Do you want to listen to the message?</string>
+    <string name="ask_to_answer">Would you like to answer?</string>
     <string name="audio_record_permission_denied">You denied record audio permission. So, the feature will be disabled. To enable it, go on settings and grant record audio for the application</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="section_format">Hello World from section: %1$d</string>
