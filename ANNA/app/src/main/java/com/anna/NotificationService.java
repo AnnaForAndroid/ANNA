@@ -1,6 +1,5 @@
 package com.anna;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -16,13 +15,11 @@ import java.util.Date;
 
 public class NotificationService extends NotificationListenerService {
 
-    Context context;
     public static boolean isNotificationAccessEnabled = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
     }
 
     @Override

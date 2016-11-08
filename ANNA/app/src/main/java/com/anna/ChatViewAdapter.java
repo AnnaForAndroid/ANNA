@@ -21,10 +21,10 @@ public class ChatViewAdapter extends RecyclerView
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        ImageView img;
-        TextView sender;
-        TextView message;
-        TextView time;
+       private ImageView img;
+       private TextView sender;
+       private TextView message;
+       private TextView time;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
