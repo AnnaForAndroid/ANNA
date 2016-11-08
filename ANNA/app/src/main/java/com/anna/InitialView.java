@@ -81,9 +81,8 @@ public class InitialView extends AppCompatActivity {
 
         switch (requestCode) {
             case PERMISSIONS_REQUEST_AUDIO:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                } else {
+                if (grantResults.length <= 0
+                        || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                             Manifest.permission.RECORD_AUDIO)) {
                         new AlertDialog.Builder(this).
@@ -139,8 +138,8 @@ public class InitialView extends AppCompatActivity {
         }
 
         private class ViewHolder {
-            TextView code;
-            CheckBox name;
+            protected TextView code;
+            protected CheckBox name;
         }
 
         @Override
