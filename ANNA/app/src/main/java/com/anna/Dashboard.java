@@ -9,8 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.List;
 public class Dashboard extends AppCompatActivity {
     public static List<String> tabOrder = new ArrayList<>();
     private long lastInteraction;
-    private int FULLSCREEN;
+    private int FULLSCREEN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +29,7 @@ public class Dashboard extends AppCompatActivity {
         Module.loadModules();
         boolean messenger = true;
         for (String name : Module.enabledAppNames) {
-            if (name.equals("Maps")) {
+            if ("Maps".equals(name)) {
                 tabLayout.addTab(tabLayout.newTab().setText(name));
                 tabOrder.add(name);
             }
@@ -70,11 +68,8 @@ public class Dashboard extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 
     public void startDetectUserInactivity() {
@@ -120,7 +115,7 @@ public class Dashboard extends AppCompatActivity {
         setLastInteractionTime();
     }
 
-    final Handler handler = new Handler() {
+    private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == FULLSCREEN) {
