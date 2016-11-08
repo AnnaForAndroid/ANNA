@@ -13,4 +13,10 @@
     <string name="ask_to_answer">Möchtest du darauf antworten?</string>
     <string name="audio_record_permission_denied">Du hast die Audio Aufnahme Berechtigung verweigert. Daher wird dieses Feature nicht unterstützt. Um es zu nutzen, gehe in die Einstellungen und gib der Applikation die entsprechenden Rechte.</string>
     <string name="title_activity_dashboard">Dashboard</string>
+    <string name="reply">antworten</string>
+    <string name="selected">Folgende Module wurden ausgewählt:\n</string>
+    <string name="audio_denied">Ton Aufnahme Berechtigung verweigert</string>
+    <string name="record_audio">Ton aufnehmen</string>
+    <string name="record_audio_denied_text">Du musst die Audioaufnahme Berechtigung zulassen um die Spracherkennungsfunktionen zu nutzen. Versuche es erneut und gewähre die Berechtigung!</string>
+    <string name="initial_view_button">Weiter</string>
 </resources>

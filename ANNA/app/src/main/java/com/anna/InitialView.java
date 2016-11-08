@@ -83,17 +83,15 @@ public class InitialView extends AppCompatActivity {
             case PERMISSIONS_REQUEST_AUDIO:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //readContacts();
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                             Manifest.permission.RECORD_AUDIO)) {
                         new AlertDialog.Builder(this).
-                                setTitle("Record Audio").
-                                setMessage("You need to grant record audio permission to use speach" +
-                                        " recognition feature. Retry and grant it !").show();
+                                setTitle(getString(R.string.record_audio)).
+                                setMessage(getString(R.string.record_audio_denied_text)).show();
                     } else {
                         new AlertDialog.Builder(this).
-                                setTitle("Record Audio permission denied").
+                                setTitle(getString(R.string.audio_denied)).
                                 setMessage(getString(R.string.audio_record_permission_denied)).show();
                     }
                 }
@@ -124,9 +122,6 @@ public class InitialView extends AppCompatActivity {
                                     int position, long id) {
 
                 Module module = (Module) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        "Clicked on Row: " + module.getName(),
-                        Toast.LENGTH_LONG).show();
             }
         });
         LayoutConfig.setListViewHeightBasedOnChildren(listView);
@@ -188,13 +183,14 @@ public class InitialView extends AppCompatActivity {
     private void checkButtonClick() {
 
         Button myButton = (Button) findViewById(R.id.button);
+        myButton.setText(getString(R.string));
         myButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 StringBuffer responseText = new StringBuffer();
-                responseText.append("The following were selected...\n");
+                responseText.append(getString(R.string.selected));
 
                 ArrayList<Module> moduleList = adapter.moduleList;
                 for (int i = 0; i < moduleList.size(); i++) {
