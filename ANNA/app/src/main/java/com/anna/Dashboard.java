@@ -1,11 +1,16 @@
 package com.anna;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +18,8 @@ import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
     public static List<String> tabOrder = new ArrayList<>();
+    private long lastInteraction;
+    private int FULLSCREEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +29,12 @@ public class Dashboard extends AppCompatActivity {
         setSupportActionBar(toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         boolean messenger = true;
-        for (String name:Module.enabledAppNames) {
-            if(name.equals("Maps")){
+        for (String name : Module.enabledAppNames) {
+            if (name.equals("Maps")) {
                 tabLayout.addTab(tabLayout.newTab().setText(name));
                 tabOrder.add(name);
             }
-            if (messenger){
+            if (messenger) {
                 tabLayout.addTab(tabLayout.newTab().setText("Messenger"));
                 messenger = false;
                 tabOrder.add("Messenger");
@@ -56,6 +63,7 @@ public class Dashboard extends AppCompatActivity {
 
             }
         });
+        startDetectUserInactivity();
     }
 
   /*  @Override
@@ -73,4 +81,63 @@ public class Dashboard extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void startDetectUserInactivity() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (getLastInteractionTime() > 3000) {
+                        Message msg = handler.obtainMessage();
+                        msg.what = FULLSCREEN;
+                        handler.sendMessage(msg);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public long getLastInteraction() {
+        return lastInteraction;
+    }
+
+    public long getLastInteractionTime() {
+        return System.currentTimeMillis() - getLastInteraction();
+    }
+
+    public void setLastInteractionTime() {
+        lastInteraction = System.currentTimeMillis();
+    }
+
+    public void onUserInteraction() {
+        setLastInteractionTime();
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setLastInteractionTime();
+    }
+
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == FULLSCREEN) {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_IMMERSIVE);
+            }
+            super.handleMessage(msg);
+        }
+    };
 }
