@@ -183,7 +183,7 @@ public class InitialView extends AppCompatActivity {
     private void checkButtonClick() {
 
         Button myButton = (Button) findViewById(R.id.button);
-        myButton.setText(getString(R.string));
+        myButton.setText(getString(R.string.initial_view_button));
         myButton.setOnClickListener(new OnClickListener() {
 
             @Override
