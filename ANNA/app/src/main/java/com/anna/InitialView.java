@@ -48,7 +48,7 @@ public class InitialView extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sharedPrefs = new PreferencesHelper(getApplicationContext(), "annaPreferences");
-        setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", "boolean");
+        setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", Boolean.class);
         this.voice = new Voice(this);
         checkForFirstUse();
     }
@@ -83,17 +83,15 @@ public class InitialView extends AppCompatActivity {
             case PERMISSIONS_REQUEST_AUDIO:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //readContacts();
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                             Manifest.permission.RECORD_AUDIO)) {
                         new AlertDialog.Builder(this).
-                                setTitle("Record Audio").
-                                setMessage("You need to grant record audio permission to use speach" +
-                                        " recognition feature. Retry and grant it !").show();
+                                setTitle(getString(R.string.record_audio)).
+                                setMessage(getString(R.string.record_audio_denied_text)).show();
                     } else {
                         new AlertDialog.Builder(this).
-                                setTitle("Record Audio permission denied").
+                                setTitle(getString(R.string.audio_denied)).
                                 setMessage(getString(R.string.audio_record_permission_denied)).show();
                     }
                 }
@@ -124,9 +122,6 @@ public class InitialView extends AppCompatActivity {
                                     int position, long id) {
 
                 Module module = (Module) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        "Clicked on Row: " + module.getName(),
-                        Toast.LENGTH_LONG).show();
             }
         });
         LayoutConfig.setListViewHeightBasedOnChildren(listView);
@@ -188,18 +183,18 @@ public class InitialView extends AppCompatActivity {
     private void checkButtonClick() {
 
         Button myButton = (Button) findViewById(R.id.button);
+        myButton.setText(getString(R.string.initial_view_button));
         myButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 StringBuffer responseText = new StringBuffer();
-                responseText.append("The following were selected...\n");
+                responseText.append(getString(R.string.selected));
 
                 ArrayList<Module> moduleList = adapter.moduleList;
                 for (int i = 0; i < moduleList.size(); i++) {
                     Module module = moduleList.get(i);
-                    sharedPrefs.savePreferences(module.getName(), module.isEnabled(), "boolean");
                     if (module.isEnabled()) {
                         responseText.append("\n" + module.getName());
                     }
@@ -208,7 +203,7 @@ public class InitialView extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
                 setupFinished = true;
-                sharedPrefs.savePreferences("setupFinished", setupFinished, "boolean");
+                sharedPrefs.savePreferences("setupFinished", setupFinished, Boolean.class);
                 if (!(NotificationService.isNotificationAccessEnabled)) {
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {
@@ -229,6 +224,14 @@ public class InitialView extends AppCompatActivity {
 
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
                     PERMISSIONS_REQUEST_AUDIO);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (setupFinished) {
+            voice.killService();
         }
     }
 }

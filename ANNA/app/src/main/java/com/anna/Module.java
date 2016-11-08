@@ -1,5 +1,9 @@
 package com.anna;
 
+import android.content.Context;
+
+import com.anna.util.PreferencesHelper;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,13 +15,14 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<Module>();
-    public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Pushbullet"));
+    public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Pushbullet", "Telegram"));
     public static List<String> packageNames = new ArrayList<String>();
     public static List<String> enabledAppNames = new ArrayList<String>();
     public static List<String> disabledAppNames = moduleNames;
     private boolean active;
     private final String name;
     private final String packageName;
+    private static final PreferencesHelper sharedPreferences = new PreferencesHelper("module");
 
     public String getPackageName() {
         return packageName;
@@ -44,12 +49,14 @@ public class Module {
         this.active = true;
         Module.enabledAppNames.add(this.getName());
         Module.disabledAppNames.remove(this.getName());
+        save();
     }
 
     public void disable() {
         this.active = false;
         Module.disabledAppNames.add(this.getName());
         Module.enabledAppNames.remove(this.getName());
+        save();
     }
 
     public void setSelected(boolean selected) {
@@ -57,6 +64,25 @@ public class Module {
             enable();
         } else {
             disable();
+        }
+    }
+
+    private void save() {
+        sharedPreferences.savePreferences(this.getName(), this, Module.class);
+    }
+
+    public static void loadModules() {
+        if (Module.modules.isEmpty()) {
+            for (String moduleName : Module.moduleNames) {
+                Module module = (Module) sharedPreferences.getPreferences(moduleName, Module.class);
+                Module.modules.add(module);
+                Module.packageNames.add(module.getPackageName());
+                if (module.isEnabled()) {
+                    Module.enabledAppNames.add(module.getName());
+                } else {
+                    Module.disabledAppNames.add(module.getName());
+                }
+            }
         }
     }
 }
