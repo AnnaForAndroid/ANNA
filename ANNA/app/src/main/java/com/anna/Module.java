@@ -12,11 +12,11 @@ import java.util.List;
 
 public class Module {
 
-    public static List<Module> modules = new ArrayList<Module>();
+    public static List<Module> modules = new ArrayList<>();
     public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire",
             "Signal","Threema"));
-    public static List<String> packageNames = new ArrayList<String>();
-    public static List<String> enabledAppNames = new ArrayList<String>();
+    public static List<String> packageNames = new ArrayList<>();
+    public static List<String> enabledAppNames = new ArrayList<>();
     public static List<String> disabledAppNames = moduleNames;
     private boolean active;
     private final String name;

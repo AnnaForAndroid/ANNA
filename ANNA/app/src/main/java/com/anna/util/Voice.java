@@ -31,7 +31,7 @@ public class Voice implements TextToSpeech.OnInitListener {
         this.context = context;
         this.isIdle = true;
         this.initialized = false;
-        this.textToSpeech = new ArrayList<String>();
+        this.textToSpeech = new ArrayList<>();
     }
 
     @Override
@@ -109,7 +109,7 @@ public class Voice implements TextToSpeech.OnInitListener {
         return voiceInput;
     }
 
-    public synchronized boolean isIdle() {
+    private synchronized boolean isIdle() {
         return isIdle;
     }
 

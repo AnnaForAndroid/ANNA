@@ -121,7 +121,7 @@ public class InitialView extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Module module = (Module) parent.getItemAtPosition(position);
+                parent.getItemAtPosition(position);
             }
         });
         LayoutConfig.setListViewHeightBasedOnChildren(listView);
