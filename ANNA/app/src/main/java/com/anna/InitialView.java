@@ -48,7 +48,7 @@ public class InitialView extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sharedPrefs = new PreferencesHelper(getApplicationContext(), "annaPreferences");
-        setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", "boolean");
+        setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", Boolean.class);
         this.voice = new Voice(this);
         checkForFirstUse();
     }
@@ -195,7 +195,6 @@ public class InitialView extends AppCompatActivity {
                 ArrayList<Module> moduleList = adapter.moduleList;
                 for (int i = 0; i < moduleList.size(); i++) {
                     Module module = moduleList.get(i);
-                    sharedPrefs.savePreferences(module.getName(), module.isEnabled(), "boolean");
                     if (module.isEnabled()) {
                         responseText.append("\n" + module.getName());
                     }
@@ -204,7 +203,7 @@ public class InitialView extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         responseText, Toast.LENGTH_LONG).show();
                 setupFinished = true;
-                sharedPrefs.savePreferences("setupFinished", setupFinished, "boolean");
+                sharedPrefs.savePreferences("setupFinished", setupFinished, Boolean.class);
                 if (!(NotificationService.isNotificationAccessEnabled)) {
                     startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                 } else {

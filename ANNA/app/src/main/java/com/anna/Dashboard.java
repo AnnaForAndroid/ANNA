@@ -21,6 +21,7 @@ public class Dashboard extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        Module.loadModules();
         boolean messenger = true;
         for (String name:Module.enabledAppNames) {
             if(name.equals("Maps")){
@@ -57,12 +58,6 @@ public class Dashboard extends AppCompatActivity {
             }
         });
     }
-
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

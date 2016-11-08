@@ -3,6 +3,8 @@ package com.anna.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+
 import java.util.Set;
 
 /**
@@ -18,27 +20,44 @@ public class PreferencesHelper {
         this.editor = sharedPreferences.edit();
     }
 
-    public Object getPreferences(String key, String type) {
-        switch (type.toLowerCase()) {
+    public PreferencesHelper(String preferencesName) {
+        this.sharedPreferences = MyApplication.getAppContext().getSharedPreferences(preferencesName, 0);
+        this.editor = sharedPreferences.edit();
+    }
+
+    public Object getPreferences(String key, Class objectType) {
+        Object value;
+        switch (objectType.getSimpleName().toLowerCase()) {
             case "boolean":
-                return sharedPreferences.getBoolean(key, false);
+                value = sharedPreferences.getBoolean(key, false);
+                break;
             case "string":
-                return sharedPreferences.getString(key, "");
+                value = sharedPreferences.getString(key, "");
+                break;
             case "int":
-                return sharedPreferences.getInt(key, 0);
+                value = sharedPreferences.getInt(key, 0);
+                break;
             case "float":
-                return sharedPreferences.getFloat(key, 0);
+                value = sharedPreferences.getFloat(key, 0);
+                break;
             case "long":
-                return sharedPreferences.getLong(key, 0);
+                value = sharedPreferences.getLong(key, 0);
+                break;
             case "stringset":
-                return sharedPreferences.getStringSet(key, null);
+                value = sharedPreferences.getStringSet(key, null);
+                break;
+            default:
+                Gson gson = new Gson();
+                String json = sharedPreferences.getString(key, "");
+                value = gson.fromJson(json, objectType);
+                break;
         }
-        return null;
+        return value;
     }
 
 
-    public void savePreferences(String key, Object value, String objectType) {
-        switch (objectType.toLowerCase()) {
+    public void savePreferences(String key, Object value, Class objectType) {
+        switch (objectType.getSimpleName().toLowerCase()) {
             case "boolean":
                 editor.putBoolean(key, (Boolean) value);
                 break;
@@ -57,8 +76,14 @@ public class PreferencesHelper {
             case "stringset":
                 editor.putStringSet(key, (Set<String>) value);
                 break;
+            default:
+                Gson gson = new Gson();
+                String json = gson.toJson(value);
+                editor.putString(key, json);
+                break;
         }
         editor.commit();
     }
+
 }
 

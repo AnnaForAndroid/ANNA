@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ANNA</string>
-    <string name="init_stmt">\nHallo ,\n\nIch bin ANNA dein Fahrassistent!\n\nBitte wähle eins der folgenden Module aus, um mich zu personalisieren:</string>
+    <string name="init_stmt">\nHallo,\n\nIch bin ANNA dein Fahrassistent!\n\nBitte wähle eins der folgenden Module aus, um mich zu personalisieren:</string>
 
     <string name="action_settings">Einstellungen</string>
     <string name="title_activity_whats_app_screen">Chat Übersicht</string>
