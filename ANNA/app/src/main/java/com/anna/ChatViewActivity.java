@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +23,6 @@ public class ChatViewActivity extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ChatViewAdapter mAdapter = new ChatViewAdapter(new IndexedHashMap<String, NotificationData>());
-    private RecyclerView.LayoutManager mLayoutManager;
     private Voice voice;
     private static String LOG_TAG = "ChatViewActivity";
     private static ChatViewActivity chatViewActivity;
@@ -33,12 +31,11 @@ public class ChatViewActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        FragmentActivity faActivity = (FragmentActivity) super.getActivity();
         RelativeLayout llLayout = (RelativeLayout) inflater.inflate(R.layout.activity_card_view, container, false);
 
         mRecyclerView = (RecyclerView) llLayout.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(super.getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(super.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         ChatViewActivity.chatViewActivity = this;
         voice = new Voice(super.getActivity());
@@ -56,7 +53,7 @@ public class ChatViewActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((ChatViewAdapter) mAdapter).setOnItemClickListener(new ChatViewAdapter
+         mAdapter.setOnItemClickListener(new ChatViewAdapter
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
