@@ -11,10 +11,10 @@ import android.widget.TextView;
 import com.anna.util.IndexedHashMap;
 
 
-public class MyRecyclerViewAdapter extends RecyclerView
-        .Adapter<MyRecyclerViewAdapter
+public class ChatViewAdapter extends RecyclerView
+        .Adapter<ChatViewAdapter
         .DataObjectHolder> {
-    private static String LOG_TAG = "MyRecyclerViewAdapter";
+    private static String LOG_TAG = "ChatViewAdapter";
     private IndexedHashMap<String, NotificationData> mDataset;
     private static MyClickListener myClickListener;
 
@@ -47,7 +47,7 @@ public class MyRecyclerViewAdapter extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public MyRecyclerViewAdapter(IndexedHashMap<String, NotificationData> myDataset) {
+    public ChatViewAdapter(IndexedHashMap<String, NotificationData> myDataset) {
         mDataset = myDataset;
     }
 

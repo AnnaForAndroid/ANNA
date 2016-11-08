@@ -23,7 +23,7 @@ import com.anna.util.Voice;
 public class ChatViewActivity extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private MyRecyclerViewAdapter mAdapter = new MyRecyclerViewAdapter(new IndexedHashMap<String, NotificationData>());
+    private ChatViewAdapter mAdapter = new ChatViewAdapter(new IndexedHashMap<String, NotificationData>());
     private RecyclerView.LayoutManager mLayoutManager;
     private Voice voice;
     private static String LOG_TAG = "ChatViewActivity";
@@ -56,7 +56,7 @@ public class ChatViewActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
+        ((ChatViewAdapter) mAdapter).setOnItemClickListener(new ChatViewAdapter
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
