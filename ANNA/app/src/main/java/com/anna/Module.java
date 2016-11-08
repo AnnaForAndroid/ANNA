@@ -1,7 +1,5 @@
 package com.anna;
 
-import android.content.Context;
-
 import com.anna.util.PreferencesHelper;
 
 import java.util.ArrayList;
@@ -15,7 +13,8 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<Module>();
-    public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Pushbullet", "Telegram"));
+    public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire",
+            "Signal","Threema"));
     public static List<String> packageNames = new ArrayList<String>();
     public static List<String> enabledAppNames = new ArrayList<String>();
     public static List<String> disabledAppNames = moduleNames;

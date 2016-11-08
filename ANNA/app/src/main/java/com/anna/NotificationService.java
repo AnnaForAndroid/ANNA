@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
-import android.support.v4.content.LocalBroadcastManager;
 
 import java.util.Date;
 
@@ -47,15 +46,8 @@ public class NotificationService extends NotificationListenerService {
             Bitmap icon = sbn.getNotification().largeIcon;
             long time = sbn.getPostTime();
 
-            NotificationData notificationData = new NotificationData(title, text, icon, new Date(time), appName, pack);
-
-            Intent msgrcv = new Intent("com.anna.Msg");
-            msgrcv.putExtra("notificationData", notificationData);
-
-            //LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
-            sendBroadcast(msgrcv);
+            ChatViewActivity.notifyUser(new NotificationData(title, text, icon, new Date(time), appName, pack, sbn.getNotification()));
         }
-
     }
 
     @Override

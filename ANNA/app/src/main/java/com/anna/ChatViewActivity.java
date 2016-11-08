@@ -1,11 +1,13 @@
 package com.anna;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.RemoteInput;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +27,7 @@ public class ChatViewActivity extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private Voice voice;
     private static String LOG_TAG = "ChatViewActivity";
-    public static ChatViewActivity chatViewActivity;
+    private static ChatViewActivity chatViewActivity;
 
 
     @Override
@@ -63,44 +65,70 @@ public class ChatViewActivity extends Fragment {
         });
     }
 
-    public void answerMessage(String text, String packageName) {
-        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        sendIntent.setType("text/plain");
-        sendIntent.setPackage(packageName);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-        startActivity(sendIntent);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        voice.killService();
     }
 
-    public static class NotificationDataReceiver extends BroadcastReceiver {
+    public void answerMessage(NotificationData notificationData, String text) {
+        NotificationCompat.Action action = extractWearAction(notificationData.getNotification());
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (chatViewActivity != null) {
-                final NotificationData notificationData = (NotificationData) intent.getParcelableExtra("notificationData");
-                chatViewActivity.mAdapter.addItem(notificationData, notificationData.getTitle());
-                chatViewActivity.mRecyclerView.setAdapter(chatViewActivity.mAdapter);
-                chatViewActivity.voice.read(notificationData.getTitle());
-                chatViewActivity.voice.read(chatViewActivity.getString(R.string.read_message));
-                chatViewActivity.voice.setStatus(false);
-                chatViewActivity.voice.promptSpeechInput();
-                new Thread() {
-                    @Override
-                    public void run() {
-                        if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
-                            chatViewActivity.voice.read(notificationData.getText());
-                            chatViewActivity.voice.read(chatViewActivity.getString(R.string.ask_to_answer));
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
-                                        chatViewActivity.answerMessage(notificationData.getText(), notificationData.getPackageName());
-                                    }
-                                }
-                            }.start();
-                        }
-                    }
-                }.start();
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        if (action != null) {
+            for (RemoteInput remoteIn : action.getRemoteInputs()) {
+                Log.i("", "RemoteInput: " + remoteIn.getLabel());
+                bundle.putCharSequence(remoteIn.getResultKey(), text);
+            }
+            RemoteInput.addResultsToIntent(action.getRemoteInputs(), intent, bundle);
+            try {
+                action.actionIntent.send(getContext(), 0, intent);
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    public static void notifyUser(final NotificationData notificationData) {
+        if (chatViewActivity != null) {
+            chatViewActivity.mAdapter.addItem(notificationData, notificationData.getTitle());
+            chatViewActivity.mRecyclerView.setAdapter(chatViewActivity.mAdapter);
+            chatViewActivity.voice.read(notificationData.getTitle());
+            chatViewActivity.voice.read(chatViewActivity.getString(R.string.read_message));
+            chatViewActivity.voice.setStatus(false);
+            chatViewActivity.voice.promptSpeechInput();
+            new Thread() {
+                @Override
+                public void run() {
+                    if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
+                        chatViewActivity.voice.read(notificationData.getText());
+                        chatViewActivity.voice.read(chatViewActivity.getString(R.string.ask_to_answer));
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
+                                    chatViewActivity.voice.promptSpeechInput();
+                                    chatViewActivity.answerMessage(notificationData, chatViewActivity.voice.getVoiceInput());
+                                }
+                            }
+                        }.start();
+                    }
+                }
+            }.start();
+        }
+    }
+
+    public NotificationCompat.Action extractWearAction(Notification n) {
+        NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender(n);
+        NotificationCompat.Action answerAction = null;
+        if (wearableExtender.getActions().size() > 0) {
+            for (NotificationCompat.Action action : wearableExtender.getActions()) {
+                if (action.title.toString().toLowerCase().contains(getString(R.string.reply))) {
+                    answerAction = action;
+                }
+            }
+        }
+        return answerAction;
     }
 }
