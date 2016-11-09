@@ -187,27 +187,31 @@ public class InitialView extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
-                StringBuffer responseText = new StringBuffer();
-                responseText.append(getString(R.string.selected));
-
-                ArrayList<Module> moduleList = adapter.moduleList;
-                for (int i = 0; i < moduleList.size(); i++) {
-                    Module module = moduleList.get(i);
-                    if (module.isEnabled()) {
-                        responseText.append("\n" + module.getName());
-                    }
-                }
-
-                Toast.makeText(getApplicationContext(),
-                        responseText, Toast.LENGTH_LONG).show();
-                setupFinished = true;
-                sharedPrefs.savePreferences("setupFinished", setupFinished, Boolean.class);
-                if (!(NotificationService.isNotificationAccessEnabled)) {
-                    startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                if (Module.enabledAppNames.size() == 0) {
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.select_one_module), Toast.LENGTH_LONG).show();
                 } else {
-                    Intent intent = new Intent(InitialView.this, Dashboard.class);
-                    InitialView.this.startActivity(intent);
+                    StringBuffer responseText = new StringBuffer();
+                    responseText.append(getString(R.string.selected));
+
+                    ArrayList<Module> moduleList = adapter.moduleList;
+                    for (int i = 0; i < moduleList.size(); i++) {
+                        Module module = moduleList.get(i);
+                        if (module.isEnabled()) {
+                            responseText.append("\n" + module.getName());
+                        }
+                    }
+
+                    Toast.makeText(getApplicationContext(),
+                            responseText, Toast.LENGTH_LONG).show();
+                    setupFinished = true;
+                    sharedPrefs.savePreferences("setupFinished", setupFinished, Boolean.class);
+                    if (!(NotificationService.isNotificationAccessEnabled)) {
+                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+                    } else {
+                        Intent intent = new Intent(InitialView.this, Dashboard.class);
+                        InitialView.this.startActivity(intent);
+                    }
                 }
             }
         });

@@ -25,25 +25,28 @@ public class NotificationService extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
 
-        String pack = sbn.getPackageName();
-        String appName = null;
-        try {
-            PackageManager pm = getApplicationContext().getPackageManager();
-            ApplicationInfo ai = pm.getApplicationInfo(pack, 0);
-            appName = pm.getApplicationLabel(ai).toString();
-        } catch (final PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        if (sbn.isClearable()) {
 
-        if (Module.enabledAppNames.contains(appName)) {
+            String pack = sbn.getPackageName();
+            String appName = null;
+            try {
+                PackageManager pm = getApplicationContext().getPackageManager();
+                ApplicationInfo ai = pm.getApplicationInfo(pack, 0);
+                appName = pm.getApplicationLabel(ai).toString();
+            } catch (final PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
 
-            Bundle extras = sbn.getNotification().extras;
-            String title = extras.getString("android.title");
-            String text = extras.getCharSequence("android.text").toString();
-            Bitmap icon = sbn.getNotification().largeIcon;
-            long time = sbn.getPostTime();
+            if (Module.enabledAppNames.contains(appName)) {
 
-            ChatViewActivity.notifyUser(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification()));
+                Bundle extras = sbn.getNotification().extras;
+                String title = extras.getString("android.title");
+                String text = extras.getCharSequence("android.text").toString();
+                Bitmap icon = sbn.getNotification().largeIcon;
+                long time = sbn.getPostTime();
+
+                ChatViewActivity.notifyUser(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification()));
+            }
         }
     }
 

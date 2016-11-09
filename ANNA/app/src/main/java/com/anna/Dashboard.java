@@ -82,7 +82,7 @@ public class Dashboard extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if (getLastInteractionTime() > 3000) {
+                    if (getLastInteractionTime() > 5000) {
                         Message msg = handler.obtainMessage();
                         msg.what = FULLSCREEN;
                         handler.sendMessage(msg);
