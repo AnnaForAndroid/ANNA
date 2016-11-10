@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Date;
@@ -26,7 +27,7 @@ public class NotificationService extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
 
         if (sbn.isClearable()) {
-
+            NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender(sbn.getNotification());
             String pack = sbn.getPackageName();
             String appName = null;
             try {
@@ -36,16 +37,14 @@ public class NotificationService extends NotificationListenerService {
             } catch (final PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-
-            if (Module.enabledAppNames.contains(appName)) {
-
+            if (Module.enabledAppNames.contains(appName) && wearableExtender.getActions().size() > 0) {
                 Bundle extras = sbn.getNotification().extras;
                 String title = extras.getString("android.title");
                 String text = extras.getCharSequence("android.text").toString();
                 Bitmap icon = sbn.getNotification().largeIcon;
                 long time = sbn.getPostTime();
 
-                ChatViewActivity.notifyUser(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification()));
+                ChatViewActivity.notifications.add(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification()));
             }
         }
     }

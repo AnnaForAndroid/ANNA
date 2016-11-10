@@ -4,6 +4,8 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
@@ -18,6 +20,9 @@ import android.widget.RelativeLayout;
 import com.anna.util.IndexedHashMap;
 import com.anna.util.Voice;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 
 public class ChatViewActivity extends Fragment {
 
@@ -25,8 +30,9 @@ public class ChatViewActivity extends Fragment {
     private ChatViewAdapter mAdapter = new ChatViewAdapter(new IndexedHashMap<String, NotificationData>());
     private Voice voice;
     private static String LOG_TAG = "ChatViewActivity";
-    private static ChatViewActivity chatViewActivity;
-
+    public static Queue<NotificationData> notifications;
+    private volatile boolean notificationProcessingActive;
+    private Handler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,8 +43,28 @@ public class ChatViewActivity extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(super.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        ChatViewActivity.chatViewActivity = this;
         voice = new Voice(super.getActivity());
+        notificationProcessingActive = true;
+        notifications = new LinkedList<>();
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                mRecyclerView.setAdapter(mAdapter);
+                super.handleMessage(msg);
+            }
+        };
+        Thread notificationProcessor = new Thread() {
+            @Override
+            public void run() {
+                while (notificationProcessingActive) {
+                    NotificationData notificationData = notifications.poll();
+                    if (notificationData != null) {
+                        notifyUser(notificationData);
+                    }
+                }
+            }
+        };
+        notificationProcessor.start();
 
         return llLayout;
     }
@@ -53,7 +79,7 @@ public class ChatViewActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-         mAdapter.setOnItemClickListener(new ChatViewAdapter
+        mAdapter.setOnItemClickListener(new ChatViewAdapter
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
@@ -66,6 +92,7 @@ public class ChatViewActivity extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         voice.killService();
+        notificationProcessingActive = false;
     }
 
     public void answerMessage(NotificationData notificationData, String text) {
@@ -87,43 +114,38 @@ public class ChatViewActivity extends Fragment {
         }
     }
 
-    public static void notifyUser(final NotificationData notificationData) {
-        if (chatViewActivity != null) {
-            chatViewActivity.mAdapter.addItem(notificationData, notificationData.getTitle());
-            chatViewActivity.mRecyclerView.setAdapter(chatViewActivity.mAdapter);
-            chatViewActivity.voice.read(notificationData.getTitle());
-            chatViewActivity.voice.read(chatViewActivity.getString(R.string.read_message));
-            chatViewActivity.voice.setStatus(false);
-            chatViewActivity.voice.promptSpeechInput();
-            new Thread() {
-                @Override
-                public void run() {
-                    if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
-                        chatViewActivity.voice.read(notificationData.getText());
-                        chatViewActivity.voice.read(chatViewActivity.getString(R.string.ask_to_answer));
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                if (chatViewActivity.voice.getVoiceInput().toLowerCase().equals("ja")) {
-                                    chatViewActivity.voice.promptSpeechInput();
-                                    chatViewActivity.answerMessage(notificationData, chatViewActivity.voice.getVoiceInput());
-                                }
-                            }
-                        }.start();
+    public void notifyUser(final NotificationData notificationData) {
+        mAdapter.addItem(notificationData, notificationData.getTitle());
+        Message msg = handler.obtainMessage();
+        msg.obj = mAdapter;
+        handler.sendMessage(msg);
+        voice.read(notificationData.getTitle());
+        voice.read(getString(R.string.read_message));
+        voice.promptSpeechInput();
+        new Thread() {
+            @Override
+            public void run() {
+                if (voice.getVoiceInput().toLowerCase().equals(getString(R.string.yes))) {
+                    voice.read(notificationData.getText());
+                    voice.read(getString(R.string.ask_to_answer));
+                    voice.promptSpeechInput();
+                    if (voice.getVoiceInput().toLowerCase().equals(getString(R.string.yes))) {
+                        voice.promptSpeechInput();
+                        answerMessage(notificationData, voice.getVoiceInput());
                     }
+
                 }
-            }.start();
-        }
+            }
+        }.start();
+
     }
 
-    public NotificationCompat.Action extractWearAction(Notification n) {
+    private NotificationCompat.Action extractWearAction(Notification n) {
         NotificationCompat.WearableExtender wearableExtender = new NotificationCompat.WearableExtender(n);
         NotificationCompat.Action answerAction = null;
-        if (wearableExtender.getActions().size() > 0) {
-            for (NotificationCompat.Action action : wearableExtender.getActions()) {
-                if (action.title.toString().toLowerCase().contains(getString(R.string.reply))) {
-                    answerAction = action;
-                }
+        for (NotificationCompat.Action action : wearableExtender.getActions()) {
+            if (action.title.toString().toLowerCase().contains(getString(R.string.reply))) {
+                answerAction = action;
             }
         }
         return answerAction;
