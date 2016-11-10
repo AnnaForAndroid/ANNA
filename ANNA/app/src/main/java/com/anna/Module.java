@@ -1,5 +1,9 @@
 package com.anna;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
+
 import com.anna.util.PreferencesHelper;
 
 import java.util.ArrayList;
@@ -14,24 +18,26 @@ public class Module {
 
     public static List<Module> modules = new ArrayList<>();
     public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire",
-            "Signal","Threema"));
+            "Signal", "Threema"));
     public static List<String> packageNames = new ArrayList<>();
     public static List<String> enabledAppNames = new ArrayList<>();
     public static List<String> disabledAppNames = moduleNames;
     private boolean active;
     private final String name;
     private final String packageName;
+    private final Drawable icon;
     private static final PreferencesHelper sharedPreferences = new PreferencesHelper("module");
 
     public String getPackageName() {
         return packageName;
     }
 
-    public Module(String name, String packageName) {
+    public Module(String name, String packageName, Drawable icon) {
         this.name = name;
         this.packageName = packageName;
         Module.packageNames.add(packageName);
         this.active = false;
+        this.icon = icon;
 
         Module.modules.add(this);
     }
@@ -42,6 +48,10 @@ public class Module {
 
     public String getName() {
         return name;
+    }
+
+    public Drawable getIcon() {
+        return icon;
     }
 
     public void enable() {

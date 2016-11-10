@@ -109,7 +109,11 @@ public class InitialView extends AppCompatActivity {
         for (ApplicationInfo info : appsInfos) {
             String appLabel = pm.getApplicationLabel(info).toString();
             if (Module.moduleNames.contains(appLabel)) {
-                new Module(appLabel, info.packageName);
+                try {
+                    new Module(appLabel, info.packageName, pm.getApplicationIcon(info.packageName));
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
