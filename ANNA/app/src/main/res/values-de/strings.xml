@@ -20,4 +20,5 @@
     <string name="record_audio_denied_text">Du musst die Audioaufnahme Berechtigung zulassen um die Spracherkennungsfunktionen zu nutzen. Versuche es erneut und gewähre die Berechtigung!</string>
     <string name="initial_view_button">Weiter</string>
     <string name="select_one_module">Du musst mindestens ein Modul auswählen um fortzufahren</string>
+    <string name="yes">ja</string>
 </resources>

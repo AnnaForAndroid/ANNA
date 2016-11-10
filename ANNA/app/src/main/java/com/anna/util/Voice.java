@@ -90,6 +90,9 @@ public class Voice implements TextToSpeech.OnInitListener {
                 }
                 break;
             }
+            default:
+                Log.e("ActivityRersultCode", String.valueOf(requestCode));
+                break;
 
         }
     }

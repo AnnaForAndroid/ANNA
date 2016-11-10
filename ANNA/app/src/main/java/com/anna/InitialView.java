@@ -95,6 +95,9 @@ public class InitialView extends AppCompatActivity {
                     }
                 }
                 break;
+            default:
+                Log.e("RequestCode", String.valueOf(requestCode));
+                break;
         }
     }
 
