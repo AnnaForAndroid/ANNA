@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -146,7 +147,7 @@ public class InitialView extends AppCompatActivity {
 
         private class ViewHolder {
             protected TextView code;
-            protected CheckBox name;
+            protected CardView name;
         }
 
         @Override
@@ -162,14 +163,14 @@ public class InitialView extends AppCompatActivity {
 
                 holder = new ViewHolder();
                 holder.code = (TextView) convertView.findViewById(R.id.textView1);
-                holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
+                holder.name = (CardView) convertView.findViewById(R.id.card_view1);
                 convertView.setTag(holder);
 
                 holder.name.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        CheckBox cb = (CheckBox) v;
+                        CardView cb = (CardView) v;
                         Module module = (Module) cb.getTag();
-                        module.setSelected(cb.isChecked());
+                        module.setSelected(cb.isSelected());
                     }
                 });
             } else {
@@ -177,8 +178,8 @@ public class InitialView extends AppCompatActivity {
             }
 
             Module module = moduleList.get(position);
-            holder.name.setText(module.getName());
-            holder.name.setChecked(module.isEnabled());
+            holder.code.setText(module.getName());
+            //holder.name.setChecked(module.isEnabled());
             holder.name.setTag(module);
 
             return convertView;
