@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -145,8 +146,8 @@ public class InitialView extends AppCompatActivity {
         }
 
         private class ViewHolder {
-            protected TextView code;
-            protected CardView name;
+            protected TextView text;
+            protected CardView card;
             protected ImageView icon;
         }
 
@@ -162,12 +163,12 @@ public class InitialView extends AppCompatActivity {
                 convertView = vi.inflate(R.layout.listitem, null);
 
                 holder = new ViewHolder();
-                holder.code = (TextView) convertView.findViewById(R.id.textView1);
-                holder.name = (CardView) convertView.findViewById(R.id.card_view1);
+                holder.text = (TextView) convertView.findViewById(R.id.textView1);
+                holder.card = (CardView) convertView.findViewById(R.id.card_view1);
                 holder.icon = (ImageView) convertView.findViewById(R.id.initialView_appIcon);
                 convertView.setTag(holder);
 
-                holder.name.setOnClickListener(new View.OnClickListener() {
+                holder.card.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         CardView cb = (CardView) v;
                         Module module = (Module) cb.getTag();
@@ -179,9 +180,14 @@ public class InitialView extends AppCompatActivity {
             }
 
             Module module = moduleList.get(position);
-            holder.code.setText(module.getName());
+            holder.text.setText(module.getName());
             holder.icon.setImageDrawable(module.getIcon());
-            holder.name.setTag(module);
+            holder.card.setTag(module);
+            if(module.isEnabled()){
+                holder.card.setCardBackgroundColor(getColor(R.color.selected_cards));
+            }else{
+                holder.card.setCardBackgroundColor(getColor(R.color.white));
+            }
 
             return convertView;
         }
