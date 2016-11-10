@@ -24,7 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,7 +121,6 @@ public class InitialView extends AppCompatActivity {
         adapter = new ModuleAdapter(this,
                 R.layout.listitem, Module.modules);
         ListView listView = (ListView) findViewById(R.id.list);
-
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
@@ -148,6 +147,7 @@ public class InitialView extends AppCompatActivity {
         private class ViewHolder {
             protected TextView code;
             protected CardView name;
+            protected ImageView icon;
         }
 
         @Override
@@ -164,6 +164,7 @@ public class InitialView extends AppCompatActivity {
                 holder = new ViewHolder();
                 holder.code = (TextView) convertView.findViewById(R.id.textView1);
                 holder.name = (CardView) convertView.findViewById(R.id.card_view1);
+                holder.icon = (ImageView) convertView.findViewById(R.id.initialView_appIcon);
                 convertView.setTag(holder);
 
                 holder.name.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +180,7 @@ public class InitialView extends AppCompatActivity {
 
             Module module = moduleList.get(position);
             holder.code.setText(module.getName());
-            //holder.name.setChecked(module.isEnabled());
+            holder.icon.setImageDrawable(module.getIcon());
             holder.name.setTag(module);
 
             return convertView;
