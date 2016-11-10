@@ -162,8 +162,8 @@ public class InitialView extends AppCompatActivity {
                 convertView = vi.inflate(R.layout.listitem, null);
 
                 holder = new ViewHolder();
-                holder.code = (TextView) convertView.findViewById(R.id.textView1);
-                holder.name = (CardView) convertView.findViewById(R.id.card_view1);
+                holder.code = (TextView) convertView.findViewById(R.id.initialView_installedApps);
+                holder.name = (CardView) convertView.findViewById(R.id.initialView_cards);
                 holder.icon = (ImageView) convertView.findViewById(R.id.initialView_appIcon);
                 convertView.setTag(holder);
 
