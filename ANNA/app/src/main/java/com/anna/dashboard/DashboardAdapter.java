@@ -1,4 +1,4 @@
-package com.anna;
+package com.anna.dashboard;
 
 /**
  * Created by D062427 on 02.11.2016.
@@ -6,6 +6,9 @@ package com.anna;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.anna.chat.ChatViewActivity;
+import com.anna.maps.MapsFragment;
 
 public class DashboardAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;

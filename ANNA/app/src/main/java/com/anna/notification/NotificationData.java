@@ -1,4 +1,4 @@
-package com.anna;
+package com.anna.notification;
 
 import android.app.Notification;
 import android.graphics.Bitmap;

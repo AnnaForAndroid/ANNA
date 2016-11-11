@@ -1,4 +1,4 @@
-package com.anna;
+package com.anna.chat;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.anna.notification.NotificationData;
+import com.anna.R;
 import com.anna.util.IndexedHashMap;
 import com.anna.util.Voice;
 

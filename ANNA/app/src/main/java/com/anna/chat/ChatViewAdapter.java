@@ -1,4 +1,4 @@
-package com.anna;
+package com.anna.chat;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.anna.notification.NotificationData;
+import com.anna.R;
 import com.anna.util.IndexedHashMap;
 
 

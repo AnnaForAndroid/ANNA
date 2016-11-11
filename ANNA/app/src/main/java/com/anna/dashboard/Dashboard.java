@@ -1,4 +1,4 @@
-package com.anna;
+package com.anna.dashboard;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.anna.util.Module;
+import com.anna.R;
 
 import java.util.ArrayList;
 import java.util.List;

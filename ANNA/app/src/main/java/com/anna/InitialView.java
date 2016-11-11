@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -32,7 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.anna.dashboard.Dashboard;
+import com.anna.notification.NotificationService;
 import com.anna.util.LayoutConfig;
+import com.anna.util.Module;
 import com.anna.util.PreferencesHelper;
 import com.anna.util.Voice;
 

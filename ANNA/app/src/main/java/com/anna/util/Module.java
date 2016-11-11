@@ -1,10 +1,7 @@
-package com.anna;
+package com.anna.util;
 
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-
-import com.anna.util.MyApplication;
-import com.anna.util.PreferencesHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
