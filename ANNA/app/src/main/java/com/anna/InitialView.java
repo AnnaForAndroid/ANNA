@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -111,11 +112,7 @@ public class InitialView extends AppCompatActivity {
         for (ApplicationInfo info : appsInfos) {
             String appLabel = pm.getApplicationLabel(info).toString();
             if (Module.moduleNames.contains(appLabel)) {
-                try {
-                    new Module(appLabel, info.packageName, pm.getApplicationIcon(info.packageName));
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
+                new Module(appLabel, info.packageName);
             }
         }
 
@@ -172,7 +169,12 @@ public class InitialView extends AppCompatActivity {
                     public void onClick(View v) {
                         CardView cb = (CardView) v;
                         Module module = (Module) cb.getTag();
-                        module.setSelected(cb.isSelected());
+                        module.setSelected(!module.isEnabled());
+                        if (module.isEnabled()) {
+                            cb.setCardBackgroundColor(getResources().getColor(R.color.selected_cards));
+                        } else {
+                            cb.setCardBackgroundColor(getResources().getColor(R.color.white));
+                        }
                     }
                 });
             } else {
@@ -183,11 +185,6 @@ public class InitialView extends AppCompatActivity {
             holder.text.setText(module.getName());
             holder.icon.setImageDrawable(module.getIcon());
             holder.card.setTag(module);
-            if(module.isEnabled()){
-                holder.card.setCardBackgroundColor(getColor(R.color.selected_cards));
-            }else{
-                holder.card.setCardBackgroundColor(getColor(R.color.white));
-            }
 
             return convertView;
         }

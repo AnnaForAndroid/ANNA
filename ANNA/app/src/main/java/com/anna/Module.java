@@ -1,9 +1,9 @@
 package com.anna;
 
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 
+import com.anna.util.MyApplication;
 import com.anna.util.PreferencesHelper;
 
 import java.util.ArrayList;
@@ -25,19 +25,17 @@ public class Module {
     private boolean active;
     private final String name;
     private final String packageName;
-    private final Drawable icon;
     private static final PreferencesHelper sharedPreferences = new PreferencesHelper("module");
 
     public String getPackageName() {
         return packageName;
     }
 
-    public Module(String name, String packageName, Drawable icon) {
+    public Module(String name, String packageName) {
         this.name = name;
         this.packageName = packageName;
         Module.packageNames.add(packageName);
         this.active = false;
-        this.icon = icon;
 
         Module.modules.add(this);
     }
@@ -51,7 +49,13 @@ public class Module {
     }
 
     public Drawable getIcon() {
-        return icon;
+        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        try {
+            return pm.getApplicationIcon(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void enable() {
