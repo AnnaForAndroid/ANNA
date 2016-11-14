@@ -117,7 +117,7 @@ public class ChatViewActivity extends Fragment {
     }
 
     public void notifyUser(final NotificationData notificationData) {
-        mAdapter.addItem(notificationData, notificationData.getTitle());
+        mAdapter.addItem(notificationData, notificationData.getTitle()+notificationData.getApp());
         Message msg = handler.obtainMessage();
         msg.obj = mAdapter;
         handler.sendMessage(msg);
