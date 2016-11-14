@@ -10,6 +10,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -35,7 +36,7 @@ import com.anna.notification.NotificationService;
 import com.anna.util.LayoutConfig;
 import com.anna.util.Module;
 import com.anna.util.PreferencesHelper;
-import com.anna.util.Voice;
+import com.anna.voice.VoiceOutput;
 
 public class InitialView extends AppCompatActivity {
 
@@ -43,7 +44,7 @@ public class InitialView extends AppCompatActivity {
     private PreferencesHelper sharedPrefs;
     private boolean setupFinished;
     private final int PERMISSIONS_REQUEST_AUDIO = 123;
-    private Voice voice;
+    private VoiceOutput voiceOutput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class InitialView extends AppCompatActivity {
         setSupportActionBar(toolbar);
         sharedPrefs = new PreferencesHelper(getApplicationContext(), "annaPreferences");
         setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", Boolean.class);
-        this.voice = new Voice(this);
+        this.voiceOutput = new VoiceOutput(this);
         checkForFirstUse();
     }
 
@@ -81,7 +82,7 @@ public class InitialView extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         switch (requestCode) {
             case PERMISSIONS_REQUEST_AUDIO:
@@ -136,21 +137,22 @@ public class InitialView extends AppCompatActivity {
 
         private ArrayList<Module> moduleList;
 
-        public ModuleAdapter(Context context, int textViewResourceId,
+        private ModuleAdapter(Context context, int textViewResourceId,
                              List<Module> moduleList) {
             super(context, textViewResourceId, moduleList);
-            this.moduleList = new ArrayList<Module>();
+            this.moduleList = new ArrayList<>();
             this.moduleList.addAll(moduleList);
         }
 
         private class ViewHolder {
-            protected TextView text;
-            protected CardView card;
-            protected ImageView icon;
+            private TextView text;
+            private CardView card;
+            private ImageView icon;
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
             ViewHolder holder = null;
             Log.v("ConvertView", String.valueOf(position));
@@ -229,7 +231,7 @@ public class InitialView extends AppCompatActivity {
             }
         });
 
-        voice.read(getString(R.string.init_stmt));
+        voiceOutput.read(getString(R.string.init_stmt));
 
     }
 
@@ -247,7 +249,7 @@ public class InitialView extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         if (setupFinished) {
-            voice.killService();
+            voiceOutput.killService();
         }
     }
 }
