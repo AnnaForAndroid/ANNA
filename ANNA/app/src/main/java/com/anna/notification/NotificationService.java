@@ -43,7 +43,7 @@ public class NotificationService extends NotificationListenerService {
             if (Module.enabledAppNames.contains(appName) && wearableExtender.getActions().size() > 0) {
                 Bundle extras = sbn.getNotification().extras;
                 String title = extras.getString("android.title");
-                String text = extras.getCharSequence("android.text").toString();
+                CharSequence text = extras.getCharSequence("android.text");
                 Bitmap icon = sbn.getNotification().largeIcon;
                 long time = sbn.getPostTime();
 

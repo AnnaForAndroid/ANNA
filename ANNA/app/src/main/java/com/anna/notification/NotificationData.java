@@ -8,14 +8,14 @@ import java.util.Date;
 
 public class NotificationData {
     private String title;
-    private String text;
+    private CharSequence text;
     private Bitmap icon;
     private Date time;
     private String app;
     private String packageName;
     private Notification notification;
 
-    NotificationData(String title, String text, Bitmap icon, Date time, String app, Notification notification, String packageName) {
+    NotificationData(String title, CharSequence text, Bitmap icon, Date time, String app, Notification notification, String packageName) {
         this.title = title;
         this.text = text;
         this.icon = icon;
@@ -33,7 +33,7 @@ public class NotificationData {
         return title;
     }
 
-    public String getText() {
+    public CharSequence getText() {
         return text;
     }
 
