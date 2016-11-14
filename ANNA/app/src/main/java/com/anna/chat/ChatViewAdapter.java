@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.anna.notification.NotificationData;
 import com.anna.R;
 import com.anna.util.IndexedHashMap;
+import com.anna.util.Module;
 
 
 public class ChatViewAdapter extends RecyclerView
@@ -23,14 +24,16 @@ public class ChatViewAdapter extends RecyclerView
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-       private ImageView img;
-       private TextView sender;
-       private TextView message;
-       private TextView time;
+        private ImageView profileImg;
+        private ImageView appImg;
+        private TextView sender;
+        private TextView message;
+        private TextView time;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            img = (ImageView) itemView.findViewById(R.id.profileImg);
+            profileImg = (ImageView) itemView.findViewById(R.id.profileImg);
+            appImg = (ImageView) itemView.findViewById(R.id.applicationImg);
             sender = (TextView) itemView.findViewById(R.id.sender);
             message = (TextView) itemView.findViewById(R.id.message);
             time = (TextView) itemView.findViewById(R.id.time);
@@ -65,10 +68,15 @@ public class ChatViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.img.setImageBitmap(mDataset.getValueAt(position).getIcon());
+        holder.profileImg.setImageBitmap(mDataset.getValueAt(position).getIcon());
         holder.sender.setText(mDataset.getValueAt(position).getTitle());
         holder.message.setText(mDataset.getValueAt(position).getText());
         holder.time.setText(mDataset.getValueAt(position).getTime());
+        for (Module m:Module.modules) {
+            if((mDataset.getValueAt(position).getPackageName()).equals(m.getPackageName())){
+                holder.appImg.setImageDrawable(m.getIcon());
+            }
+        }
     }
 
     public void addItem(NotificationData dataObj, String index) {
