@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar answer;
+
+public <answer> = yes | no;

@@ -20,7 +20,8 @@ import android.widget.RelativeLayout;
 import com.anna.notification.NotificationData;
 import com.anna.R;
 import com.anna.util.IndexedHashMap;
-import com.anna.util.Voice;
+import com.anna.voice.VoiceOutput;
+import com.anna.voice.VoiceInput;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -30,7 +31,8 @@ public class ChatViewActivity extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ChatViewAdapter mAdapter = new ChatViewAdapter(new IndexedHashMap<String, NotificationData>());
-    private Voice voice;
+    private VoiceOutput voiceOutput;
+    private VoiceInput voiceInput;
     private static String LOG_TAG = "ChatViewActivity";
     public static Queue<NotificationData> notifications;
     private volatile boolean notificationProcessingActive;
@@ -45,7 +47,8 @@ public class ChatViewActivity extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(super.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        voice = new Voice(super.getActivity());
+        voiceOutput = new VoiceOutput(super.getActivity());
+        voiceInput = new VoiceInput(super.getActivity());
         notificationProcessingActive = true;
         notifications = new LinkedList<>();
         handler = new Handler() {
@@ -72,13 +75,6 @@ public class ChatViewActivity extends Fragment {
     }
 
     @Override
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        ChatViewActivity.super.onActivityResult(requestCode, resultCode, data);
-        voice.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-    @Override
     public void onResume() {
         super.onResume();
         mAdapter.setOnItemClickListener(new ChatViewAdapter
@@ -93,7 +89,8 @@ public class ChatViewActivity extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        voice.killService();
+        voiceOutput.killService();
+        voiceInput.killService();
         notificationProcessingActive = false;
     }
 
@@ -117,29 +114,20 @@ public class ChatViewActivity extends Fragment {
     }
 
     public void notifyUser(final NotificationData notificationData) {
-        mAdapter.addItem(notificationData, notificationData.getTitle()+notificationData.getApp());
+        mAdapter.addItem(notificationData, notificationData.getTitle() + notificationData.getApp());
         Message msg = handler.obtainMessage();
         msg.obj = mAdapter;
         handler.sendMessage(msg);
-        voice.read(notificationData.getTitle());
-        voice.read(getString(R.string.read_message));
-        voice.promptSpeechInput();
-        new Thread() {
-            @Override
-            public void run() {
-                if (voice.getVoiceInput().toLowerCase().equals(getString(R.string.yes))) {
-                    voice.read(notificationData.getText());
-                    voice.read(getString(R.string.ask_to_answer));
-                    voice.promptSpeechInput();
-                    if (voice.getVoiceInput().toLowerCase().equals(getString(R.string.yes))) {
-                        voice.promptSpeechInput();
-                        answerMessage(notificationData, voice.getVoiceInput());
-                    }
-
-                }
+        voiceOutput.read(notificationData.getTitle());
+        voiceOutput.read(getString(R.string.read_message));
+        if (voiceInput.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
+            voiceOutput.read(notificationData.getText().toString());
+            voiceOutput.read(getString(R.string.ask_to_answer));
+            if (voiceInput.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
+                //   voice.promptSpeechInput();
+                //   answerMessage(notificationData, voice.getVoiceInput());
             }
-        }.start();
-
+        }
     }
 
     private NotificationCompat.Action extractWearAction(Notification n) {
