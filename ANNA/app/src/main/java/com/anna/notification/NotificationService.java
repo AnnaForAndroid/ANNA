@@ -47,7 +47,7 @@ public class NotificationService extends NotificationListenerService {
                 Bitmap icon = sbn.getNotification().largeIcon;
                 long time = sbn.getPostTime();
 
-                ChatViewActivity.notifications.add(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification()));
+                ChatViewActivity.notifications.add(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification(), pack));
             }
         }
     }

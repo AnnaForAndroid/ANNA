@@ -12,15 +12,21 @@ public class NotificationData {
     private Bitmap icon;
     private Date time;
     private String app;
+    private String packageName;
     private Notification notification;
 
-    NotificationData(String title, String text, Bitmap icon, Date time, String app, Notification notification) {
+    NotificationData(String title, String text, Bitmap icon, Date time, String app, Notification notification, String packageName) {
         this.title = title;
         this.text = text;
         this.icon = icon;
         this.time = time;
         this.app = app;
         this.notification = notification;
+        this.packageName = packageName;
+    }
+
+    public String getPackageName() {
+        return packageName;
     }
 
     public String getTitle() {
