@@ -1,5 +1,6 @@
 package com.anna.chat;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.anna.notification.NotificationData;
 import com.anna.R;
 import com.anna.util.IndexedHashMap;
 import com.anna.util.Module;
+import com.anna.util.MyApplication;
 
 
 public class ChatViewAdapter extends RecyclerView
@@ -68,12 +70,17 @@ public class ChatViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.profileImg.setImageBitmap(mDataset.getValueAt(position).getIcon());
+        if (mDataset.getValueAt(position).getIcon() == null) {
+            Drawable defaultProfile = MyApplication.getAppContext().getResources().getDrawable(R.drawable.default_profile);
+            holder.profileImg.setImageDrawable(defaultProfile);
+        } else {
+            holder.profileImg.setImageBitmap(mDataset.getValueAt(position).getIcon());
+        }
         holder.sender.setText(mDataset.getValueAt(position).getTitle());
         holder.message.setText(mDataset.getValueAt(position).getText());
         holder.time.setText(mDataset.getValueAt(position).getTime());
-        for (Module m:Module.modules) {
-            if((mDataset.getValueAt(position).getPackageName()).equals(m.getPackageName())){
+        for (Module m : Module.modules) {
+            if ((mDataset.getValueAt(position).getPackageName()).equals(m.getPackageName())) {
                 holder.appImg.setImageDrawable(m.getIcon());
             }
         }
