@@ -85,12 +85,14 @@ public class Module {
         if (Module.modules.isEmpty()) {
             for (String moduleName : Module.moduleNames) {
                 Module module = (Module) sharedPreferences.getPreferences(moduleName, Module.class);
-                Module.modules.add(module);
-                Module.packageNames.add(module.getPackageName());
-                if (module.isEnabled()) {
-                    Module.enabledAppNames.add(module.getName());
-                } else {
-                    Module.disabledAppNames.add(module.getName());
+                if (module != null) {
+                    Module.modules.add(module);
+                    Module.packageNames.add(module.getPackageName());
+                    if (module.isEnabled()) {
+                        Module.enabledAppNames.add(module.getName());
+                    } else {
+                        Module.disabledAppNames.add(module.getName());
+                    }
                 }
             }
         }
