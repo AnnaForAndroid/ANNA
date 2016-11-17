@@ -2,4 +2,4 @@
 
 grammar answer;
 
-public <answer> = yes | no;
+public <answer> = ja | nein;

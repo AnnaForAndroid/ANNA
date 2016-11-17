@@ -20,15 +20,11 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
-public class VoiceInput implements RecognitionListener {
+public class HotwordDetection implements RecognitionListener {
 
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
-    private static final String FORECAST_SEARCH = "forecast";
-    private static final String DIGITS_SEARCH = "digits";
     private static final String YES_NO_SEARCH = "answer";
-    private static final String PHONE_SEARCH = "phones";
-    private static final String MENU_SEARCH = "menu";
 
     /* Keyword we are looking for to activate menu */
     private static final String KEYPHRASE = "hey anna";
@@ -38,7 +34,7 @@ public class VoiceInput implements RecognitionListener {
     private String userAnswer;
     private boolean sendUserAnswer;
 
-    public VoiceInput(Context context) {
+    public HotwordDetection(Context context) {
         this.context = context;
         runRecognizerSetup();
     }
@@ -47,10 +43,12 @@ public class VoiceInput implements RecognitionListener {
         recognizer.stop();
 
         // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
-        if (searchName.equals(KWS_SEARCH))
+
+        if (searchName.equals(KWS_SEARCH)) {
             recognizer.startListening(searchName);
-        else
+        } else {
             recognizer.startListening(searchName, 10000);
+        }
     }
 
     private void setupRecognizer(File assetsDir) throws IOException {
@@ -60,38 +58,20 @@ public class VoiceInput implements RecognitionListener {
         recognizer = SpeechRecognizerSetup.defaultSetup()
                 .setAcousticModel(new File(assetsDir, "en-us-ptm"))
                 .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
-
-                .setRawLogDir(assetsDir) // To disable logging of raw audio comment out this call (takes a lot of space on the device)
+                .setKeywordThreshold(1e-5f)
+                //.setRawLogDir(assetsDir) // To disable logging of raw audio comment out this call (takes a lot of space on the device)
 
                 .getRecognizer();
         recognizer.addListener(this);
 
-        /** In your application you might not need to add all those searches.
-         * They are added here for demonstration. You can leave just one.
-         */
-
         // Create keyword-activation search.
         recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
 
-        // Create grammar-based search for selection between demos
-        File menuGrammar = new File(assetsDir, "menu.gram");
-        recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
-
-        // Create grammar-based search for digit recognition
-        File digitsGrammar = new File(assetsDir, "digits.gram");
-        recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
-
-        //Create grammar-based search for yes/no answer
+        // Create grammar-based search for answer recognition
         File answerGrammar = new File(assetsDir, "answer.gram");
         recognizer.addGrammarSearch(YES_NO_SEARCH, answerGrammar);
 
-        // Create language model search
-        File languageModel = new File(assetsDir, "weather.dmp");
-        recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
-
-        // Phonetic search
-        File phoneticModel = new File(assetsDir, "en-phone.dmp");
-        recognizer.addAllphoneSearch(PHONE_SEARCH, phoneticModel);
+        switchSearch(KWS_SEARCH);
     }
 
     private void runRecognizerSetup() {
@@ -146,14 +126,12 @@ public class VoiceInput implements RecognitionListener {
             return;
 
         String text = hypothesis.getHypstr();
-        if (text.equals(KEYPHRASE))
-            switchSearch(MENU_SEARCH);
-        else if (text.equals(DIGITS_SEARCH))
-            switchSearch(DIGITS_SEARCH);
-        else if (text.equals(PHONE_SEARCH))
-            switchSearch(PHONE_SEARCH);
-        else if (text.equals(FORECAST_SEARCH))
-            switchSearch(FORECAST_SEARCH);
+        if (text.equals(KEYPHRASE)) {
+            Toast.makeText(context, "Hotword detected", Toast.LENGTH_LONG).show();
+            switchSearch(KWS_SEARCH);
+        } else if (text.equals(YES_NO_SEARCH)) {
+            switchSearch(YES_NO_SEARCH);
+        }
     }
 
     /**
@@ -162,12 +140,14 @@ public class VoiceInput implements RecognitionListener {
     @Override
     public void onResult(Hypothesis hypothesis) {
 
-        String text = hypothesis.getHypstr().toLowerCase();
-        if (text.equals(context.getString(R.string.yes)) || text.equals(context.getString(R.string.no))) {
-            userAnswer = text;
-        }
+        if (hypothesis != null) {
+            String text = hypothesis.getHypstr();
+            if (text.equals(context.getString(R.string.yes)) || text.equals(context.getString(R.string.no))) {
+                userAnswer = text;
+            }
 
-        sendUserAnswer = true;
+            sendUserAnswer = true;
+        }
     }
 
     @Override

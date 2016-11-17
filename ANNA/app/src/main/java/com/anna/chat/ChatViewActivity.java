@@ -21,7 +21,7 @@ import com.anna.notification.NotificationData;
 import com.anna.R;
 import com.anna.util.IndexedHashMap;
 import com.anna.voice.VoiceOutput;
-import com.anna.voice.VoiceInput;
+import com.anna.voice.HotwordDetection;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -32,7 +32,7 @@ public class ChatViewActivity extends Fragment {
     private RecyclerView mRecyclerView;
     private ChatViewAdapter mAdapter = new ChatViewAdapter(new IndexedHashMap<String, NotificationData>());
     private VoiceOutput voiceOutput;
-    private VoiceInput voiceInput;
+    private HotwordDetection hotwordDetection;
     private static String LOG_TAG = "ChatViewActivity";
     public static Queue<NotificationData> notifications;
     private volatile boolean notificationProcessingActive;
@@ -48,7 +48,7 @@ public class ChatViewActivity extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(super.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         voiceOutput = new VoiceOutput(super.getActivity());
-        voiceInput = new VoiceInput(super.getActivity());
+        hotwordDetection = new HotwordDetection(super.getActivity());
         notificationProcessingActive = true;
         notifications = new LinkedList<>();
         handler = new Handler() {
@@ -90,7 +90,7 @@ public class ChatViewActivity extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         voiceOutput.killService();
-        voiceInput.killService();
+        hotwordDetection.killService();
         notificationProcessingActive = false;
     }
 
@@ -120,10 +120,10 @@ public class ChatViewActivity extends Fragment {
         handler.sendMessage(msg);
         voiceOutput.read(notificationData.getTitle());
         voiceOutput.read(getString(R.string.read_message));
-        if (voiceInput.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
+        if (hotwordDetection.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
             voiceOutput.read(notificationData.getText().toString());
             voiceOutput.read(getString(R.string.ask_to_answer));
-            if (voiceInput.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
+            if (hotwordDetection.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
                 //   voice.promptSpeechInput();
                 //   answerMessage(notificationData, voice.getVoiceInput());
             }
