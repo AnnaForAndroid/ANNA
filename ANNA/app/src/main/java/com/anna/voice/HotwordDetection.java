@@ -73,6 +73,9 @@ public class HotwordDetection implements RecognitionListener {
                         .getRecognizer();
                 recognizer.addListener(this);
                 break;
+            default:
+                Toast.makeText(context, "Sorry your language is not supported yet", Toast.LENGTH_LONG).show();
+                break;
         }
 
         // Create keyword-activation search.
@@ -104,7 +107,7 @@ public class HotwordDetection implements RecognitionListener {
             @Override
             protected void onPostExecute(Exception result) {
                 if (result != null) {
-                    Toast.makeText(context, "Failed to init recognizer " + result, Toast.LENGTH_LONG);
+                    Toast.makeText(context, "Failed to init recognizer " + result, Toast.LENGTH_LONG).show();
                 } else {
                     switchSearch(KWS_SEARCH);
                 }
