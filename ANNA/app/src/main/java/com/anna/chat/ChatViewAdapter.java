@@ -80,7 +80,7 @@ public class ChatViewAdapter extends RecyclerView
         holder.message.setText(mDataset.getValueAt(position).getText());
         holder.time.setText(mDataset.getValueAt(position).getTime());
         for (Module m : Module.modules) {
-            if ((mDataset.getValueAt(position).getPackageName()).equals(m.getPackageName())) {
+            if (mDataset.getValueAt(position).getPackageName().equals(m.getPackageName())) {
                 holder.appImg.setImageDrawable(m.getIcon());
             }
         }
