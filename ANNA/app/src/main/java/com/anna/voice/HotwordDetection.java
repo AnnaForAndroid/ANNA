@@ -13,6 +13,7 @@ import com.anna.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
@@ -55,14 +56,24 @@ public class HotwordDetection implements RecognitionListener {
         // The recognizer can be configured to perform multiple searches
         // of different kind and switch between them
 
-        recognizer = SpeechRecognizerSetup.defaultSetup()
-                .setAcousticModel(new File(assetsDir, "en-us-ptm"))
-                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
-                .setKeywordThreshold(1e-5f)
-                //.setRawLogDir(assetsDir) // To disable logging of raw audio comment out this call (takes a lot of space on the device)
-
-                .getRecognizer();
-        recognizer.addListener(this);
+        switch (Locale.getDefault().getDisplayLanguage().toLowerCase()) {
+            case "de":
+                recognizer = SpeechRecognizerSetup.defaultSetup()
+                        .setAcousticModel(new File(assetsDir, "de-de-ptm"))
+                        .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                        .setKeywordThreshold(1e-5f)
+                        .getRecognizer();
+                recognizer.addListener(this);
+                break;
+            case "us":
+                recognizer = SpeechRecognizerSetup.defaultSetup()
+                        .setAcousticModel(new File(assetsDir, "en-us-ptm"))
+                        .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                        .setKeywordThreshold(1e-5f)
+                        .getRecognizer();
+                recognizer.addListener(this);
+                break;
+        }
 
         // Create keyword-activation search.
         recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
@@ -127,7 +138,6 @@ public class HotwordDetection implements RecognitionListener {
 
         String text = hypothesis.getHypstr();
         if (text.equals(KEYPHRASE)) {
-            Toast.makeText(context, "Hotword detected", Toast.LENGTH_LONG).show();
             switchSearch(KWS_SEARCH);
         } else if (text.equals(YES_NO_SEARCH)) {
             switchSearch(YES_NO_SEARCH);
