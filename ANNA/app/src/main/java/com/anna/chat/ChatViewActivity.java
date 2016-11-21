@@ -120,7 +120,7 @@ public class ChatViewActivity extends Fragment {
         handler.sendMessage(msg);
         voiceOutput.read(notificationData.getTitle());
         voiceOutput.read(getString(R.string.read_message));
-        if (hotwordDetection.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
+        if (hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
             voiceOutput.read(notificationData.getText().toString());
             voiceOutput.read(getString(R.string.ask_to_answer));
             if (hotwordDetection.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
