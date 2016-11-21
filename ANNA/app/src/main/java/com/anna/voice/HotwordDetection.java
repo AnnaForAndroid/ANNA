@@ -55,27 +55,24 @@ public class HotwordDetection implements RecognitionListener {
     private void setupRecognizer(File assetsDir) throws IOException {
         // The recognizer can be configured to perform multiple searches
         // of different kind and switch between them
+        String systemLanguage = Locale.getDefault().getLanguage();
 
-        switch (Locale.getDefault().getDisplayLanguage().toLowerCase()) {
-            case "de":
-                recognizer = SpeechRecognizerSetup.defaultSetup()
-                        .setAcousticModel(new File(assetsDir, "de-de-ptm"))
-                        .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
-                        .setKeywordThreshold(1e-5f)
-                        .getRecognizer();
-                recognizer.addListener(this);
-                break;
-            case "us":
-                recognizer = SpeechRecognizerSetup.defaultSetup()
-                        .setAcousticModel(new File(assetsDir, "en-us-ptm"))
-                        .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
-                        .setKeywordThreshold(1e-5f)
-                        .getRecognizer();
-                recognizer.addListener(this);
-                break;
-            default:
-                Toast.makeText(context, "Sorry your language is not supported yet", Toast.LENGTH_LONG).show();
-                break;
+        if (systemLanguage.equals("en")) {
+            recognizer = SpeechRecognizerSetup.defaultSetup()
+                    .setAcousticModel(new File(assetsDir, "en-us-ptm"))
+                    .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                    .setKeywordThreshold(1e-5f)
+                    .getRecognizer();
+            recognizer.addListener(this);
+        } else if (systemLanguage.equals("de")) {
+            recognizer = SpeechRecognizerSetup.defaultSetup()
+                    .setAcousticModel(new File(assetsDir, "de-de-ptm"))
+                    .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                    .setKeywordThreshold(1e-5f)
+                    .getRecognizer();
+            recognizer.addListener(this);
+        } else {
+            Toast.makeText(context, "Sorry your language is not supported yet", Toast.LENGTH_LONG);
         }
 
         // Create keyword-activation search.
@@ -86,6 +83,7 @@ public class HotwordDetection implements RecognitionListener {
         recognizer.addGrammarSearch(YES_NO_SEARCH, answerGrammar);
 
         switchSearch(KWS_SEARCH);
+
     }
 
     private void runRecognizerSetup() {

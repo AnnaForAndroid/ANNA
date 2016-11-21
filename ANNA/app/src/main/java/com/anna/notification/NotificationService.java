@@ -1,5 +1,6 @@
 package com.anna.notification;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.util.Log;
 
 import com.anna.util.Module;
 import com.anna.chat.ChatViewActivity;
+import com.anna.util.MyApplication;
 
 import java.util.Date;
 
@@ -20,10 +22,14 @@ import java.util.Date;
 public class NotificationService extends NotificationListenerService {
 
     public static boolean isNotificationAccessEnabled = false;
+    private final String notificationService = MyApplication.getAppContext().NOTIFICATION_SERVICE;
+    private NotificationManager notificationManager;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
+        notificationManager = (NotificationManager) MyApplication.getAppContext().getSystemService(notificationService);
     }
 
     @Override
@@ -47,6 +53,7 @@ public class NotificationService extends NotificationListenerService {
                 Bitmap icon = sbn.getNotification().largeIcon;
                 long time = sbn.getPostTime();
 
+                notificationManager.cancel(sbn.getId());
                 ChatViewActivity.notifications.add(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification(), pack));
             }
         }
