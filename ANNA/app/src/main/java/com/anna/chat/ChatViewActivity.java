@@ -124,8 +124,8 @@ public class ChatViewActivity extends Fragment {
             voiceOutput.read(notificationData.getText().toString());
             voiceOutput.read(getString(R.string.ask_to_answer));
             if (hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
-                //   voice.promptSpeechInput();
-                //   answerMessage(notificationData, voice.getVoiceInput());
+                voiceOutput.promptSpeechInput();
+                answerMessage(notificationData, voiceOutput.getVoiceInput());
             }
         }
     }
