@@ -123,7 +123,7 @@ public class ChatViewActivity extends Fragment {
         if (hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
             voiceOutput.read(notificationData.getText().toString());
             voiceOutput.read(getString(R.string.ask_to_answer));
-            if (hotwordDetection.getUserAnswer().toLowerCase().equals(getString(R.string.yes))) {
+            if (hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
                 //   voice.promptSpeechInput();
                 //   answerMessage(notificationData, voice.getVoiceInput());
             }
