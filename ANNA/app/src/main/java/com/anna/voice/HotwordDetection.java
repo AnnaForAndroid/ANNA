@@ -67,7 +67,7 @@ public class HotwordDetection implements RecognitionListener {
         } else if (systemLanguage.equals("de")) {
             recognizer = SpeechRecognizerSetup.defaultSetup()
                     .setAcousticModel(new File(assetsDir, "de-de-ptm"))
-                    .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                    .setDictionary(new File(assetsDir, "voxforge_de.dic"))
                     .setKeywordThreshold(1e-5f)
                     .getRecognizer();
             recognizer.addListener(this);

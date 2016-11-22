@@ -8,8 +8,6 @@ de-de-ptm/noisedict
 de-de-ptm/sendump
 de-de-ptm/transition_matrices
 de-de-ptm/variances
-digits.gram
-en-phone.dmp
 en-us-ptm/README
 en-us-ptm/feat.params
 en-us-ptm/mdef
@@ -18,5 +16,4 @@ en-us-ptm/noisedict
 en-us-ptm/sendump
 en-us-ptm/transition_matrices
 en-us-ptm/variances
-menu.gram
-weather.dmp
+voxforge_de.dic
