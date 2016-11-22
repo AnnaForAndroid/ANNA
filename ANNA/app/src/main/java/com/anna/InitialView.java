@@ -41,7 +41,6 @@ public class InitialView extends AppCompatActivity {
     private ModuleAdapter adapter;
     private PreferencesHelper sharedPrefs;
     private boolean setupFinished;
-    private final int PERMISSIONS_REQUEST = 123456;
     private VoiceOutput voiceOutput;
 
     @Override
@@ -75,102 +74,6 @@ public class InitialView extends AppCompatActivity {
         if (setupFinished) {
             Intent intent = new Intent(InitialView.this, Dashboard.class);
             InitialView.this.startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-
-                if (grantResults.length > 1
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-
-                if (grantResults.length > 2
-                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-
-                if (grantResults.length > 3
-                        && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-
-                if (grantResults.length > 4
-                        && grantResults[4] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-
-                if (grantResults.length > 5
-                        && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                if (grantResults.length > 6
-                        && grantResults[6] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-            default:
-                Log.e("RequestCode", String.valueOf(requestCode));
-                return;
         }
     }
 
@@ -335,7 +238,7 @@ public class InitialView extends AppCompatActivity {
         }
         String[] permissionArray = new String[permissions.size()];
         permissions.toArray(permissionArray);
-        requestPermissions(permissionArray, PERMISSIONS_REQUEST);
+        requestPermissions(permissionArray, 1234567);
     }
 
     @Override
