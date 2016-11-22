@@ -115,7 +115,7 @@ public class HotwordDetection implements RecognitionListener {
 
     @Override
     public void onBeginningOfSpeech() {
-
+        //Required for interface
     }
 
     /**

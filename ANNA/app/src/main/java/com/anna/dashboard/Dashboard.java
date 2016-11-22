@@ -59,12 +59,12 @@ public class Dashboard extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                //Required for interface
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                //Required for interface
             }
         });
         startDetectUserInactivity();
