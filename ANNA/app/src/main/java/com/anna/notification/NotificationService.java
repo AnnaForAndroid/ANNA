@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.service.notification.NotificationListenerService;
@@ -47,7 +48,11 @@ public class NotificationService extends NotificationListenerService {
                 e.printStackTrace();
             }
             if (Module.enabledAppNames.contains(appName)) {
-                notificationManager.cancel(sbn.getId());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    cancelNotification(sbn.getKey());
+                } else {
+                    cancelNotification(pack, sbn.getTag(), sbn.getId());
+                }
                 if (wearableExtender.getActions().size() > 0) {
                     Bundle extras = sbn.getNotification().extras;
                     String title = extras.getString("android.title");
