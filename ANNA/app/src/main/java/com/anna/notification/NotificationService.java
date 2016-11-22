@@ -1,6 +1,5 @@
 package com.anna.notification;
 
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +12,7 @@ import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.anna.BuildConfig;
 import com.anna.util.Module;
 import com.anna.chat.ChatViewActivity;
 import com.anna.util.MyApplication;
@@ -23,8 +23,6 @@ import java.util.Date;
 public class NotificationService extends NotificationListenerService {
 
     public static boolean isNotificationAccessEnabled;
-    private final String notificationService = MyApplication.getAppContext().NOTIFICATION_SERVICE;
-
 
     @Override
     public void onCreate() {
@@ -43,7 +41,9 @@ public class NotificationService extends NotificationListenerService {
                 ApplicationInfo ai = pm.getApplicationInfo(pack, 0);
                 appName = pm.getApplicationLabel(ai).toString();
             } catch (final PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG) {
+                    Log.e("NameNotFoundException", e.getMessage());
+                }
             }
             if (Module.enabledAppNames.contains(appName)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

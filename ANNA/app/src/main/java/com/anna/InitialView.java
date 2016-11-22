@@ -186,7 +186,7 @@ public class InitialView extends AppCompatActivity {
                     for (int i = 0; i < moduleList.size(); i++) {
                         Module module = moduleList.get(i);
                         if (module.isEnabled()) {
-                            responseText.append("\n" + module.getName());
+                            responseText.append("\n").append(module.getName());
                         }
                     }
 

@@ -124,7 +124,7 @@ public class Dashboard extends AppCompatActivity {
 
     private static class FullscreenHandler extends Handler {
 
-        Dashboard dashboardObject;
+        private Dashboard dashboardObject;
 
         private FullscreenHandler(Dashboard dashboardObject) {
             this.dashboardObject = dashboardObject;

@@ -1,6 +1,5 @@
 package com.anna.util;
 
-import android.os.Build;
 import android.util.Log;
 
 import com.anna.BuildConfig;

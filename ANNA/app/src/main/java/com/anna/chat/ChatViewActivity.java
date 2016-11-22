@@ -105,7 +105,9 @@ public class ChatViewActivity extends Fragment {
             try {
                 action.actionIntent.send(getContext(), 0, intent);
             } catch (PendingIntent.CanceledException e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG) {
+                    Log.e("CanceledException",e.getMessage());
+                }
             }
         }
     }
