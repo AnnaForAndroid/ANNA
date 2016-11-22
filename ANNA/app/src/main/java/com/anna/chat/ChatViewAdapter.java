@@ -73,7 +73,11 @@ public class ChatViewAdapter extends RecyclerView
         if (mDataset.getValueAt(position).getIcon() == null) {
             Drawable defaultProfile = MyApplication.getAppContext().getResources().getDrawable(R.drawable.default_profile);
             holder.profileImg.setImageDrawable(defaultProfile);
-        } else {
+        }
+        if(holder.profileImg.getDrawable() != null){
+            //do nothing
+        }
+        else {
             holder.profileImg.setImageBitmap(mDataset.getValueAt(position).getIcon());
         }
         holder.sender.setText(mDataset.getValueAt(position).getTitle());
