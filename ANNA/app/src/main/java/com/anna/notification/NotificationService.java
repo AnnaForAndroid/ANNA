@@ -46,15 +46,17 @@ public class NotificationService extends NotificationListenerService {
             } catch (final PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-            if (Module.enabledAppNames.contains(appName) && wearableExtender.getActions().size() > 0) {
-                Bundle extras = sbn.getNotification().extras;
-                String title = extras.getString("android.title");
-                CharSequence text = extras.getCharSequence("android.text");
-                Bitmap icon = sbn.getNotification().largeIcon;
-                long time = sbn.getPostTime();
-
+            if (Module.enabledAppNames.contains(appName)) {
                 notificationManager.cancel(sbn.getId());
-                ChatViewActivity.notifications.add(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification(), pack));
+                if (wearableExtender.getActions().size() > 0) {
+                    Bundle extras = sbn.getNotification().extras;
+                    String title = extras.getString("android.title");
+                    CharSequence text = extras.getCharSequence("android.text");
+                    Bitmap icon = sbn.getNotification().largeIcon;
+                    long time = sbn.getPostTime();
+
+                    ChatViewActivity.notifications.add(new NotificationData(title, text, icon, new Date(time), appName, sbn.getNotification(), pack));
+                }
             }
         }
     }
