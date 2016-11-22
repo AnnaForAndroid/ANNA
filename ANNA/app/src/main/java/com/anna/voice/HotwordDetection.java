@@ -57,14 +57,14 @@ public class HotwordDetection implements RecognitionListener {
         // of different kind and switch between them
         String systemLanguage = Locale.getDefault().getLanguage();
 
-        if (systemLanguage.equals("en")) {
+        if ("en".equals(systemLanguage)) {
             recognizer = SpeechRecognizerSetup.defaultSetup()
                     .setAcousticModel(new File(assetsDir, "en-us-ptm"))
                     .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
                     .setKeywordThreshold(1e-5f)
                     .getRecognizer();
             recognizer.addListener(this);
-        } else if (systemLanguage.equals("de")) {
+        } else if ("de".equals(systemLanguage)) {
             recognizer = SpeechRecognizerSetup.defaultSetup()
                     .setAcousticModel(new File(assetsDir, "de-de-ptm"))
                     .setDictionary(new File(assetsDir, "voxforge_de.dic"))
