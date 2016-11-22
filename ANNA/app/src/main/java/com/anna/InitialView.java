@@ -12,8 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -43,7 +41,7 @@ public class InitialView extends AppCompatActivity {
     private ModuleAdapter adapter;
     private PreferencesHelper sharedPrefs;
     private boolean setupFinished;
-    private final int PERMISSIONS_REQUEST_AUDIO = 123;
+    private final int PERMISSIONS_REQUEST = 123456;
     private VoiceOutput voiceOutput;
 
     @Override
@@ -85,24 +83,94 @@ public class InitialView extends AppCompatActivity {
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         switch (requestCode) {
-            case PERMISSIONS_REQUEST_AUDIO:
-                if (grantResults.length <= 0
-                        || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            Manifest.permission.RECORD_AUDIO)) {
-                        new AlertDialog.Builder(this).
-                                setTitle(getString(R.string.record_audio)).
-                                setMessage(getString(R.string.record_audio_denied_text)).show();
-                    } else {
-                        new AlertDialog.Builder(this).
-                                setTitle(getString(R.string.audio_denied)).
-                                setMessage(getString(R.string.audio_record_permission_denied)).show();
-                    }
+            case PERMISSIONS_REQUEST: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
                 }
-                break;
+
+                if (grantResults.length > 1
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+
+                if (grantResults.length > 2
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+
+                if (grantResults.length > 3
+                        && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+
+                if (grantResults.length > 4
+                        && grantResults[4] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+
+                if (grantResults.length > 5
+                        && grantResults[5] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                if (grantResults.length > 6
+                        && grantResults[6] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
             default:
                 Log.e("RequestCode", String.valueOf(requestCode));
-                break;
+                return;
         }
     }
 
@@ -138,7 +206,7 @@ public class InitialView extends AppCompatActivity {
         private ArrayList<Module> moduleList;
 
         private ModuleAdapter(Context context, int textViewResourceId,
-                             List<Module> moduleList) {
+                              List<Module> moduleList) {
             super(context, textViewResourceId, moduleList);
             this.moduleList = new ArrayList<>();
             this.moduleList.addAll(moduleList);
@@ -232,17 +300,42 @@ public class InitialView extends AppCompatActivity {
         });
 
         voiceOutput.read(getString(R.string.init_stmt));
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void accessPermissions() {
+        List<String> permissions = new ArrayList<>();
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                    PERMISSIONS_REQUEST_AUDIO);
+            permissions.add(Manifest.permission.RECORD_AUDIO);
         }
+        if (checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        }
+        if (checkSelfPermission(Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.INTERNET);
+        }
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (checkSelfPermission(Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.CALL_PHONE);
+        }
+        if (checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.READ_CONTACTS);
+        }
+        String[] permissionArray = new String[permissions.size()];
+        permissions.toArray(permissionArray);
+        requestPermissions(permissionArray, PERMISSIONS_REQUEST);
     }
 
     @Override
