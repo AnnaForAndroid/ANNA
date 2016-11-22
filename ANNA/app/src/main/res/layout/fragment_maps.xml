@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_maps"
-        android:id="@+id/include" />
+    <include layout="@layout/activity_maps"/>
 
 </RelativeLayout>

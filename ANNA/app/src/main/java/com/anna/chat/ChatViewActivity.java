@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.anna.BuildConfig;
 import com.anna.notification.NotificationData;
 import com.anna.R;
 import com.anna.util.IndexedHashMap;
@@ -51,13 +52,7 @@ public class ChatViewActivity extends Fragment {
         hotwordDetection = new HotwordDetection(super.getActivity());
         notificationProcessingActive = true;
         notifications = new LinkedList<>();
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                mRecyclerView.setAdapter(mAdapter);
-                super.handleMessage(msg);
-            }
-        };
+        handler = new ViewHandler(this);
         Thread notificationProcessor = new Thread() {
             @Override
             public void run() {
@@ -81,7 +76,9 @@ public class ChatViewActivity extends Fragment {
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                Log.i(LOG_TAG, " Clicked on Item " + position);
+                if (BuildConfig.DEBUG) {
+                    Log.i(LOG_TAG, " Clicked on Item " + position);
+                }
             }
         });
     }
@@ -139,5 +136,19 @@ public class ChatViewActivity extends Fragment {
             }
         }
         return answerAction;
+    }
+
+    private static class ViewHandler extends Handler {
+        private ChatViewActivity chatViewActivityObject;
+
+        private ViewHandler(ChatViewActivity chatViewActivityObject) {
+            this.chatViewActivityObject = chatViewActivityObject;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            chatViewActivityObject.mRecyclerView.setAdapter(chatViewActivityObject.mAdapter);
+            super.handleMessage(msg);
+        }
     }
 }

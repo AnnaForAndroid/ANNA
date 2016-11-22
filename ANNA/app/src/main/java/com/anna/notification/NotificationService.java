@@ -22,15 +22,13 @@ import java.util.Date;
 
 public class NotificationService extends NotificationListenerService {
 
-    public static boolean isNotificationAccessEnabled = false;
+    public static boolean isNotificationAccessEnabled;
     private final String notificationService = MyApplication.getAppContext().NOTIFICATION_SERVICE;
-    private NotificationManager notificationManager;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        notificationManager = (NotificationManager) MyApplication.getAppContext().getSystemService(notificationService);
     }
 
     @Override

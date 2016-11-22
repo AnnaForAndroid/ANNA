@@ -33,7 +33,6 @@ public class HotwordDetection implements RecognitionListener {
     private SpeechRecognizer recognizer;
     private Context context;
     private String userAnswer;
-    private boolean sendUserAnswer;
 
     public HotwordDetection(Context context) {
         this.context = context;
@@ -72,7 +71,7 @@ public class HotwordDetection implements RecognitionListener {
                     .getRecognizer();
             recognizer.addListener(this);
         } else {
-            Toast.makeText(context, "Sorry your language is not supported yet", Toast.LENGTH_LONG);
+            Toast.makeText(context, "Sorry your language is not supported yet", Toast.LENGTH_LONG).show();
         }
 
         // Create keyword-activation search.
@@ -154,10 +153,11 @@ public class HotwordDetection implements RecognitionListener {
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             if (text.equals(context.getString(R.string.yes)) || text.equals(context.getString(R.string.no))) {
-                userAnswer = text;
+                synchronized (this) {
+                    userAnswer = text;
+                    this.notify();
+                }
             }
-
-            sendUserAnswer = true;
         }
     }
 
@@ -174,7 +174,6 @@ public class HotwordDetection implements RecognitionListener {
     }
 
     public void killService() {
-
         if (recognizer != null) {
             recognizer.cancel();
             recognizer.shutdown();
@@ -182,12 +181,14 @@ public class HotwordDetection implements RecognitionListener {
     }
 
     public String getUserAnswer() {
-        sendUserAnswer = false;
         switchSearch(YES_NO_SEARCH);
-        while (!sendUserAnswer) {
-            //do nothing
+        synchronized (this) {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return userAnswer;
         }
-        sendUserAnswer = false;
-        return userAnswer;
     }
 }

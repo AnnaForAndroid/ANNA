@@ -21,7 +21,7 @@ import java.util.List;
 public class Dashboard extends AppCompatActivity {
     public static List<String> tabOrder = new ArrayList<>();
     private long lastInteraction;
-    private int FULLSCREEN = 1;
+    private static final int FULLSCREEN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +120,20 @@ public class Dashboard extends AppCompatActivity {
         setLastInteractionTime();
     }
 
-    private final Handler handler = new Handler() {
+    private final Handler handler = new FullscreenHandler(this);
+
+    private static class FullscreenHandler extends Handler {
+
+        Dashboard dashboardObject;
+
+        private FullscreenHandler(Dashboard dashboardObject) {
+            this.dashboardObject = dashboardObject;
+        }
+
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == FULLSCREEN) {
-                getWindow().getDecorView().setSystemUiVisibility(
+                dashboardObject.getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -134,5 +143,5 @@ public class Dashboard extends AppCompatActivity {
             }
             super.handleMessage(msg);
         }
-    };
+    }
 }

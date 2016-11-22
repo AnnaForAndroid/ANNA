@@ -125,19 +125,21 @@ public class InitialView extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-            ViewHolder holder = null;
-            Log.v("ConvertView", String.valueOf(position));
-
-            if (convertView == null) {
+            ViewHolder holder;
+            View tempConvertView = convertView;
+            if (BuildConfig.DEBUG) {
+                Log.v("ConvertView", String.valueOf(position));
+            }
+            if (tempConvertView == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
-                convertView = vi.inflate(R.layout.listitem, null);
+                tempConvertView = vi.inflate(R.layout.listitem, null);
 
                 holder = new ViewHolder();
-                holder.text = (TextView) convertView.findViewById(R.id.initialView_installedApps);
-                holder.card = (CardView) convertView.findViewById(R.id.initialView_cards);
-                holder.icon = (ImageView) convertView.findViewById(R.id.initialView_appIcon);
-                convertView.setTag(holder);
+                holder.text = (TextView) tempConvertView.findViewById(R.id.initialView_installedApps);
+                holder.card = (CardView) tempConvertView.findViewById(R.id.initialView_cards);
+                holder.icon = (ImageView) tempConvertView.findViewById(R.id.initialView_appIcon);
+                tempConvertView.setTag(holder);
 
                 holder.card.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
@@ -152,7 +154,7 @@ public class InitialView extends AppCompatActivity {
                     }
                 });
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = (ViewHolder) tempConvertView.getTag();
             }
 
             Module module = moduleList.get(position);
@@ -160,7 +162,7 @@ public class InitialView extends AppCompatActivity {
             holder.icon.setImageDrawable(module.getIcon());
             holder.card.setTag(module);
 
-            return convertView;
+            return tempConvertView;
         }
 
     }

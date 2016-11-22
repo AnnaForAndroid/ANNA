@@ -1,6 +1,9 @@
 package com.anna.util;
 
+import android.os.Build;
 import android.util.Log;
+
+import com.anna.BuildConfig;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,10 +12,14 @@ public class IndexedHashMap<K, V> extends LinkedHashMap<K, V> {
 
     public int getPositionOfKey(K key) {
         int i = 0;
-        Log.d("Schlüssel",key.toString());
+        if (BuildConfig.DEBUG) {
+            Log.d("Schlüssel", key.toString());
+        }
         for (Map.Entry<K, V> entry : this.entrySet()) {
             K obj = entry.getKey();
-            Log.d("Objekt",obj.toString());
+            if (BuildConfig.DEBUG) {
+                Log.d("Objekt", obj.toString());
+            }
             if (obj.equals(key)) {
                 break;
             }
