@@ -2,6 +2,9 @@ package com.anna.util;
 
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+
+import com.anna.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +53,9 @@ public class Module {
         try {
             return pm.getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            if(BuildConfig.DEBUG){
+                Log.e("NameNotFoundException", e.getMessage());
+            }
             return null;
         }
     }

@@ -15,7 +15,6 @@ import android.util.Log;
 import com.anna.BuildConfig;
 import com.anna.util.Module;
 import com.anna.chat.ChatViewActivity;
-import com.anna.util.MyApplication;
 
 import java.util.Date;
 

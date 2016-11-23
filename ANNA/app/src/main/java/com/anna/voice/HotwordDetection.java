@@ -186,7 +186,7 @@ public class HotwordDetection implements RecognitionListener {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("InterruptedException", e.toString());
             }
             return userAnswer;
         }

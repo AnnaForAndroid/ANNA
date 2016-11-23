@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,6 +23,7 @@ public class Dashboard extends AppCompatActivity {
     public static List<String> tabOrder = new ArrayList<>();
     private long lastInteraction;
     private static final int FULLSCREEN = 1;
+    private final Handler handler = new FullscreenHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,7 @@ public class Dashboard extends AppCompatActivity {
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Log.e("InterruptedException", e.toString());
                     }
                     if (getLastInteractionTime() > 5000) {
                         Message msg = handler.obtainMessage();
@@ -119,8 +121,6 @@ public class Dashboard extends AppCompatActivity {
         super.onResume();
         setLastInteractionTime();
     }
-
-    private final Handler handler = new FullscreenHandler(this);
 
     private static class FullscreenHandler extends Handler {
 
