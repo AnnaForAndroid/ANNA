@@ -1,8 +1,12 @@
 package com.anna.util;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.anna.BuildConfig;
 
@@ -17,8 +21,7 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<>();
-    public static final List<String> moduleNames = new ArrayList(Arrays.asList("Maps", "WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire",
-            "Signal", "Threema"));
+    public static List<String> moduleNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
     public static List<String> packageNames = new ArrayList<>();
     public static List<String> enabledAppNames = new ArrayList<>();
     public static List<String> disabledAppNames = moduleNames;
@@ -40,6 +43,39 @@ public class Module {
         Module.modules.add(this);
     }
 
+    public static void initializeModules() {
+        initializePhoneApp();
+        initializeSMSApp();
+        initializeMusicApp();
+    }
+
+    public static void initializePhoneApp() {
+        Intent i = (new Intent(Intent.ACTION_CALL, Uri.parse("tel:")));
+        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        final ResolveInfo mInfo = pm.resolveActivity(i, 0);
+        moduleNames.add(mInfo.loadLabel(pm).toString());
+    }
+
+    public static void initializeSMSApp() {
+        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_APP_MESSAGING);
+        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
+        for (ResolveInfo info : pkgAppsList) {
+            moduleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
+        }
+    }
+
+    public static void initializeMusicApp() {
+        final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_APP_MUSIC);
+        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
+        for (ResolveInfo info : pkgAppsList) {
+            moduleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
+        }
+    }
+
     public boolean isEnabled() {
         return active;
     }
@@ -53,7 +89,7 @@ public class Module {
         try {
             return pm.getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            if(BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 Log.e("NameNotFoundException", e.getMessage());
             }
             return null;

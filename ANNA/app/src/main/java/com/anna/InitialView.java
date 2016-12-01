@@ -52,6 +52,7 @@ public class InitialView extends AppCompatActivity {
         sharedPrefs = new PreferencesHelper(getApplicationContext(), "annaPreferences");
         setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", Boolean.class);
         this.voiceOutput = new VoiceOutput(this);
+        Module.initializeModules();
         checkForFirstUse();
     }
 
@@ -214,14 +215,6 @@ public class InitialView extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.RECORD_AUDIO);
         }
-        if (checkSelfPermission(Manifest.permission.ACCESS_NETWORK_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
-        }
-        if (checkSelfPermission(Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED) {
-            permissions.add(Manifest.permission.INTERNET);
-        }
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -238,9 +231,15 @@ public class InitialView extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.READ_CONTACTS);
         }
-        String[] permissionArray = new String[permissions.size()];
-        permissions.toArray(permissionArray);
-        requestPermissions(permissionArray, 1234567);
+        if (checkSelfPermission(Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.SEND_SMS);
+        }
+        if (permissions.size() > 0) {
+            String[] permissionArray = new String[permissions.size()];
+            permissions.toArray(permissionArray);
+            requestPermissions(permissionArray, 1234567);
+        }
     }
 
     @Override
