@@ -9,7 +9,7 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="130dp"
         android:layout_margin="5dp"
         card_view:cardCornerRadius="2dp"
         card_view:contentPadding="10dp">
@@ -27,37 +27,43 @@
 
             <ImageView
                 android:id="@+id/applicationImg"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="true"
                 android:adjustViewBounds="true"
-                android:layout_marginTop="30dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_marginTop="42dp"
+                android:layout_marginLeft="2dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
 
             <TextView
                 android:id="@+id/sender"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="75dp"
-                android:layout_width="210dp"
+                android:layout_marginLeft="85dp"
+                android:layout_width="wrap_content"
                 android:ellipsize="end"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/message"
-                android:layout_width="210dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/sender"
-                android:layout_marginLeft="75dp"
+                android:layout_marginLeft="85dp"
                 android:ellipsize="end"
-                android:maxLines="1"/>
+                android:maxLines="2"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
