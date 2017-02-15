@@ -1,9 +1,5 @@
 package com.anna.voice;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -14,6 +10,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.anna.R;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class VoiceOutput implements TextToSpeech.OnInitListener {
 

@@ -12,9 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.anna.preferences.PreferencesHelper;
-import com.anna.util.Module;
 import com.anna.R;
+import com.anna.util.Module;
 
 import java.util.ArrayList;
 import java.util.List;

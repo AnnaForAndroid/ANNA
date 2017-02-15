@@ -1,8 +1,5 @@
 package com.anna;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -18,23 +15,26 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.anna.dashboard.Dashboard;
 import com.anna.notification.NotificationService;
+import com.anna.preferences.PreferencesHelper;
 import com.anna.util.LayoutConfig;
 import com.anna.util.Module;
-import com.anna.preferences.PreferencesHelper;
 import com.anna.voice.VoiceOutput;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class InitialView extends AppCompatActivity {
 

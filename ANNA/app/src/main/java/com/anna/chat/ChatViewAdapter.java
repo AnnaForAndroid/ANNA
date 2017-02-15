@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.anna.notification.NotificationData;
 import com.anna.R;
+import com.anna.notification.NotificationData;
 import com.anna.util.IndexedHashMap;
 import com.anna.util.Module;
 import com.anna.util.MyApplication;

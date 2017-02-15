@@ -2,7 +2,6 @@ package com.anna.phone;
 
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 /**
  * Created by PARSEA on 13.02.2017.
