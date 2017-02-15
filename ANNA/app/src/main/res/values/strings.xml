@@ -22,4 +22,5 @@
     <string name="select_one_module">You have to select at least one module to proceed</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="modules_title">Modules</string>
 </resources>

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.anna.preferences.PreferencesHelper;
 import com.anna.util.Module;
 import com.anna.R;
 
@@ -35,6 +36,8 @@ public class Dashboard extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         Module.loadModules();
         boolean messenger = true;
+        tabLayout.addTab(tabLayout.newTab().setText("Settings"));
+        tabOrder.add("Settings");
         for (String name : Module.enabledAppNames) {
             if ("Maps".equals(name)) {
                 tabLayout.addTab(tabLayout.newTab().setText(name));

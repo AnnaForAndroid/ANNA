@@ -33,7 +33,7 @@ import com.anna.dashboard.Dashboard;
 import com.anna.notification.NotificationService;
 import com.anna.util.LayoutConfig;
 import com.anna.util.Module;
-import com.anna.util.PreferencesHelper;
+import com.anna.preferences.PreferencesHelper;
 import com.anna.voice.VoiceOutput;
 
 public class InitialView extends AppCompatActivity {
@@ -49,7 +49,7 @@ public class InitialView extends AppCompatActivity {
         setContentView(R.layout.activity_initial);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        sharedPrefs = new PreferencesHelper(getApplicationContext(), "annaPreferences");
+        sharedPrefs = new PreferencesHelper(getApplicationContext());
         setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", Boolean.class);
         this.voiceOutput = new VoiceOutput(this);
         Module.initializeModules();
