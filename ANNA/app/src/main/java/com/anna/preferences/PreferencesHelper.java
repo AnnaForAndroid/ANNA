@@ -1,10 +1,18 @@
-package com.anna.util;
+package com.anna.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.anna.R;
+import com.anna.util.MyApplication;
 import com.google.gson.Gson;
 
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceScreen;
+
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,15 +22,18 @@ import java.util.Set;
 public class PreferencesHelper {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private Preferences preferences;
 
-    public PreferencesHelper(Context context, String preferencesName) {
-        this.sharedPreferences = context.getSharedPreferences(preferencesName, 0);
+    public PreferencesHelper(Context context) {
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.editor = sharedPreferences.edit();
+        this.preferences = new Preferences();
     }
 
-    public PreferencesHelper(String preferencesName) {
-        this.sharedPreferences = MyApplication.getAppContext().getSharedPreferences(preferencesName, 0);
+    public PreferencesHelper() {
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
         this.editor = sharedPreferences.edit();
+        this.preferences = new Preferences();
     }
 
     public Object getPreferences(String key, Class objectType) {

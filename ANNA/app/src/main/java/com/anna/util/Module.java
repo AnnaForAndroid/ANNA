@@ -6,9 +6,9 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.anna.BuildConfig;
+import com.anna.preferences.PreferencesHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class Module {
     private boolean active;
     private final String name;
     private final String packageName;
-    private static final PreferencesHelper sharedPreferences = new PreferencesHelper("module");
+    private static final PreferencesHelper sharedPreferences = new PreferencesHelper();
 
     public String getPackageName() {
         return packageName;

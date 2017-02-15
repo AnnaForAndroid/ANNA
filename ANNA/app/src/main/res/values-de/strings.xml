@@ -22,4 +22,5 @@
     <string name="select_one_module">Du musst mindestens ein Modul auswählen um fortzufahren</string>
     <string name="yes">ja</string>
     <string name="no">nein</string>
+    <string name="modules_title">Module</string>
 </resources>

@@ -3,6 +3,8 @@ package com.anna.util;
 import android.app.Application;
 import android.content.Context;
 
+import com.anna.preferences.Preferences;
+
 /**
  * Created by PARSEA on 08.11.2016.
  */
@@ -10,6 +12,7 @@ import android.content.Context;
 public class MyApplication extends Application {
 
     private static Context context;
+    public static Preferences preferences;
 
     public void onCreate() {
         super.onCreate();

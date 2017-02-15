@@ -7,8 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.anna.preferences.Preferences;
 import com.anna.chat.ChatViewActivity;
 import com.anna.maps.MapsFragment;
+import com.anna.preferences.PreferencesHelper;
+import com.anna.util.Module;
+import com.anna.util.MyApplication;
 
 public class DashboardAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;
@@ -27,6 +31,10 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
             case "Maps":
                 MapsFragment tab2 = new MapsFragment();
                 return tab2;
+            case "Settings":
+                Preferences tab3 = new Preferences();
+                MyApplication.preferences=tab3;
+                return tab3;
             default:
                 return null;
         }
