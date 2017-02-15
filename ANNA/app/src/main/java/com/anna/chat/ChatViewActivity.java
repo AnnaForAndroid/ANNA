@@ -18,11 +18,11 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.anna.BuildConfig;
-import com.anna.notification.NotificationData;
 import com.anna.R;
+import com.anna.notification.NotificationData;
 import com.anna.util.IndexedHashMap;
-import com.anna.voice.VoiceOutput;
 import com.anna.voice.HotwordDetection;
+import com.anna.voice.VoiceOutput;
 
 import java.util.LinkedList;
 import java.util.Queue;

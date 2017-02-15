@@ -4,15 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.anna.R;
 import com.anna.util.MyApplication;
 import com.google.gson.Gson;
 
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceScreen;
-
-import java.util.List;
 import java.util.Set;
 
 /**

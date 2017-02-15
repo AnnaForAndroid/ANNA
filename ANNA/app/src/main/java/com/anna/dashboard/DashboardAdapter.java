@@ -3,15 +3,14 @@ package com.anna.dashboard;
 /**
  * Created by D062427 on 02.11.2016.
  */
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.anna.preferences.Preferences;
 import com.anna.chat.ChatViewActivity;
 import com.anna.maps.MapsFragment;
-import com.anna.preferences.PreferencesHelper;
-import com.anna.util.Module;
+import com.anna.preferences.Preferences;
 import com.anna.util.MyApplication;
 
 public class DashboardAdapter extends FragmentStatePagerAdapter {
