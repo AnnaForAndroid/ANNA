@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.anna.chat.ChatViewActivity;
-import com.anna.maps.MapsFragment;
+import com.anna.maps.HereMapsFragment;
 import com.anna.preferences.Preferences;
 import com.anna.util.MyApplication;
 
@@ -27,12 +27,15 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
             case "Messenger":
                 ChatViewActivity tab1 = new ChatViewActivity();
                 return tab1;
+//            case "Maps":
+//                MapsFragment tab2 = new MapsFragment();
+//                return tab2;
             case "Maps":
-                MapsFragment tab2 = new MapsFragment();
+                HereMapsFragment tab2 = new HereMapsFragment();
                 return tab2;
             case "Settings":
                 Preferences tab3 = new Preferences();
-                MyApplication.preferences=tab3;
+                MyApplication.preferences = tab3;
                 return tab3;
             default:
                 return null;

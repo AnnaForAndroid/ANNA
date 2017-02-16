@@ -1,6 +1,7 @@
 package com.anna.util;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -21,10 +22,11 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<>();
-    public static List<String> moduleNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
+    public static List<String> supportedModuleNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema", "Maps"));
     public static List<String> packageNames = new ArrayList<>();
     public static List<String> enabledAppNames = new ArrayList<>();
-    public static List<String> disabledAppNames = moduleNames;
+    public static List<String> disabledAppNames = new ArrayList<>();
+    public static List<String> moduleNames = new ArrayList<>();
     private boolean active;
     private final String name;
     private final String packageName;
@@ -47,13 +49,15 @@ public class Module {
         initializePhoneApp();
         initializeSMSApp();
         initializeMusicApp();
+        initializeOthers();
+        disabledAppNames = moduleNames;
     }
 
     public static void initializePhoneApp() {
         Intent i = (new Intent(Intent.ACTION_CALL, Uri.parse("tel:")));
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(i, 0);
-        moduleNames.add(mInfo.loadLabel(pm).toString());
+        supportedModuleNames.add(mInfo.loadLabel(pm).toString());
     }
 
     public static void initializeSMSApp() {
@@ -62,7 +66,7 @@ public class Module {
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
-            moduleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
+            supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
         }
     }
 
@@ -72,8 +76,30 @@ public class Module {
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
-            moduleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
+            supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
         }
+    }
+
+    public static void initializeOthers() {
+        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (ApplicationInfo info : appsInfos) {
+            String appLabel = pm.getApplicationLabel(info).toString();
+            if (Module.supportedModuleNames.contains(appLabel)) {
+                new Module(appLabel, info.packageName);
+                moduleNames.add(appLabel);
+            }
+        }
+    }
+
+    public static Module getModule(String moduleName) {
+        for (Module module : modules) {
+            if (module.getName().equals(moduleName)) {
+                return module;
+            }
+        }
+        return null;
     }
 
     public boolean isEnabled() {
@@ -116,6 +142,10 @@ public class Module {
         } else {
             disable();
         }
+    }
+
+    public void toogleStatus() {
+        setSelected(!isEnabled());
     }
 
     private void save() {

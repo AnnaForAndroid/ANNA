@@ -3,18 +3,14 @@ package com.anna.preferences; /**
  */
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.support.v7.preference.PreferenceScreen;
-import android.support.annotation.Nullable;
-
 import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceScreen;
 
 import com.anna.R;
 import com.anna.util.Module;
-import com.anna.util.MyApplication;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 public class Preferences extends PreferenceFragmentCompat {
@@ -57,20 +53,38 @@ public class Preferences extends PreferenceFragmentCompat {
 
         PreferenceCategory category = createCategory(getString(R.string.modules_title));
 
-        for (String name : Module.enabledAppNames) {
+        for (final String name : Module.enabledAppNames) {
             CheckBoxPreference checkBoxPref = new CheckBoxPreference(screen.getContext());
-            checkBoxPref.setKey(name + "_ENABLED");
+            checkBoxPref.setKey(name + "_CHECKBOX");
             checkBoxPref.setTitle(name);
             checkBoxPref.setChecked(true);
+
+            checkBoxPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Module module = Module.getModule(name);
+                    module.toogleStatus();
+                    return false;
+                }
+            });
 
             category.addPreference(checkBoxPref);
         }
 
-        for (String name : Module.disabledAppNames) {
+        for (final String name : Module.disabledAppNames) {
             CheckBoxPreference checkBoxPref = new CheckBoxPreference(screen.getContext());
-            checkBoxPref.setKey(name + "_DISABLED");
+            checkBoxPref.setKey(name + "_CHECKBOX");
             checkBoxPref.setTitle(name);
             checkBoxPref.setChecked(false);
+
+            checkBoxPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Module module = Module.getModule(name);
+                    module.toogleStatus();
+                    return false;
+                }
+            });
 
             category.addPreference(checkBoxPref);
         }
