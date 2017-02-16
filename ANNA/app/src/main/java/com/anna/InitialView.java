@@ -80,16 +80,6 @@ public class InitialView extends AppCompatActivity {
 
     private void displayListView() {
 
-        PackageManager pm = getApplicationContext().getPackageManager();
-        List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-
-        for (ApplicationInfo info : appsInfos) {
-            String appLabel = pm.getApplicationLabel(info).toString();
-            if (Module.moduleNames.contains(appLabel)) {
-                new Module(appLabel, info.packageName);
-            }
-        }
-
         adapter = new ModuleAdapter(this,
                 R.layout.listitem, Module.modules);
         ListView listView = (ListView) findViewById(R.id.list);
