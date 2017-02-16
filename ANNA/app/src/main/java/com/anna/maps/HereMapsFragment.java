@@ -14,8 +14,12 @@ import android.widget.LinearLayout;
 import com.anna.R;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.OnEngineInitListener;
+import com.here.android.mpa.common.PositioningManager;
+import com.here.android.mpa.guidance.NavigationManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
+
+import java.util.Locale;
 
 public class HereMapsFragment extends Fragment {
 
@@ -43,19 +47,30 @@ public class HereMapsFragment extends Fragment {
             public void onEngineInitializationCompleted(
                     OnEngineInitListener.Error error) {
                 if (error == OnEngineInitListener.Error.NONE) {
-                    // retrieve a reference of the map from the map fragment
                     map = mapFragment.getMap();
-                    // Set the map center to the Vancouver region (no animation)
-                    map.setCenter(new GeoCoordinate(49.196261, -123.004773, 0.0),
+                    map.setMapScheme(Map.Scheme.NORMAL_TRAFFIC_DAY);
+                    map.setCenter(new GeoCoordinate(123,123),
                             Map.Animation.NONE);
-                    // Set the zoom level to the average between min and max
+                    map.setMapDisplayLanguage(Locale.getDefault());
                     map.setZoomLevel(
                             (map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
                 } else {
                     System.out.println("ERROR: Cannot initialize Map Fragment");
+
                 }
             }
         });
+    }
+
+    public void startNavigation(){
+        NavigationManager navigationManager = NavigationManager.getInstance();
+
+//set the map where the navigation will be performed
+        navigationManager.setMap(getMap());
+
+// if user wants to start real navigation, submit calculated route
+// for more information on calculating a route, see the "Directions" section
+        NavigationManager.Error error = navigationManager.startNavigation(route);
     }
 }
 

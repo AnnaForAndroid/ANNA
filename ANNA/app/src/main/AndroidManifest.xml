@@ -57,8 +57,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <meta-data android:name="com.here.android.maps.appid" android:value="bnEhEyeCfOknXENVUD77"/>
-        <meta-data android:name="com.here.android.maps.apptoken" android:value="jmqQEm01LIWSHOU6fzVhjQ"/>
+        <meta-data android:name="com.here.android.maps.appid" android:value="1KcdiWjdR5SvdjDHkMD0"/>
+        <meta-data android:name="com.here.android.maps.apptoken" android:value="s2ukBgjIRG8e6yGyyxJGVQ"/>
 
         <activity
             android:name=".dashboard.Dashboard"
