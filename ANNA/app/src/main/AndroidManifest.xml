@@ -52,7 +52,7 @@
             android:name=".dashboard.Dashboard"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
