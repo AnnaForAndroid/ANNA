@@ -3,7 +3,7 @@
     <color name="colorPrimary">#0097A7</color>
     <color name="colorPrimaryDark">#006064</color>
     <color name="colorAccent">#03A9F4</color>
-    <color name="colorTabs">#616161</color>
+    <color name="colorTabs">#CC263238</color>
     <color name="white">#ffffff</color>
     <color name="bg_gradient_start">#31244e</color>
     <color name="bg_gradient_end">#6b394c</color>
