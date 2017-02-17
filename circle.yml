@@ -1,0 +1,24 @@
+general:
+    artifacts:
+        - /home/ubuntu/ANNA/
+
+machine:
+
+  java:
+    version:
+      oraclejdk8
+
+  environment:
+        ANDROID_HOME: /usr/local/android-sdk-linux
+
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter platform-tools,tools,android-25,extra-android-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository,addon-google_apis-google-25
+    - chmod +x gradlew
+    - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+
+test:
+  override:
+    - ./gradlew assembleDebug
+    - ./gradlew assembleRelease
+    - cp -r project-name/build/outputs $CIRCLE_ARTIFACTS
