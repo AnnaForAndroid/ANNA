@@ -12,7 +12,6 @@
     <string name="ask_to_answer">Would you like to answer?</string>
     <string name="audio_record_permission_denied">You denied record audio permission. So, the feature will be disabled. To enable it, go on settings and grant record audio for the application</string>
     <string name="title_activity_dashboard">Dashboard</string>
-    <string name="section_format">Hello World from section: %1$d</string>
     <string name="reply">reply</string>
     <string name="selected">The following were selected...\n</string>
     <string name="audio_denied">Record Audio permission denied</string>
