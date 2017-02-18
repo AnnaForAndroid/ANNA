@@ -25,5 +25,5 @@ dependencies:
 
 test:
   override:
-    - ./ANNA/gradlew build -b ./ANNA/build.gradle
+    - ./ANNA/gradlew build -b ./ANNA/build.gradle -PdisablePreDex
     - cp -r ANNA/build/outputs $CIRCLE_ARTIFACTS

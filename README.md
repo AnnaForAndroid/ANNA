@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/AnnaForAndroid/ANNA.svg?branch=master)](https://travis-ci.org/AnnaForAndroid/ANNA) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/eddbe0f04fe44aed923c8cf3bad081ed)](https://www.codacy.com/app/Aaper/ANNA?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnnaForAndroid/ANNA&amp;utm_campaign=Badge_Grade)
+[![CircleCI](https://circleci.com/gh/AnnaForAndroid/ANNA.svg?style=svg)](https://circleci.com/gh/AnnaForAndroid/ANNA) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/eddbe0f04fe44aed923c8cf3bad081ed)](https://www.codacy.com/app/Aaper/ANNA?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnnaForAndroid/ANNA&amp;utm_campaign=Badge_Grade)
 # ANNA
 
 Im Straßenverkehr sind 10% der Unfälle auf Ablenkung zurückzuführen. Dabei nehmen Smartphones einen immer größer werdenden Teil dieser Statistik ein.
@@ -11,5 +11,4 @@ Außerdem zielt ANNA darauf ab den User mit relevanten Informationen zu versorge
 
 Das Projekt ANNA  zielt hierbei auf eine junge Zielgruppe ab. Jüngere Menschen haben meist eine stärkere Abhängigkeit im Bezug auf ihr Smartphone und sind ohnehin nicht so Straßenverkehrs affin wie ältere Autofahrer.  Außerdem können sie sich kein Auto der gehobenen Klasse leisten, welche bereits einige Funktionen des Projekts ANNA anbieten. Ein weiter Vorteil des Projekts ANNA ist es, dass keine zusätzlichen Umbauten am Auto vorgenommen werden müssen, wie es bei anderen kostspieligen Lösungen der Fall ist. Außerdem bietet sich ANNA aus technischer Sicht andere Möglichkeiten mit dem Smartphone zu interagieren, als es bei anderen Systemen über Bluetooth der Fall ist.
 
-Ein weiterer Mehrwert der durch Projekt ANNA entsteht, ist die Personalisierung. Die  Idee hinter Anna besteht darin, aus einer Vielzahl von Modulen, sein persönliches Dashboard zu erstellen und somit gezielt auf persönliche Bedürfnisse einzugehen. 
-
+Ein weiterer Mehrwert der durch Projekt ANNA entsteht, ist die Personalisierung. Die  Idee hinter Anna besteht darin, aus einer Vielzahl von Modulen, sein persönliches Dashboard zu erstellen und somit gezielt auf persönliche Bedürfnisse einzugehen.
