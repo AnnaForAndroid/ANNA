@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.anna.BuildConfig;
+import com.anna.R;
 import com.anna.preferences.PreferencesHelper;
 
 import java.util.ArrayList;
@@ -22,11 +23,11 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<>();
-    public static List<String> supportedModuleNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema", "Maps"));
-    public static List<String> packageNames = new ArrayList<>();
+    private static List<String> supportedModuleNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
+    private static List<String> packageNames = new ArrayList<>();
     public static List<String> enabledAppNames = new ArrayList<>();
     public static List<String> disabledAppNames = new ArrayList<>();
-    public static List<String> moduleNames = new ArrayList<>();
+    private static List<String> moduleNames = new ArrayList<>();
     private boolean active;
     private final String name;
     private final String packageName;
@@ -36,7 +37,7 @@ public class Module {
         return packageName;
     }
 
-    public Module(String name, String packageName) {
+    private Module(String name, String packageName) {
         this.name = name;
         this.packageName = packageName;
         Module.packageNames.add(packageName);
@@ -49,18 +50,19 @@ public class Module {
         initializePhoneApp();
         initializeSMSApp();
         initializeMusicApp();
+        initializeHereMaps();
         initializeOthers();
         disabledAppNames = moduleNames;
     }
 
-    public static void initializePhoneApp() {
+    private static void initializePhoneApp() {
         Intent i = (new Intent(Intent.ACTION_CALL, Uri.parse("tel:")));
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(i, 0);
         supportedModuleNames.add(mInfo.loadLabel(pm).toString());
     }
 
-    public static void initializeSMSApp() {
+    private static void initializeSMSApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MESSAGING);
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
@@ -70,7 +72,7 @@ public class Module {
         }
     }
 
-    public static void initializeMusicApp() {
+    private static void initializeMusicApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MUSIC);
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
@@ -80,7 +82,12 @@ public class Module {
         }
     }
 
-    public static void initializeOthers() {
+    private static void initializeHereMaps() {
+        new Module("Here Maps", "");
+        moduleNames.add("Here Maps");
+    }
+
+    private static void initializeOthers() {
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
@@ -115,7 +122,9 @@ public class Module {
         try {
             return pm.getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            if (BuildConfig.DEBUG) {
+            if (name.equals("Here Maps")) {
+                return MyApplication.getAppContext().getResources().getDrawable(R.drawable.here_maps);
+            } else if (BuildConfig.DEBUG) {
                 Log.e("NameNotFoundException", e.getMessage());
             }
             return null;

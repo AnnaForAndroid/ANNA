@@ -27,7 +27,7 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
             case "Messenger":
                 ChatViewActivity tab1 = new ChatViewActivity();
                 return tab1;
-            case "Maps":
+            case "Here Maps":
                 HereMapsFragment tab2 = new HereMapsFragment();
                 return tab2;
             case "Settings":
