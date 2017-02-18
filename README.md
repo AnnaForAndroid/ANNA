@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/AnnaForAndroid/ANNA.svg?style=svg)](https://circleci.com/gh/AnnaForAndroid/ANNA) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/eddbe0f04fe44aed923c8cf3bad081ed)](https://www.codacy.com/app/Aaper/ANNA?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnnaForAndroid/ANNA&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/AnnaForAndroid/ANNA.svg?branch=master)](https://travis-ci.org/AnnaForAndroid/ANNA) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/eddbe0f04fe44aed923c8cf3bad081ed)](https://www.codacy.com/app/Aaper/ANNA?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AnnaForAndroid/ANNA&amp;utm_campaign=Badge_Grade)
 # ANNA
 
 Im Straßenverkehr sind 10% der Unfälle auf Ablenkung zurückzuführen. Dabei nehmen Smartphones einen immer größer werdenden Teil dieser Statistik ein.
