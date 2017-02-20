@@ -6,6 +6,7 @@ package com.anna.maps;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,9 @@ import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.guidance.NavigationManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
+import com.here.android.mpa.routing.CoreRouter;
+import com.here.android.mpa.routing.RouteOptions;
+import com.here.android.mpa.routing.RoutePlan;
 
 import java.util.Locale;
 
@@ -49,28 +53,35 @@ public class HereMapsFragment extends Fragment {
                 if (error == OnEngineInitListener.Error.NONE) {
                     map = mapFragment.getMap();
                     map.setMapScheme(Map.Scheme.NORMAL_TRAFFIC_DAY);
-                    map.setCenter(new GeoCoordinate(123,123),
+                    PositioningManager pm = PositioningManager.getInstance();
+                    pm.start(PositioningManager.LocationMethod.GPS_NETWORK);
+                    map.setCenter(pm.getPosition().getCoordinate(),
                             Map.Animation.NONE);
+                    pm.stop();
                     map.setMapDisplayLanguage(Locale.getDefault());
                     map.setZoomLevel(
                             (map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
                 } else {
-                    System.out.println("ERROR: Cannot initialize Map Fragment");
+                    Log.e("","ERROR: Cannot initialize Map Fragment");
 
                 }
             }
         });
     }
 
-    public void startNavigation(){
-        NavigationManager navigationManager = NavigationManager.getInstance();
+    public void startNavigation() {
 
-//set the map where the navigation will be performed
-        navigationManager.setMap(getMap());
+        NavigationManager navigationManager = NavigationManager.getInstance();
+        CoreRouter coreRouter = new CoreRouter();
+        RoutePlan routePlan = new RoutePlan();
+        RouteOptions routeOptions = new RouteOptions();
+
+
+        navigationManager.setMap(map);
 
 // if user wants to start real navigation, submit calculated route
 // for more information on calculating a route, see the "Directions" section
-        NavigationManager.Error error = navigationManager.startNavigation(route);
+        //NavigationManager.Error error = navigationManager.startNavigation(route);
     }
 }
 

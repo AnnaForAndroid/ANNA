@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -18,9 +18,9 @@
     <application
         android:name=".util.MyApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/anna_app_logo"
         android:label="@string/app_name"
-        android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -45,26 +45,32 @@
 
         <service
             android:name="com.here.android.mpa.service.MapService"
+            android:exported="true"
             android:label="HereMapService"
-            android:process="global.Here.Map.Service.v2"
-            android:exported="true" >
+            android:process="global.Here.Map.Service.v2">
             <intent-filter>
-                <action android:name="com.here.android.mpa.service.MapService" >
-                </action>
+                <action android:name="com.here.android.mpa.service.MapService"></action>
             </intent-filter>
         </service>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <meta-data android:name="com.here.android.maps.appid" android:value="1KcdiWjdR5SvdjDHkMD0"/>
-        <meta-data android:name="com.here.android.maps.apptoken" android:value="s2ukBgjIRG8e6yGyyxJGVQ"/>
+        <meta-data
+            android:name="com.here.android.maps.appid"
+            android:value="1KcdiWjdR5SvdjDHkMD0" />
+        <meta-data
+            android:name="com.here.android.maps.apptoken"
+            android:value="s2ukBgjIRG8e6yGyyxJGVQ" />
+        <meta-data
+            android:name="com.here.android.maps.license.key"
+            android:value="cQmo4OztjKlJupcp8d6amB0BMFFUU67W9i042siK3/K75C7TFTNs97D706vATrd4I5NCbCkBoSEuAj+zbdiDL6x5Oic0ENWLoaD4B7KNKO5pCr7jz5IQ8OYKuko2bPpso8re3GWCxNIeH8v9bl7EmvZs29y7mcUiLd1JkiTdKpN6c5m0daM+8kja+g7miQM4btY39pHPTTGjwbavsQbAA2Taim4vbH+8zoyI9SmkxRxICcyQ/fz3BZe8Wvm7TU0JZjLIppw9McyaNdFB5IV14nYdXmZPldP5h0zM4CJMMivQHjNTtYUQKE/0Dmu2bcmIAwXjE50hpEPX3myrobYDhGig0sdC/3yt7O+Qwx9MuXbQXPc+Rqi8zb+TZMWxpdIyBdLSZdO9rs+GVWFjuqQ+xvUVZLkM46+Mv+gObFyaZTEY9kiG9wukloD7bXnzIoj/v9nSh/313ugF/nRRW/+c1b93SyZ8o0+wiCgUSNxDoToR+UNcCaIifMfh0sX8gdcncPWkuESYw3iH14LHMt8Mllfa8BDKRcTVIl+GNiWgvI4vsMHmy1Cp8Ql7HtGGsS6XVU0BGg6LPnOKHLPZDSCL8/6gHYa7lZQPitGWBde3Qs+k8+hqP+SFgGoUTBzupMg5/RX4xfte/AGb+CiEcpRFzYDe30XaWbW5YtypXAT0ZqM=" />
 
         <activity
             android:name=".dashboard.Dashboard"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -3,7 +3,6 @@ package com.anna;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,13 +45,8 @@ public class InitialView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_initial);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         sharedPrefs = new PreferencesHelper(getApplicationContext());
         setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", Boolean.class);
-        this.voiceOutput = new VoiceOutput(this);
-        Module.initializeModules();
         checkForFirstUse();
     }
 
@@ -61,6 +55,12 @@ public class InitialView extends AppCompatActivity {
             Intent intent = new Intent(InitialView.this, Dashboard.class);
             InitialView.this.startActivity(intent);
         } else {
+            setContentView(R.layout.activity_initial);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            this.voiceOutput = new VoiceOutput(this);
+            Module.initializeModules();
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 accessPermissions();
             }
@@ -235,7 +235,7 @@ public class InitialView extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (setupFinished) {
+        if (voiceOutput != null) {
             voiceOutput.killService();
         }
     }

@@ -20,6 +20,6 @@ before_install:
   - export JAVA8_HOME=/usr/lib/jvm/java-8-oracle
   - export JAVA_HOME=$JAVA8_HOME
 script:
-  - ./ANNA/gradlew build -b ./ANNA/build.gradle
+  - ./ANNA/gradlew build -b ./ANNA/build.gradle -PdisablePreDex -Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"
 after_success:
   - ./upload-apk.sh
