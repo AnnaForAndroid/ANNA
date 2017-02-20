@@ -7,15 +7,14 @@ package com.anna.maps;
 import android.app.Activity;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.anna.R;
 import com.here.android.mpa.common.GeoCoordinate;
@@ -28,9 +27,9 @@ import com.here.android.mpa.routing.CoreRouter;
 import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
 
-import java.util.EnumSet;
 import java.util.List;
 
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.here.android.mpa.common.GeoBoundingBox;
@@ -55,9 +54,9 @@ public class HereMapsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.fragment_here_maps, container, false);
+        RelativeLayout rl = (RelativeLayout) inflater.inflate(R.layout.fragment_here_maps, container, false);
         initialize();
-        return ll;
+        return rl;
     }
 
     private void initialize() {
@@ -83,7 +82,7 @@ public class HereMapsFragment extends Fragment {
                     map.setZoomLevel(
                             (map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
 
-                    Button button = (Button) activity.findViewById(R.id.directionsbutton);
+                    FloatingActionButton button = (FloatingActionButton) activity.findViewById(R.id.directionsbutton);
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
