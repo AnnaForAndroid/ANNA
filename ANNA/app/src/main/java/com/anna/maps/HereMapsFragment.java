@@ -34,22 +34,18 @@ import android.widget.Toast;
 
 import com.here.android.mpa.common.GeoBoundingBox;
 import com.here.android.mpa.mapping.MapRoute;
-import com.here.android.mpa.routing.RouteManager;
-import com.here.android.mpa.routing.RouteOptions;
-import com.here.android.mpa.routing.RoutePlan;
 import com.here.android.mpa.routing.RouteResult;
+import com.here.android.mpa.routing.RouteWaypoint;
+import com.here.android.mpa.routing.Router;
+import com.here.android.mpa.routing.RoutingError;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Locale;
 
 public class HereMapsFragment extends Fragment {
 
-    // map embedded in the map fragment
     private Map map = null;
-    // map fragment embedded in this activity
     private MapFragment mapFragment = null;
-    // MapRoute for this activity
     private MapRoute mapRoute = null;
 
     @Override
@@ -61,7 +57,6 @@ public class HereMapsFragment extends Fragment {
 
     private void initialize() {
 
-        // Search for the map fragment to finish setup by calling init().
         getFragmentManager().findFragmentById(R.id.heremapfragment);
         final Activity activity = super.getActivity();
         mapFragment = (MapFragment) activity.getFragmentManager().findFragmentById(
@@ -86,7 +81,7 @@ public class HereMapsFragment extends Fragment {
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            getDirections(v);
+                            getDirections();
                         }
                     });
                 } else {
@@ -97,43 +92,44 @@ public class HereMapsFragment extends Fragment {
         });
     }
 
-    private RouteManager.Listener routeManagerListener =
-            new RouteManager.Listener() {
-                public void onCalculateRouteFinished(RouteManager.Error errorCode,
-                                                     List<RouteResult> result) {
+    private Router.Listener<List<RouteResult>, RoutingError> routeManagerListener = new Router.Listener<List<RouteResult>, RoutingError>() {
+        @Override
+        public void onProgress(int i) {
 
-                    if (errorCode == RouteManager.Error.NONE &&
-                            result.get(0).getRoute() != null) {
+        }
 
-                        // create a map route object and place it on the map
-                        mapRoute = new MapRoute(result.get(0).getRoute());
-                        map.addMapObject(mapRoute);
+        @Override
+        public void onCalculateRouteFinished(List<RouteResult> routeResult, RoutingError routingError) {
 
-                        // Get the bounding box containing the route and zoom in
-                        GeoBoundingBox gbb = result.get(0).getRoute().getBoundingBox();
-                        map.zoomTo(gbb, Map.Animation.NONE,
-                                Map.MOVE_PRESERVE_ORIENTATION);
+            if (routingError == RoutingError.NONE &&
+                    routeResult.get(0).getRoute() != null) {
 
-                    }
-                }
+                mapRoute = new MapRoute(routeResult.get(0).getRoute());
+                map.addMapObject(mapRoute);
 
-                public void onProgress(int percentage) {
+                // Get the bounding box containing the route and zoom in
+                GeoBoundingBox gbb = routeResult.get(0).getRoute().getBoundingBox();
+                map.zoomTo(gbb, Map.Animation.NONE,
+                        Map.MOVE_PRESERVE_ORIENTATION);
 
-                }
-            };
+            }
+            else if(routingError != RoutingError.NONE){
+                Toast.makeText(HereMapsFragment.super.getActivity().getApplicationContext(),
+                        "Route calculation failed with: " + routingError.toString(),
+                        Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    };
 
-    // Functionality for taps of the "Get Directions" button
-    public void getDirections(View view) {
-        // 1. clear previous results
+    public void getDirections() {
         if (map != null && mapRoute != null) {
             map.removeMapObject(mapRoute);
             mapRoute = null;
         }
 
-        // 2. Initialize RouteManager
-        RouteManager routeManager = new RouteManager();
+        CoreRouter coreRouter = new CoreRouter();
 
-        // 3. Select routing options via RoutingMode
         RoutePlan routePlan = new RoutePlan();
 
         RouteOptions routeOptions = new RouteOptions();
@@ -141,41 +137,24 @@ public class HereMapsFragment extends Fragment {
         routeOptions.setRouteType(RouteOptions.Type.FASTEST);
         routePlan.setRouteOptions(routeOptions);
 
-        // 4. Select Waypoints for your routes
-        // START
         EditText from = (EditText) super.getActivity().findViewById(R.id.navigationFrom);
-        routePlan.addWaypoint(getGeoCoordinateFromAdress(from.getText().toString()));
+        RouteWaypoint fromWaypoint = new RouteWaypoint(getGeoCoordinateFromAdress(from.getText().toString()));
+        routePlan.addWaypoint(fromWaypoint);
 
-        // END
         EditText to = (EditText) super.getActivity().findViewById(R.id.navigationTo);
-        routePlan.addWaypoint(getGeoCoordinateFromAdress(to.getText().toString()));
+        RouteWaypoint toWaypoint = new RouteWaypoint(getGeoCoordinateFromAdress(to.getText().toString()));
+        routePlan.addWaypoint(toWaypoint);
 
-        // 5. Retrieve Routing information via RouteManagerListener
-        RouteManager.Error error =
-                routeManager.calculateRoute(routePlan, routeManagerListener);
-        if (error != RouteManager.Error.NONE) {
-            Toast.makeText(super.getActivity().getApplicationContext(),
-                    "Route calculation failed with: " + error.toString(),
-                    Toast.LENGTH_SHORT)
-                    .show();
-        }
+        coreRouter.calculateRoute(routePlan, routeManagerListener);
     }
-
-    ;
 
     public void startNavigation() {
 
         NavigationManager navigationManager = NavigationManager.getInstance();
-        CoreRouter coreRouter = new CoreRouter();
-        RoutePlan routePlan = new RoutePlan();
-        RouteOptions routeOptions = new RouteOptions();
-
 
         navigationManager.setMap(map);
+        //NavigationManager.Error error = navigationManager.startNavigation();
 
-// if user wants to start real navigation, submit calculated route
-// for more information on calculating a route, see the "Directions" section
-        //NavigationManager.Error error = navigationManager.startNavigation(route);
     }
 
     public GeoCoordinate getGeoCoordinateFromAdress(String locationName) {
