@@ -76,11 +76,11 @@ public class Dashboard extends AppCompatActivity {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         Log.e("InterruptedException", e.toString());
                     }
-                    if (getLastInteractionTime() > 5000) {
+                    if (getLastInteractionTime() > 3000) {
                         Message msg = handler.obtainMessage();
                         msg.what = FULLSCREEN;
                         handler.sendMessage(msg);
