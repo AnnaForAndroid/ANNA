@@ -123,7 +123,7 @@ public class Module {
         try {
             return pm.getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
-            if (name.equals("Here Maps")) {
+            if ("Here Maps".equals(name)) {
                 return MyApplication.getAppContext().getResources().getDrawable(R.drawable.here_maps);
             } else if (BuildConfig.DEBUG) {
                 Log.e("NameNotFoundException", e.getMessage());
