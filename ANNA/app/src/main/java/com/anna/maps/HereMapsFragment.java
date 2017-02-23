@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import com.anna.R;
 import com.here.android.mpa.common.GeoCoordinate;
+import com.here.android.mpa.common.GeoPosition;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.guidance.NavigationManager;
@@ -47,10 +48,14 @@ public class HereMapsFragment extends Fragment {
     private Map map = null;
     private MapFragment mapFragment = null;
     private MapRoute mapRoute = null;
+    private String from;
+    private String to = "";
+    private PositioningManager pm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RelativeLayout rl = (RelativeLayout) inflater.inflate(R.layout.fragment_here_maps, container, false);
+        from = getString(R.string.current_position);
         initialize();
         return rl;
     }
@@ -65,12 +70,17 @@ public class HereMapsFragment extends Fragment {
             @Override
             public void onEngineInitializationCompleted(
                     OnEngineInitListener.Error error) {
+
+                pm = PositioningManager.getInstance();
+                pm.start(PositioningManager.LocationMethod.GPS_NETWORK);
+
                 if (error == OnEngineInitListener.Error.NONE) {
                     map = mapFragment.getMap();
                     map.setMapScheme(Map.Scheme.NORMAL_TRAFFIC_DAY);
-                    PositioningManager pm = PositioningManager.getInstance();
-                    pm.start(PositioningManager.LocationMethod.GPS_NETWORK);
-                    map.setCenter(pm.getPosition().getCoordinate(),
+
+                    final GeoPosition currentPosition = getCurrentPosition();
+
+                    map.setCenter(currentPosition.getCoordinate(),
                             Map.Animation.NONE);
                     pm.stop();
                     map.setMapDisplayLanguage(Locale.getDefault());
@@ -81,7 +91,15 @@ public class HereMapsFragment extends Fragment {
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            getDirections();
+                            EditText fromField = (EditText) HereMapsFragment.super.getActivity().findViewById(R.id.navigationFrom);
+                            EditText toField = (EditText) HereMapsFragment.super.getActivity().findViewById(R.id.navigationTo);
+                            if (from.equals(fromField.getText().toString()) && to.equals(toField.getText().toString())) {
+                                startNavigation();
+                            } else {
+                                from = fromField.getText().toString();
+                                to = toField.getText().toString();
+                                getDirections();
+                            }
                         }
                     });
                 } else {
@@ -90,6 +108,14 @@ public class HereMapsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private GeoPosition getCurrentPosition() {
+        if (pm.hasValidPosition()) {
+            return pm.getPosition();
+        } else {
+            return pm.getLastKnownPosition();
+        }
     }
 
     private Router.Listener<List<RouteResult>, RoutingError> routeManagerListener = new Router.Listener<List<RouteResult>, RoutingError>() {
@@ -107,13 +133,11 @@ public class HereMapsFragment extends Fragment {
                 mapRoute = new MapRoute(routeResult.get(0).getRoute());
                 map.addMapObject(mapRoute);
 
-                // Get the bounding box containing the route and zoom in
                 GeoBoundingBox gbb = routeResult.get(0).getRoute().getBoundingBox();
                 map.zoomTo(gbb, Map.Animation.NONE,
                         Map.MOVE_PRESERVE_ORIENTATION);
 
-            }
-            else if(routingError != RoutingError.NONE){
+            } else if (routingError != RoutingError.NONE) {
                 Toast.makeText(HereMapsFragment.super.getActivity().getApplicationContext(),
                         "Route calculation failed with: " + routingError.toString(),
                         Toast.LENGTH_SHORT)
@@ -137,12 +161,15 @@ public class HereMapsFragment extends Fragment {
         routeOptions.setRouteType(RouteOptions.Type.FASTEST);
         routePlan.setRouteOptions(routeOptions);
 
-        EditText from = (EditText) super.getActivity().findViewById(R.id.navigationFrom);
-        RouteWaypoint fromWaypoint = new RouteWaypoint(getGeoCoordinateFromAdress(from.getText().toString()));
+        RouteWaypoint fromWaypoint;
+        if (from.equals(getString(R.string.current_position))) {
+            fromWaypoint = new RouteWaypoint(getCurrentPosition().getCoordinate());
+        } else {
+            fromWaypoint = new RouteWaypoint(getGeoCoordinateFromAdress(from));
+        }
         routePlan.addWaypoint(fromWaypoint);
 
-        EditText to = (EditText) super.getActivity().findViewById(R.id.navigationTo);
-        RouteWaypoint toWaypoint = new RouteWaypoint(getGeoCoordinateFromAdress(to.getText().toString()));
+        RouteWaypoint toWaypoint = new RouteWaypoint(getGeoCoordinateFromAdress(to));
         routePlan.addWaypoint(toWaypoint);
 
         coreRouter.calculateRoute(routePlan, routeManagerListener);
@@ -151,9 +178,10 @@ public class HereMapsFragment extends Fragment {
     public void startNavigation() {
 
         NavigationManager navigationManager = NavigationManager.getInstance();
-
+        map.setMapScheme(Map.Scheme.CARNAV_TRAFFIC_DAY);
         navigationManager.setMap(map);
-        //NavigationManager.Error error = navigationManager.startNavigation();
+        navigationManager.setMapUpdateMode(NavigationManager.MapUpdateMode.NONE);
+        NavigationManager.Error error = navigationManager.startNavigation(mapRoute.getRoute());
 
     }
 

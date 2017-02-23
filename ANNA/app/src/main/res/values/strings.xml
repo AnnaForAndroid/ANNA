@@ -25,4 +25,5 @@
     <string name="label_button_getdirections">Show Route</string>
     <string name="navigation_from">From:</string>
     <string name="navigation_to">To:</string>
+    <string name="current_position">My location</string>
 </resources>
