@@ -34,11 +34,11 @@ public class Dashboard extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Settings"));
         tabOrder.add("Settings");
         for (String name : Module.enabledAppNames) {
-            if ("Maps".equals(name)) {
+            if ("Here Maps".equals(name)) {
                 tabLayout.addTab(tabLayout.newTab().setText(name));
                 tabOrder.add(name);
             }
-            if (messenger) {
+            if (messenger && Module.messengerNames.contains(name)) {
                 tabLayout.addTab(tabLayout.newTab().setText("Messenger"));
                 messenger = false;
                 tabOrder.add("Messenger");

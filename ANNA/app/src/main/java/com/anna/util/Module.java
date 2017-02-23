@@ -23,7 +23,8 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<>();
-    private static List<String> supportedModuleNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
+    public static List<String> messengerNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
+    private static List<String> supportedModuleNames = messengerNames;
     private static List<String> packageNames = new ArrayList<>();
     public static List<String> enabledAppNames = new ArrayList<>();
     public static List<String> disabledAppNames = new ArrayList<>();

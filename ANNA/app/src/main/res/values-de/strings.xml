@@ -23,4 +23,8 @@
     <string name="yes">ja</string>
     <string name="no">nein</string>
     <string name="modules_title">Module</string>
+    <string name="navigation_from">Von:</string>
+    <string name="navigation_to">Nach:</string>
+    <string name="label_button_getdirections">Zeige Route</string>
+    <string name="current_position">Mein Standort</string>
 </resources>
