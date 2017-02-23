@@ -5,11 +5,14 @@ package com.anna.maps;
  */
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.Image;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +28,16 @@ import com.here.android.mpa.guidance.NavigationManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.routing.CoreRouter;
+import com.here.android.mpa.routing.Route;
 import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
 
+import java.lang.ref.WeakReference;
+import java.util.EnumSet;
 import java.util.List;
 
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.here.android.mpa.common.GeoBoundingBox;
@@ -51,13 +58,14 @@ public class HereMapsFragment extends Fragment {
     private String from;
     private String to = "";
     private PositioningManager pm;
+    private boolean paused;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RelativeLayout rl = (RelativeLayout) inflater.inflate(R.layout.fragment_here_maps, container, false);
+        LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.fragment_here_maps, container, false);
         from = getString(R.string.current_position);
         initialize();
-        return rl;
+        return ll;
     }
 
     private void initialize() {
@@ -177,12 +185,43 @@ public class HereMapsFragment extends Fragment {
 
     public void startNavigation() {
 
+        LinearLayout ll = (LinearLayout) getView().findViewById(R.id.navigation_adress_fields);
+        ll.setVisibility(View.INVISIBLE);
+
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.directionsbutton);
+        fab.setVisibility(View.INVISIBLE);
+
+        CardView infos = (CardView) getView().findViewById(R.id.card_navigation_info);
+        infos.setVisibility(View.VISIBLE);
+
+        pm.addListener(new WeakReference<PositioningManager.OnPositionChangedListener>(positionListener));
+
         NavigationManager navigationManager = NavigationManager.getInstance();
         map.setMapScheme(Map.Scheme.CARNAV_TRAFFIC_DAY);
+        map.getPositionIndicator().setVisible(true);
+        ;
+        map.setTilt(45, Map.Animation.NONE);
+
+        navigationManager.setRoute(mapRoute.getRoute());
+        navigationManager.setNaturalGuidanceMode(EnumSet.of(NavigationManager.NaturalGuidanceMode.TRAFFIC_LIGHT, NavigationManager.NaturalGuidanceMode.STOP_SIGN, NavigationManager.NaturalGuidanceMode.JUNCTION));
+        navigationManager.setTrafficAvoidanceMode(NavigationManager.TrafficAvoidanceMode.DYNAMIC);
+        navigationManager.addTrafficRerouteListener(new WeakReference<NavigationManager.TrafficRerouteListener>(trafficRerouteListener));
+        navigationManager.addRerouteListener(new WeakReference<NavigationManager.RerouteListener>(rerouteListener));
+
+        //navigationManager.setRealisticViewMode(NavigationManager.RealisticViewMode.DAY);
+
         navigationManager.setMap(map);
-        navigationManager.setMapUpdateMode(NavigationManager.MapUpdateMode.NONE);
+        navigationManager.setMapUpdateMode(NavigationManager.MapUpdateMode.ROADVIEW);
         NavigationManager.Error error = navigationManager.startNavigation(mapRoute.getRoute());
 
+        if (error != NavigationManager.Error.NONE) {
+            Toast.makeText(HereMapsFragment.super.getActivity().getApplicationContext(),
+                    "Navigation failed with: " + error.toString(),
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
+
+        initializeInfoScreen();
     }
 
     public GeoCoordinate getGeoCoordinateFromAdress(String locationName) {
@@ -197,6 +236,96 @@ public class HereMapsFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public void onPause() {
+        if (pm != null) {
+            pm.stop();
+        }
+        super.onPause();
+        paused = true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        paused = false;
+        if (pm != null) {
+            pm.start(
+                    PositioningManager.LocationMethod.GPS_NETWORK);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (pm != null) {
+            pm.removeListener(
+                    positionListener);
+        }
+        map = null;
+        super.onDestroy();
+    }
+
+    private PositioningManager.OnPositionChangedListener positionListener = new
+            PositioningManager.OnPositionChangedListener() {
+
+                public void onPositionUpdated(PositioningManager.LocationMethod method,
+                                              GeoPosition position, boolean isMapMatched) {
+                    // set the center only when the app is in the foreground
+                    // to reduce CPU consumption
+                    if (!paused) {
+                        map.setCenter(position.getCoordinate(),
+                                Map.Animation.LINEAR);
+                    }
+                }
+
+                public void onPositionFixChanged(PositioningManager.LocationMethod method,
+                                                 PositioningManager.LocationStatus status) {
+                }
+            };
+
+    private NavigationManager.TrafficRerouteListener trafficRerouteListener = new NavigationManager.TrafficRerouteListener() {
+        @Override
+        public void onTrafficRerouted(Route route) {
+            super.onTrafficRerouted(route);
+            map.removeMapObject(mapRoute);
+            mapRoute.setRoute(route);
+            map.addMapObject(mapRoute);
+        }
+    };
+
+    private NavigationManager.RerouteListener rerouteListener = new NavigationManager.RerouteListener() {
+        @Override
+        public void onRerouteEnd(Route route) {
+            super.onRerouteEnd(route);
+            map.removeMapObject(mapRoute);
+            mapRoute.setRoute(route);
+            map.addMapObject(mapRoute);
+        }
+    };
+
+    private void initializeInfoScreen() {
+
+        Thread speedThread = new Thread() {
+            @Override
+            public void run() {
+                TextView speedView = (TextView) getView().findViewById(R.id.navigation_speed);
+                double speed = getCurrentPosition().getSpeed();
+                while (true) {
+                    if (speed != getCurrentPosition().getSpeed()) {
+                        speed = getCurrentPosition().getSpeed();
+                        speedView.setText(speed + " km/h");
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Log.e("", e.toString());
+                    }
+                }
+            }
+        };
+        speedThread.start();
     }
 
 }
