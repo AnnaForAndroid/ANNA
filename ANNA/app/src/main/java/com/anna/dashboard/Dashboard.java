@@ -31,15 +31,15 @@ public class Dashboard extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         Module.loadModules();
         boolean messenger = true;
-        tabLayout.addTab(tabLayout.newTab().setText("Settings"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_settings)));
         tabOrder.add("Settings");
         for (String name : Module.enabledAppNames) {
             if ("Here Maps".equals(name)) {
-                tabLayout.addTab(tabLayout.newTab().setText(name));
+                tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_navigation)));
                 tabOrder.add(name);
             }
             if (messenger && Module.messengerNames.contains(name)) {
-                tabLayout.addTab(tabLayout.newTab().setText("Messenger"));
+                tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_chat)));
                 messenger = false;
                 tabOrder.add("Messenger");
             }
