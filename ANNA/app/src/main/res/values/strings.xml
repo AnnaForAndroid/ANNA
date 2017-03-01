@@ -26,4 +26,5 @@
     <string name="navigation_from">From:</string>
     <string name="navigation_to">To:</string>
     <string name="current_position">My location</string>
+    <string name="preferences_modules_description">Choose which modules you want to use</string>
 </resources>

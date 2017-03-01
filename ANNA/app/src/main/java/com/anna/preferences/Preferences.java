@@ -4,7 +4,7 @@ package com.anna.preferences; /**
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.preference.CheckBoxPreference;
+import android.support.v14.preference.MultiSelectListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceScreen;
@@ -12,6 +12,8 @@ import android.support.v7.preference.PreferenceScreen;
 import com.anna.R;
 import com.anna.util.Module;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
+
+import java.util.Set;
 
 public class Preferences extends PreferenceFragmentCompat {
 
@@ -49,45 +51,30 @@ public class Preferences extends PreferenceFragmentCompat {
 
     public void addModulesToPreferenceScreen() {
 
-        PreferenceScreen screen = this.getPreferenceScreen();
+        MultiSelectListPreference listPreference = (MultiSelectListPreference) findPreference("modules");
+        String[] keys = new String[Module.modules.size()];
+        String[] values = new String[Module.modules.size()];
 
-        PreferenceCategory category = createCategory(getString(R.string.modules_title));
-
-        for (final String name : Module.enabledAppNames) {
-            CheckBoxPreference checkBoxPref = new CheckBoxPreference(screen.getContext());
-            checkBoxPref.setKey(name + "_CHECKBOX");
-            checkBoxPref.setTitle(name);
-            checkBoxPref.setChecked(true);
-
-            checkBoxPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Module module = Module.getModule(name);
-                    module.toogleStatus();
-                    return false;
-                }
-            });
-
-            category.addPreference(checkBoxPref);
+        for (int i = 0; i < Module.modules.size(); i++) {
+            keys[i] = Module.modules.get(i).getName();
+            values[i] = "" + i;
         }
 
-        for (final String name : Module.disabledAppNames) {
-            CheckBoxPreference checkBoxPref = new CheckBoxPreference(screen.getContext());
-            checkBoxPref.setKey(name + "_CHECKBOX");
-            checkBoxPref.setTitle(name);
-            checkBoxPref.setChecked(false);
+        listPreference.setEntries(keys);
+        listPreference.setEntryValues(values);
 
-            checkBoxPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Module module = Module.getModule(name);
+        listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                for (String s : (Set<String>) newValue) {
+                    Module module = Module.modules.get(Integer.parseInt(s));
                     module.toogleStatus();
-                    return false;
                 }
-            });
 
-            category.addPreference(checkBoxPref);
-        }
+                return false;
+            }
+        });
+
     }
 
 }

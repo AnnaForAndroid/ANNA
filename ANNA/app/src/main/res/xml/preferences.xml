@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="modules_title"
+        android:title="@string/modules_title">
+        <MultiSelectListPreference
+            android:key="modules"
+            android:summary="@string/preferences_modules_description"
+            android:title="@string/modules_title" />
+    </PreferenceCategory>
 </PreferenceScreen>

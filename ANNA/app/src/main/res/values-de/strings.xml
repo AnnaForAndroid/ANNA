@@ -27,4 +27,5 @@
     <string name="navigation_to">Nach:</string>
     <string name="label_button_getdirections">Zeige Route</string>
     <string name="current_position">Mein Standort</string>
+    <string name="preferences_modules_description">Wähle die Module aus die du benutzen willst</string>
 </resources>
