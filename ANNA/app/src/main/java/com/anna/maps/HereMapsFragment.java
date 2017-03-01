@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
-import android.media.Image;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,12 +21,14 @@ import android.widget.EditText;
 import com.anna.R;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.GeoPosition;
+import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.guidance.NavigationManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.routing.CoreRouter;
+import com.here.android.mpa.routing.Maneuver;
 import com.here.android.mpa.routing.Route;
 import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
@@ -36,6 +37,7 @@ import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 import java.util.List;
 
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +61,7 @@ public class HereMapsFragment extends Fragment {
     private String to = "";
     private PositioningManager pm;
     private boolean paused;
+    private NavigationManager navigationManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -196,7 +199,7 @@ public class HereMapsFragment extends Fragment {
 
         pm.addListener(new WeakReference<PositioningManager.OnPositionChangedListener>(positionListener));
 
-        NavigationManager navigationManager = NavigationManager.getInstance();
+        navigationManager = NavigationManager.getInstance();
         map.setMapScheme(Map.Scheme.CARNAV_TRAFFIC_DAY);
         map.getPositionIndicator().setVisible(true);
         ;
@@ -205,10 +208,11 @@ public class HereMapsFragment extends Fragment {
         navigationManager.setRoute(mapRoute.getRoute());
         navigationManager.setNaturalGuidanceMode(EnumSet.of(NavigationManager.NaturalGuidanceMode.TRAFFIC_LIGHT, NavigationManager.NaturalGuidanceMode.STOP_SIGN, NavigationManager.NaturalGuidanceMode.JUNCTION));
         navigationManager.setTrafficAvoidanceMode(NavigationManager.TrafficAvoidanceMode.DYNAMIC);
-        navigationManager.addTrafficRerouteListener(new WeakReference<NavigationManager.TrafficRerouteListener>(trafficRerouteListener));
         navigationManager.addRerouteListener(new WeakReference<NavigationManager.RerouteListener>(rerouteListener));
 
-        //navigationManager.setRealisticViewMode(NavigationManager.RealisticViewMode.DAY);
+        navigationManager.setRealisticViewMode(NavigationManager.RealisticViewMode.DAY);
+        navigationManager.addRealisticViewAspectRatio(NavigationManager.AspectRatio.AR_4x3);
+        navigationManager.addRealisticViewListener(new WeakReference<NavigationManager.RealisticViewListener>(realisticViewListener));
 
         navigationManager.setMap(map);
         navigationManager.setMapUpdateMode(NavigationManager.MapUpdateMode.ROADVIEW);
@@ -285,16 +289,6 @@ public class HereMapsFragment extends Fragment {
                 }
             };
 
-    private NavigationManager.TrafficRerouteListener trafficRerouteListener = new NavigationManager.TrafficRerouteListener() {
-        @Override
-        public void onTrafficRerouted(Route route) {
-            super.onTrafficRerouted(route);
-            map.removeMapObject(mapRoute);
-            mapRoute.setRoute(route);
-            map.addMapObject(mapRoute);
-        }
-    };
-
     private NavigationManager.RerouteListener rerouteListener = new NavigationManager.RerouteListener() {
         @Override
         public void onRerouteEnd(Route route) {
@@ -302,6 +296,8 @@ public class HereMapsFragment extends Fragment {
             map.removeMapObject(mapRoute);
             mapRoute.setRoute(route);
             map.addMapObject(mapRoute);
+            navigationManager.setRoute(route);
+            Toast.makeText(HereMapsFragment.super.getContext(), "reroute end", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -328,5 +324,18 @@ public class HereMapsFragment extends Fragment {
         speedThread.start();
     }
 
+    private NavigationManager.RealisticViewListener realisticViewListener = new NavigationManager.RealisticViewListener() {
+        public void onRealisticViewShow(NavigationManager.AspectRatio ratio, Image junction, Image signpost) {
+            if (junction.getType() == Image.Type.SVG) {
+                // full size is too big (will cover most of the screen), so cut the size in half
+                Bitmap bmpImage = junction.getBitmap((int) (junction.getWidth() * 0.5),
+                        (int) (junction.getHeight() * 0.5));
+                if (bmpImage != null) {
+                    ImageView imageView = (ImageView) getView().findViewById(R.id.navigation_images);
+                    imageView.setImageBitmap(bmpImage);
+                    imageView.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    };
 }
-

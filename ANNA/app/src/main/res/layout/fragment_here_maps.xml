@@ -6,10 +6,17 @@
     android:orientation="vertical"
     android:weightSum="1">
 
+    <ImageView
+        android:id="@+id/navigation_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:visibility="invisible" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.8">
+        android:layout_weight="0.6">
 
         <fragment
             android:id="@+id/heremapfragment"
@@ -128,9 +135,9 @@
                 android:id="@+id/navigation_speed"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text=""
-                android:layout_marginStart="6dp"
                 android:layout_marginBottom="6dp"
+                android:layout_marginStart="6dp"
+                android:text=""
                 android:textSize="40sp" />
 
         </LinearLayout>
