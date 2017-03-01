@@ -3,6 +3,7 @@ package com.anna.util;
 import android.app.Application;
 import android.content.Context;
 
+import com.anna.dashboard.Dashboard;
 import com.anna.preferences.Preferences;
 
 /**
@@ -12,7 +13,7 @@ import com.anna.preferences.Preferences;
 public class MyApplication extends Application {
 
     private static Context context;
-    public static Preferences preferences;
+    public static Dashboard dashboard;
 
     public void onCreate() {
         super.onCreate();

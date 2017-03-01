@@ -32,7 +32,6 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
                 return tab2;
             case "Settings":
                 Preferences tab3 = new Preferences();
-                MyApplication.preferences = tab3;
                 return tab3;
             default:
                 return null;

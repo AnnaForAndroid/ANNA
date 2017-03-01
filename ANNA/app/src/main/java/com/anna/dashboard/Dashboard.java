@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import com.anna.R;
 import com.anna.util.Module;
+import com.anna.util.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +23,29 @@ public class Dashboard extends AppCompatActivity {
     private long lastInteraction;
     private static final int FULLSCREEN = 1;
     private final Handler handler = new FullscreenHandler(this);
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        Module.loadModules();
-        boolean messenger = true;
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        MyApplication.dashboard = this;
+        initDashBoard();
+    }
+
+    public void updateDashBoard() {
+        tabLayout.removeAllTabs();
+        tabOrder.clear();
+        initDashBoard();
+    }
+
+    public void initDashBoard() {
         tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_settings)));
         tabOrder.add("Settings");
+        Module.loadModules();
+        boolean messenger = true;
         for (String name : Module.enabledAppNames) {
             if ("Here Maps".equals(name)) {
                 tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_navigation)));

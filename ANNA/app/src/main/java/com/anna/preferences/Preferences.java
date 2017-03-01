@@ -11,6 +11,7 @@ import android.support.v7.preference.PreferenceScreen;
 
 import com.anna.R;
 import com.anna.util.Module;
+import com.anna.util.MyApplication;
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat;
 
 import java.util.Set;
@@ -70,7 +71,7 @@ public class Preferences extends PreferenceFragmentCompat {
                     Module module = Module.modules.get(Integer.parseInt(s));
                     module.toogleStatus();
                 }
-
+                MyApplication.dashboard.updateDashBoard();
                 return false;
             }
         });
