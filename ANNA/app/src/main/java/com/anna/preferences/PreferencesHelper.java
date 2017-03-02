@@ -16,18 +16,15 @@ import java.util.Set;
 public class PreferencesHelper {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-    private Preferences preferences;
 
     public PreferencesHelper(Context context) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.editor = sharedPreferences.edit();
-        this.preferences = new Preferences();
     }
 
     public PreferencesHelper() {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
         this.editor = sharedPreferences.edit();
-        this.preferences = new Preferences();
     }
 
     public Object getPreferences(String key, Class objectType) {

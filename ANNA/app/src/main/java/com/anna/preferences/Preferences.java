@@ -20,7 +20,7 @@ public class Preferences extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferencesFix(@Nullable Bundle savedInstanceState, String rootKey) {
-
+        // Needed for Superclass
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Preferences extends PreferenceFragmentCompat {
 
         for (int i = 0; i < Module.modules.size(); i++) {
             keys[i] = Module.modules.get(i).getName();
-            values[i] = "" + i;
+            values[i] = Integer.toString(i);
         }
 
         listPreference.setEntries(keys);

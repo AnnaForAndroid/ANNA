@@ -112,10 +112,10 @@ public class ChatViewActivity extends Fragment {
         handler.sendMessage(msg);
         MyApplication.dashboard.voiceOutput.read(notificationData.getTitle());
         MyApplication.dashboard.voiceOutput.read(getString(R.string.read_message));
-        if (MyApplication.dashboard.hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
+        if (MyApplication.dashboard.voiceControl.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
             MyApplication.dashboard.voiceOutput.read(notificationData.getText().toString());
             MyApplication.dashboard.voiceOutput.read(getString(R.string.ask_to_answer));
-            if (MyApplication.dashboard.hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
+            if (MyApplication.dashboard.voiceControl.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
                 MyApplication.dashboard.voiceOutput.promptSpeechInput();
                 answerMessage(notificationData, MyApplication.dashboard.voiceOutput.getVoiceInput());
             }

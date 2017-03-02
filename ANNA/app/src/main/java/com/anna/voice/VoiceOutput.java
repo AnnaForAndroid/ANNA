@@ -18,7 +18,7 @@ import java.util.Locale;
 public class VoiceOutput implements TextToSpeech.OnInitListener {
 
     private TextToSpeech tts;
-    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private static final int REQ_CODE_SPEECH_INPUT = 100;
     private Context context;
     private String voiceInput;
     private boolean isIdle;

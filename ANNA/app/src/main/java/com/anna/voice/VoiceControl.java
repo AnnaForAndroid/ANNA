@@ -21,7 +21,7 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
-public class HotwordDetection implements RecognitionListener {
+public class VoiceControl implements RecognitionListener {
 
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
@@ -36,7 +36,7 @@ public class HotwordDetection implements RecognitionListener {
     private String userAnswer;
     private String grammarDir;
 
-    public HotwordDetection(Context context) {
+    public VoiceControl(Context context) {
         this.context = context;
         runRecognizerSetup();
     }

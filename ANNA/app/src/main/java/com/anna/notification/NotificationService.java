@@ -24,11 +24,6 @@ public class NotificationService extends NotificationListenerService {
     public static boolean isNotificationAccessEnabled;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
 
         if (sbn.isClearable()) {

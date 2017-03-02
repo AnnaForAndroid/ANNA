@@ -53,9 +53,9 @@ import java.util.Locale;
 
 public class HereMapsFragment extends Fragment {
 
-    private Map map = null;
-    private MapFragment mapFragment = null;
-    private MapRoute mapRoute = null;
+    private Map map;
+    private MapFragment mapFragment;
+    private MapRoute mapRoute;
     private String from;
     private String to = "";
     private PositioningManager pm;
@@ -131,7 +131,7 @@ public class HereMapsFragment extends Fragment {
     private Router.Listener<List<RouteResult>, RoutingError> routeManagerListener = new Router.Listener<List<RouteResult>, RoutingError>() {
         @Override
         public void onProgress(int i) {
-
+            // Needed for Interface
         }
 
         @Override
@@ -284,6 +284,7 @@ public class HereMapsFragment extends Fragment {
 
                 public void onPositionFixChanged(PositioningManager.LocationMethod method,
                                                  PositioningManager.LocationStatus status) {
+                    // Needed for Interface
                 }
             };
 
