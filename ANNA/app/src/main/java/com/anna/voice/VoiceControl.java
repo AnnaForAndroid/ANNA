@@ -7,9 +7,12 @@ package com.anna.voice;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.anna.R;
+import com.anna.util.MyApplication;
 
 import java.io.File;
 import java.io.IOException;
@@ -122,7 +125,8 @@ public class VoiceControl implements RecognitionListener {
 
     @Override
     public void onBeginningOfSpeech() {
-        //Required for interface
+        ImageView imageView = (ImageView) MyApplication.dashboard.findViewById(R.id.voice_overlay);
+        imageView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -130,6 +134,9 @@ public class VoiceControl implements RecognitionListener {
      */
     @Override
     public void onEndOfSpeech() {
+        ImageView imageView = (ImageView) MyApplication.dashboard.findViewById(R.id.voice_overlay);
+        imageView.setVisibility(View.INVISIBLE);
+
         if (!recognizer.getSearchName().equals(KWS_SEARCH))
             switchSearch(KWS_SEARCH);
     }

@@ -32,6 +32,7 @@
         android:layout_centerInParent="true"
         android:background="#80212121"
         android:src="@drawable/anna_app_logo"
+        android:visibility="invisible"
         app:layout_anchor="@id/pager" />
 
 </RelativeLayout>
