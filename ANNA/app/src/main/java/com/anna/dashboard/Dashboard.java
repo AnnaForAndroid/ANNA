@@ -13,6 +13,8 @@ import android.view.WindowManager;
 import com.anna.R;
 import com.anna.util.Module;
 import com.anna.util.MyApplication;
+import com.anna.voice.HotwordDetection;
+import com.anna.voice.VoiceOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class Dashboard extends AppCompatActivity {
     private long lastInteraction;
     private static final int FULLSCREEN = 1;
     private final Handler handler = new FullscreenHandler(this);
+    public HotwordDetection hotwordDetection;
+    public VoiceOutput voiceOutput;
     private TabLayout tabLayout;
 
     @Override
@@ -32,7 +36,16 @@ public class Dashboard extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         MyApplication.dashboard = this;
+        voiceOutput = new VoiceOutput(this);
+        hotwordDetection = new HotwordDetection(this);
         initDashBoard();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        voiceOutput.killService();
+        hotwordDetection.killService();
     }
 
     public void updateDashBoard() {

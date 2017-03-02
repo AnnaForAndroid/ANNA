@@ -21,8 +21,7 @@ import com.anna.BuildConfig;
 import com.anna.R;
 import com.anna.notification.NotificationData;
 import com.anna.util.IndexedHashMap;
-import com.anna.voice.HotwordDetection;
-import com.anna.voice.VoiceOutput;
+import com.anna.util.MyApplication;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -32,8 +31,6 @@ public class ChatViewActivity extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ChatViewAdapter mAdapter = new ChatViewAdapter(new IndexedHashMap<String, NotificationData>());
-    private VoiceOutput voiceOutput;
-    private HotwordDetection hotwordDetection;
     private static String LOG_TAG = "ChatViewActivity";
     public static Queue<NotificationData> notifications;
     private volatile boolean notificationProcessingActive;
@@ -48,8 +45,6 @@ public class ChatViewActivity extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(super.getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        voiceOutput = new VoiceOutput(super.getActivity());
-        hotwordDetection = new HotwordDetection(super.getActivity());
         notificationProcessingActive = true;
         notifications = new LinkedList<>();
         handler = new ViewHandler(this);
@@ -86,8 +81,6 @@ public class ChatViewActivity extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        voiceOutput.killService();
-        hotwordDetection.killService();
         notificationProcessingActive = false;
     }
 
@@ -106,7 +99,7 @@ public class ChatViewActivity extends Fragment {
                 action.actionIntent.send(getContext(), 0, intent);
             } catch (PendingIntent.CanceledException e) {
                 if (BuildConfig.DEBUG) {
-                    Log.e("CanceledException",e.getMessage());
+                    Log.e("CanceledException", e.getMessage());
                 }
             }
         }
@@ -117,14 +110,14 @@ public class ChatViewActivity extends Fragment {
         Message msg = handler.obtainMessage();
         msg.obj = mAdapter;
         handler.sendMessage(msg);
-        voiceOutput.read(notificationData.getTitle());
-        voiceOutput.read(getString(R.string.read_message));
-        if (hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
-            voiceOutput.read(notificationData.getText().toString());
-            voiceOutput.read(getString(R.string.ask_to_answer));
-            if (hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
-                voiceOutput.promptSpeechInput();
-                answerMessage(notificationData, voiceOutput.getVoiceInput());
+        MyApplication.dashboard.voiceOutput.read(notificationData.getTitle());
+        MyApplication.dashboard.voiceOutput.read(getString(R.string.read_message));
+        if (MyApplication.dashboard.hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
+            MyApplication.dashboard.voiceOutput.read(notificationData.getText().toString());
+            MyApplication.dashboard.voiceOutput.read(getString(R.string.ask_to_answer));
+            if (MyApplication.dashboard.hotwordDetection.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
+                MyApplication.dashboard.voiceOutput.promptSpeechInput();
+                answerMessage(notificationData, MyApplication.dashboard.voiceOutput.getVoiceInput());
             }
         }
     }

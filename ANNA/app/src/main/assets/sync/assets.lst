@@ -1,4 +1,3 @@
-answer.gram
 cmudict-en-us.dict
 de-de-ptm/feat.params
 de-de-ptm/mdef
@@ -16,4 +15,6 @@ en-us-ptm/noisedict
 en-us-ptm/sendump
 en-us-ptm/transition_matrices
 en-us-ptm/variances
+grammers-de/answer.gram
+grammers-en/answer.gram
 voxforge_de.dic

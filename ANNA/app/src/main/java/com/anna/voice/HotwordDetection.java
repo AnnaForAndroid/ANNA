@@ -26,6 +26,7 @@ public class HotwordDetection implements RecognitionListener {
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
     private static final String YES_NO_SEARCH = "answer";
+    private static final String NAVIGATION_SEARCH = "navigation";
 
     /* Keyword we are looking for to activate menu */
     private static final String KEYPHRASE = "hey anna";
@@ -33,6 +34,7 @@ public class HotwordDetection implements RecognitionListener {
     private SpeechRecognizer recognizer;
     private Context context;
     private String userAnswer;
+    private String grammarDir;
 
     public HotwordDetection(Context context) {
         this.context = context;
@@ -62,6 +64,7 @@ public class HotwordDetection implements RecognitionListener {
                     .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
                     .setKeywordThreshold(1e-5f)
                     .getRecognizer();
+            grammarDir = "/grammars-en/";
             recognizer.addListener(this);
         } else if ("de".equals(systemLanguage)) {
             recognizer = SpeechRecognizerSetup.defaultSetup()
@@ -69,6 +72,7 @@ public class HotwordDetection implements RecognitionListener {
                     .setDictionary(new File(assetsDir, "voxforge_de.dic"))
                     .setKeywordThreshold(1e-5f)
                     .getRecognizer();
+            grammarDir = "/grammars-de/";
             recognizer.addListener(this);
         } else {
             Toast.makeText(context, "Sorry your language is not supported yet", Toast.LENGTH_LONG).show();
@@ -78,8 +82,12 @@ public class HotwordDetection implements RecognitionListener {
         recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
 
         // Create grammar-based search for answer recognition
-        File answerGrammar = new File(assetsDir, "answer.gram");
+        File answerGrammar = new File(assetsDir, grammarDir + "answer.gram");
         recognizer.addGrammarSearch(YES_NO_SEARCH, answerGrammar);
+
+        File navigationGrammar = new File(assetsDir, grammarDir + "navigation.gram");
+        recognizer.addGrammarSearch(YES_NO_SEARCH, navigationGrammar);
+
 
         switchSearch(KWS_SEARCH);
 

@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.anna.chat.ChatViewActivity;
 import com.anna.maps.HereMapsFragment;
 import com.anna.preferences.Preferences;
-import com.anna.util.MyApplication;
 
 public class DashboardAdapter extends FragmentStatePagerAdapter {
     private int mNumOfTabs;

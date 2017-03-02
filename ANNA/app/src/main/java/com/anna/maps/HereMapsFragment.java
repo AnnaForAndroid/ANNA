@@ -28,7 +28,6 @@ import com.here.android.mpa.guidance.NavigationManager;
 import com.here.android.mpa.mapping.Map;
 import com.here.android.mpa.mapping.MapFragment;
 import com.here.android.mpa.routing.CoreRouter;
-import com.here.android.mpa.routing.Maneuver;
 import com.here.android.mpa.routing.Route;
 import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
@@ -202,7 +201,6 @@ public class HereMapsFragment extends Fragment {
         navigationManager = NavigationManager.getInstance();
         map.setMapScheme(Map.Scheme.CARNAV_TRAFFIC_DAY);
         map.getPositionIndicator().setVisible(true);
-        ;
         map.setTilt(45, Map.Animation.NONE);
 
         navigationManager.setRoute(mapRoute.getRoute());
@@ -237,7 +235,7 @@ public class HereMapsFragment extends Fragment {
 
             return new GeoCoordinate(latitude, longitude);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("", e.toString());
             return null;
         }
     }
