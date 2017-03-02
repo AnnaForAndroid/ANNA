@@ -116,7 +116,7 @@ public class VoiceOutput implements TextToSpeech.OnInitListener {
         return isIdle;
     }
 
-    public synchronized void setStatus(boolean status) {
+    private synchronized void setStatus(boolean status) {
         this.isIdle = status;
     }
 

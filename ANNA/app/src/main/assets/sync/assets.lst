@@ -15,6 +15,7 @@ en-us-ptm/noisedict
 en-us-ptm/sendump
 en-us-ptm/transition_matrices
 en-us-ptm/variances
-grammers-de/answer.gram
-grammers-en/answer.gram
+grammars-de/answer.gram
+grammars-de/navigation.gram
+grammars-en/answer.gram
 voxforge_de.dic

@@ -57,7 +57,7 @@ public class Module {
     }
 
     private static void initializePhoneApp() {
-        Intent i = (new Intent(Intent.ACTION_CALL, Uri.parse("tel:")));
+        Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(i, 0);
         supportedModuleNames.add(mInfo.loadLabel(pm).toString());

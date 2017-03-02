@@ -145,10 +145,17 @@ public class VoiceControl implements RecognitionListener {
             return;
 
         String text = hypothesis.getHypstr();
-        if (text.equals(KEYPHRASE)) {
-            switchSearch(KWS_SEARCH);
-        } else if (text.equals(YES_NO_SEARCH)) {
-            switchSearch(YES_NO_SEARCH);
+
+        switch (text) {
+            case KEYPHRASE:
+                switchSearch(KWS_SEARCH);
+                break;
+            case YES_NO_SEARCH:
+                switchSearch(YES_NO_SEARCH);
+                break;
+            case NAVIGATION_SEARCH:
+                switchSearch(NAVIGATION_SEARCH);
+                break;
         }
     }
 
