@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.anna.R;
@@ -51,8 +52,8 @@ public class VoiceControl implements RecognitionListener {
         if (searchName.equals(KWS_SEARCH)) {
             recognizer.startListening(searchName);
         } else {
-            ImageView imageView = (ImageView) MyApplication.dashboard.findViewById(R.id.voice_overlay);
-            imageView.setVisibility(View.VISIBLE);
+            RelativeLayout relativeLayout = (RelativeLayout) MyApplication.dashboard.findViewById(R.id.voice_overlay);
+            relativeLayout.setVisibility(View.VISIBLE);
             recognizer.startListening(searchName, 10000);
         }
     }
@@ -133,8 +134,8 @@ public class VoiceControl implements RecognitionListener {
      */
     @Override
     public void onEndOfSpeech() {
-        ImageView imageView = (ImageView) MyApplication.dashboard.findViewById(R.id.voice_overlay);
-        imageView.setVisibility(View.INVISIBLE);
+        RelativeLayout relativeLayout = (RelativeLayout) MyApplication.dashboard.findViewById(R.id.voice_overlay);
+        relativeLayout.setVisibility(View.INVISIBLE);
 
         if (!recognizer.getSearchName().equals(KWS_SEARCH))
             switchSearch(KWS_SEARCH);
