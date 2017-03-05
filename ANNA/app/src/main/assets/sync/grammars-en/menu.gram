@@ -2,4 +2,4 @@
 
 grammar menu;
 
-public <item> = navigation;
+public <item> = navigate me to;

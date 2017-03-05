@@ -29,7 +29,7 @@ public class VoiceControl implements RecognitionListener {
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
     private static final String YES_NO_SEARCH = "answer";
-    private static final String NAVIGATION_SEARCH = "navigation";
+    private static String NAVIGATION_SEARCH;
     private static final String MENU_SEARCH = "menu";
 
     /* Keyword we are looking for to activate menu */
@@ -42,6 +42,7 @@ public class VoiceControl implements RecognitionListener {
 
     public VoiceControl(Context context) {
         this.context = context;
+        NAVIGATION_SEARCH = context.getString(R.string.navigation);
         runRecognizerSetup();
     }
 
@@ -90,8 +91,8 @@ public class VoiceControl implements RecognitionListener {
         File answerGrammar = new File(assetsDir, grammarDir + "answer.gram");
         recognizer.addGrammarSearch(YES_NO_SEARCH, answerGrammar);
 
-        File navigationGrammar = new File(assetsDir, grammarDir + "navigation.gram");
-        recognizer.addGrammarSearch(NAVIGATION_SEARCH, navigationGrammar);
+        File navigationGrammar = new File(assetsDir, grammarDir + "language-model.lm.bin");
+        recognizer.addNgramSearch(NAVIGATION_SEARCH, navigationGrammar);
 
         File menuGrammar = new File(assetsDir, grammarDir + "menu.gram");
         recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
@@ -155,7 +156,7 @@ public class VoiceControl implements RecognitionListener {
             return;
 
         String text = hypothesis.getHypstr();
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+
         if (text.equals(KEYPHRASE)) {
             switchSearch(MENU_SEARCH);
         } else if (text.equals(YES_NO_SEARCH)) {
@@ -178,10 +179,10 @@ public class VoiceControl implements RecognitionListener {
                     userAnswer = text;
                     this.notify();
                 }
-            } else if (text.startsWith(context.getString(R.string.navigate_me_to))) {
+            } else if (text.startsWith(context.getString(R.string.navigation))) {
 
             }
-            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
         }
     }
 
