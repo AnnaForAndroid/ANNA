@@ -1,0 +1,5 @@
+#JSGF V1.0 ISO8859-1 de;
+
+grammar menu;
+
+public <item> = navigation;

@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -31,6 +30,7 @@ public class VoiceControl implements RecognitionListener {
     private static final String KWS_SEARCH = "wakeup";
     private static final String YES_NO_SEARCH = "answer";
     private static final String NAVIGATION_SEARCH = "navigation";
+    private static final String MENU_SEARCH = "menu";
 
     /* Keyword we are looking for to activate menu */
     private static final String KEYPHRASE = "hey anna";
@@ -93,6 +93,9 @@ public class VoiceControl implements RecognitionListener {
         File navigationGrammar = new File(assetsDir, grammarDir + "navigation.gram");
         recognizer.addGrammarSearch(NAVIGATION_SEARCH, navigationGrammar);
 
+        File menuGrammar = new File(assetsDir, grammarDir + "menu.gram");
+        recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
+
         switchSearch(KWS_SEARCH);
 
     }
@@ -152,17 +155,13 @@ public class VoiceControl implements RecognitionListener {
             return;
 
         String text = hypothesis.getHypstr();
-
-        switch (text) {
-            case KEYPHRASE:
-                switchSearch(KWS_SEARCH);
-                break;
-            case YES_NO_SEARCH:
-                switchSearch(YES_NO_SEARCH);
-                break;
-            case NAVIGATION_SEARCH:
-                switchSearch(NAVIGATION_SEARCH);
-                break;
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        if (text.equals(KEYPHRASE)) {
+            switchSearch(MENU_SEARCH);
+        } else if (text.equals(YES_NO_SEARCH)) {
+            switchSearch(YES_NO_SEARCH);
+        } else if (text.equals(NAVIGATION_SEARCH)) {
+            switchSearch(NAVIGATION_SEARCH);
         }
     }
 
@@ -179,7 +178,10 @@ public class VoiceControl implements RecognitionListener {
                     userAnswer = text;
                     this.notify();
                 }
+            } else if (text.startsWith(context.getString(R.string.navigate_me_to))) {
+
             }
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
         }
     }
 

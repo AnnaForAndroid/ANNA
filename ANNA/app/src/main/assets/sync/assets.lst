@@ -18,6 +18,8 @@ en-us-ptm/sendump
 en-us-ptm/transition_matrices
 en-us-ptm/variances
 grammars-de/answer.gram
+grammars-de/menu.gram
 grammars-de/navigation.gram
 grammars-en/answer.gram
+grammars-en/menu.gram
 grammars-en/navigation.gram
