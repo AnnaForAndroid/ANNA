@@ -1,10 +1,10 @@
-#JSGF V1.0;
+#JSGF V1.0 ISO8859-1 de;
 
 grammar navigation;
 
-public <navigation> = navigiere mich nach <address>;
+public <navigation> = führe mich nach <address>;
 <address> = <city> [<postcode>] <street> <number>;
-<city> = (a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)+;
-<postcode> = (eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|null)(eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|null)(eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|null)(eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|null)(eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|null);
-<number> = (eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|null)*;
-<street> = (a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)*;
+<city> = (a | b | c | de | e | f | g | ha | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z) +;
+<postcode> = (eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun | null) (eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun | null) (eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun | null) (eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun | null) (eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun | null );
+<number> = (eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun | null) *;
+<street> = (a | b | c | de | e | f | g | ha | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z) *;

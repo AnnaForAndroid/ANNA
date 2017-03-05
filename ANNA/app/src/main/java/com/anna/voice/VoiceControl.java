@@ -48,10 +48,11 @@ public class VoiceControl implements RecognitionListener {
         recognizer.stop();
 
         // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
-
         if (searchName.equals(KWS_SEARCH)) {
             recognizer.startListening(searchName);
         } else {
+            ImageView imageView = (ImageView) MyApplication.dashboard.findViewById(R.id.voice_overlay);
+            imageView.setVisibility(View.VISIBLE);
             recognizer.startListening(searchName, 10000);
         }
     }
@@ -72,7 +73,7 @@ public class VoiceControl implements RecognitionListener {
         } else if ("de".equals(systemLanguage)) {
             recognizer = SpeechRecognizerSetup.defaultSetup()
                     .setAcousticModel(new File(assetsDir, "de-de-ptm"))
-                    .setDictionary(new File(assetsDir, "voxforge_de.dic"))
+                    .setDictionary(new File(assetsDir, "cmusphinx-voxforge-de.dic"))
                     .setKeywordThreshold(1e-5f)
                     .getRecognizer();
             grammarDir = "/grammars-de/";
@@ -89,8 +90,7 @@ public class VoiceControl implements RecognitionListener {
         recognizer.addGrammarSearch(YES_NO_SEARCH, answerGrammar);
 
         File navigationGrammar = new File(assetsDir, grammarDir + "navigation.gram");
-        recognizer.addGrammarSearch(YES_NO_SEARCH, navigationGrammar);
-
+        recognizer.addGrammarSearch(NAVIGATION_SEARCH, navigationGrammar);
 
         switchSearch(KWS_SEARCH);
 
@@ -125,8 +125,7 @@ public class VoiceControl implements RecognitionListener {
 
     @Override
     public void onBeginningOfSpeech() {
-        ImageView imageView = (ImageView) MyApplication.dashboard.findViewById(R.id.voice_overlay);
-        imageView.setVisibility(View.VISIBLE);
+        // Needed for Interface
     }
 
     /**

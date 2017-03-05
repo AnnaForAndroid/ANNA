@@ -1,4 +1,6 @@
 cmudict-en-us.dict
+cmusphinx-voxforge-de.dic
+de-de-ptm/README.md
 de-de-ptm/feat.params
 de-de-ptm/mdef
 de-de-ptm/means
@@ -18,4 +20,4 @@ en-us-ptm/variances
 grammars-de/answer.gram
 grammars-de/navigation.gram
 grammars-en/answer.gram
-voxforge_de.dic
+grammars-en/navigation.gram
