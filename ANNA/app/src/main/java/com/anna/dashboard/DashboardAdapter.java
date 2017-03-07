@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.anna.chat.ChatViewActivity;
 import com.anna.maps.HereMapsFragment;
+import com.anna.phone.Phone;
 import com.anna.preferences.Preferences;
 
 public class DashboardAdapter extends FragmentStatePagerAdapter {
@@ -32,6 +33,9 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
             case "Settings":
                 Preferences tab3 = new Preferences();
                 return tab3;
+            case "Phone":
+                Phone tab4 = new Phone();
+                return tab4;
             default:
                 return null;
         }

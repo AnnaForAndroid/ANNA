@@ -57,6 +57,8 @@ public class Dashboard extends AppCompatActivity {
     public void initDashBoard() {
         tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_settings)));
         tabOrder.add("Settings");
+        tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.default_profile)));
+        tabOrder.add("Phone");
         Module.loadModules();
         boolean messenger = true;
         for (String name : Module.enabledAppNames) {

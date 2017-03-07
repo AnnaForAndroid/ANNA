@@ -29,7 +29,7 @@ public class VoiceControl implements RecognitionListener {
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
     private static final String YES_NO_SEARCH = "answer";
-    private static String NAVIGATION_SEARCH;
+    private String NAVIGATION_SEARCH;
     private static final String MENU_SEARCH = "menu";
 
     /* Keyword we are looking for to activate menu */
