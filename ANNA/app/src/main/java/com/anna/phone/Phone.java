@@ -28,6 +28,7 @@ import android.widget.ListView;
 
 import com.anna.R;
 import com.anna.util.MyApplication;
+import com.anna.voice.DictionaryExtender;
 
 /**
  * Created by PARSEA on 22.11.2016.
@@ -38,9 +39,9 @@ public class Phone extends Fragment {
     private ProgressDialog pDialog;
     private Handler updateBarHandler;
     private ArrayList<Contact> contactList;
-    private ListView mListView;
-    Cursor cursor;
-    int counter;
+    private volatile ListView mListView;
+    private Cursor cursor;
+    private int counter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,12 +54,14 @@ public class Phone extends Fragment {
         pDialog.show();
         updateBarHandler = new Handler();
         // Since reading contacts takes more time, let's run it on a separate thread.
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getContacts();
-            }
-        }).start();
+        if (contactList.isEmpty()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getContacts();
+                }
+            }).start();
+        }
 
         return rlLayout;
     }
@@ -104,8 +107,7 @@ public class Phone extends Fragment {
     }
 
     public void getContacts() {
-        mListView = (ListView) getActivity().findViewById(R.id.contacts_list);
-        contactList = new ArrayList<Contact>();
+        contactList = new ArrayList<>();
         String phoneNumber = null;
         Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
         String _ID = ContactsContract.Contacts._ID;
@@ -138,13 +140,16 @@ public class Phone extends Fragment {
                     phoneCursor.close();
                 }
                 // Add the contact to the ArrayList
-                contactList.add(new Contact(name, phoneNumber));
+                if (name != null && !name.contains("@") && phoneNumber != null) {
+                    contactList.add(new Contact(name, phoneNumber));
+                }
             }
             // ListView has to be updated using a ui thread
             MyApplication.dashboard.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     ContactsAdapter adapter = new ContactsAdapter(contactList, getContext());
+                    mListView = (ListView) getActivity().findViewById(R.id.contacts_list);
                     mListView.setAdapter(adapter);
                 }
             });
@@ -155,6 +160,8 @@ public class Phone extends Fragment {
                     pDialog.cancel();
                 }
             }, 500);
+            DictionaryExtender dictionaryEnhancer = new DictionaryExtender();
+            dictionaryEnhancer.createContactsGrammar(contactList);
         }
     }
 }
