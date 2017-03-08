@@ -49,6 +49,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.takisoft.fix:preference-v7:25.2.0.0'
     compile(name: 'HERE-sdk', ext: 'aar')
+    compile (name: 'pocketsphinx-android-5prealpha-release', ext: 'aar')
     testCompile 'junit:junit:4.12'
 }
 
