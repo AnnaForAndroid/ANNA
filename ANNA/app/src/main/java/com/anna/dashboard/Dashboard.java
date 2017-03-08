@@ -141,6 +141,11 @@ public class Dashboard extends AppCompatActivity {
         setLastInteractionTime();
     }
 
+    public void switchTab(String tabName) {
+        TabLayout.Tab tab = tabLayout.getTabAt(tabOrder.indexOf(tabName));
+        tab.select();
+    }
+
     private static class FullscreenHandler extends Handler {
 
         private Dashboard dashboardObject;

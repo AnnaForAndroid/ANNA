@@ -63,45 +63,44 @@ public class Phone extends Fragment {
         return rlLayout;
     }
 
-    public void call(String number) {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + number));
-        EndCallListener callListener = new EndCallListener();
-        TelephonyManager mTM = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-        mTM.listen(callListener, PhoneStateListener.LISTEN_CALL_STATE);
-        if (ActivityCompat.checkSelfPermission(MyApplication.getAppContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-            MyApplication.getAppContext().startActivity(callIntent);
+    public void call(String callTo) {
+        String number = getNumber(callTo);
+        if (number != null) {
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + number));
+            EndCallListener callListener = new EndCallListener();
+            TelephonyManager mTM = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+            mTM.listen(callListener, PhoneStateListener.LISTEN_CALL_STATE);
+            if (ActivityCompat.checkSelfPermission(MyApplication.getAppContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                MyApplication.getAppContext().startActivity(callIntent);
+            }
         }
     }
 
-    public void fetchContact(String contactName) {
-        // Define the fields that the query will return
-        String[] PROJECTION = new String[]{
-                ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.NUMBER
-        };
-
-        ContentResolver cr = getContext().getContentResolver();
-
-        // Execute the query and receive the cursor with the results
-        Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, PROJECTION,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE ?",
-                new String[]{contactName},
-                null);
-
-        // First discover the index of the desired field (Number)
-        final int indexNumber = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-        String number = cursor.getString(indexNumber);
+    private String getNumber(String callTo) {
+        String pattern = "([+0-9])+";
+        if (callTo.matches(pattern)) {
+            return callTo;
+        } else {
+            for (Contact contact : contactList) {
+                if (contact.getName().equals(callTo)) {
+                    return contact.getPhoneNumber();
+                }
+            }
+        }
+        return null;
     }
+
 
     protected void sendSMSMessage(String phoneNo, String message) {
 
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNo, null, message, null, null);
-        Toast.makeText(MyApplication.getAppContext().getApplicationContext(), "SMS sent.",
-                Toast.LENGTH_LONG).show();
-
+        String number = getNumber(phoneNo);
+        if (number != null) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(number, null, message, null, null);
+            Toast.makeText(MyApplication.getAppContext().getApplicationContext(), "SMS sent.",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     public void getContacts() {

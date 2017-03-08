@@ -2,4 +2,7 @@
 
 grammar menu;
 
-public <item> = führe mich nach;
+public <item> = <nagigation> | <call> | <sms>;
+<nagigation> = führe mich nach;
+<call> = ruf;
+<sms> = schick eine sms an;

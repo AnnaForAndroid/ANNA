@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anna.R;
@@ -39,6 +40,8 @@ public class VoiceControl implements RecognitionListener {
     private Context context;
     private String userAnswer;
     private String grammarDir;
+
+    private String currentSearch;
 
     public VoiceControl(Context context) {
         this.context = context;
@@ -158,10 +161,13 @@ public class VoiceControl implements RecognitionListener {
         String text = hypothesis.getHypstr();
 
         if (text.equals(KEYPHRASE)) {
+            currentSearch = MENU_SEARCH;
             switchSearch(MENU_SEARCH);
         } else if (text.equals(YES_NO_SEARCH)) {
+            currentSearch = YES_NO_SEARCH;
             switchSearch(YES_NO_SEARCH);
         } else if (text.equals(NAVIGATION_SEARCH)) {
+            currentSearch = NAVIGATION_SEARCH;
             switchSearch(NAVIGATION_SEARCH);
         }
     }
@@ -174,16 +180,26 @@ public class VoiceControl implements RecognitionListener {
 
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
-            if (text.equals(context.getString(R.string.yes)) || text.equals(context.getString(R.string.no))) {
+            if (YES_NO_SEARCH.equals(currentSearch)) {
                 synchronized (this) {
                     userAnswer = text;
                     this.notify();
                 }
-            } else if (text.startsWith(context.getString(R.string.navigation))) {
-
+            } else if (NAVIGATION_SEARCH.equals(currentSearch)) {
+                navigateTo(text);
             }
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void navigateTo(String text) {
+        MyApplication.dashboard.switchTab("Here Maps");
+        TextView to = (TextView) MyApplication.dashboard.findViewById(R.id.navigationTo);
+        String[] result = text.split(context.getString(R.string.navigation));
+        if (result.length >= 1) {
+            to.setText(result[0]);
+        }
+
     }
 
     @Override
