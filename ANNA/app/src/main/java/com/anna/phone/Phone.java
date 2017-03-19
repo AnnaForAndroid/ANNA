@@ -54,7 +54,7 @@ public class Phone extends Fragment {
         pDialog.show();
         updateBarHandler = new Handler();
         // Since reading contacts takes more time, let's run it on a separate thread.
-        if (contactList.isEmpty()) {
+        if (contactList == null || contactList.isEmpty()) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
