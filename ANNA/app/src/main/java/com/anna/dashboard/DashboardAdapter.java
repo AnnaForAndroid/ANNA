@@ -25,17 +25,13 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (Dashboard.tabOrder.get(position)) {
             case "Messenger":
-                ChatViewActivity tab1 = new ChatViewActivity();
-                return tab1;
+                return new ChatViewActivity();
             case "Here Maps":
-                HereMapsFragment tab2 = new HereMapsFragment();
-                return tab2;
+                return new HereMapsFragment();
             case "Settings":
-                Preferences tab3 = new Preferences();
-                return tab3;
+                return new Preferences();
             case "Phone":
-                Phone tab4 = new Phone();
-                return tab4;
+                return new Phone();
             default:
                 return null;
         }

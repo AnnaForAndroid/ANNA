@@ -43,8 +43,7 @@ public class NotificationData {
 
     public String getTime() {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm");
-        String currentTime = localDateFormat.format(time);
-        return currentTime;
+        return localDateFormat.format(time);
     }
 
     public String getApp() {

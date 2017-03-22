@@ -19,11 +19,10 @@ import com.anna.util.MyApplication;
 public class ChatViewAdapter extends RecyclerView
         .Adapter<ChatViewAdapter
         .DataObjectHolder> {
-    private static String LOG_TAG = "ChatViewAdapter";
     private IndexedHashMap<String, NotificationData> mDataset;
     private static MyClickListener myClickListener;
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder
+    static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
         private ImageView profileImg;
@@ -32,7 +31,7 @@ public class ChatViewAdapter extends RecyclerView
         private TextView message;
         private TextView time;
 
-        public DataObjectHolder(View itemView) {
+        DataObjectHolder(View itemView) {
             super(itemView);
             profileImg = (ImageView) itemView.findViewById(R.id.profileImg);
             appImg = (ImageView) itemView.findViewById(R.id.applicationImg);
@@ -40,7 +39,7 @@ public class ChatViewAdapter extends RecyclerView
             message = (TextView) itemView.findViewById(R.id.message);
             time = (TextView) itemView.findViewById(R.id.time);
 
-            Log.i(LOG_TAG, "Adding Listener");
+            Log.i("ChatViewAdapter", "Adding Listener");
             itemView.setOnClickListener(this);
         }
 
@@ -50,8 +49,8 @@ public class ChatViewAdapter extends RecyclerView
         }
     }
 
-    public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
+    void setOnItemClickListener(MyClickListener myClickListener) {
+        ChatViewAdapter.myClickListener = myClickListener;
     }
 
     public ChatViewAdapter(IndexedHashMap<String, NotificationData> myDataset) {
@@ -64,14 +63,13 @@ public class ChatViewAdapter extends RecyclerView
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.content_card_view, parent, false);
 
-        DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
-        return dataObjectHolder;
+        return new DataObjectHolder(view);
     }
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         if (mDataset.getValueAt(position).getIcon() == null) {
-            Drawable defaultProfile = MyApplication.getAppContext().getResources().getDrawable(R.drawable.default_profile);
+            Drawable defaultProfile = MyApplication.dashboard.getResources().getDrawable(R.drawable.default_profile);
             holder.profileImg.setImageDrawable(defaultProfile);
         }
         if (holder.profileImg.getDrawable() == null) {
@@ -87,14 +85,9 @@ public class ChatViewAdapter extends RecyclerView
         }
     }
 
-    public void addItem(NotificationData dataObj, String index) {
+    void addItem(NotificationData dataObj, String index) {
         mDataset.put(index, dataObj);
         notifyItemInserted(mDataset.getPositionOfKey(index));
-    }
-
-    public void deleteItem(int index) {
-        mDataset.remove(index);
-        notifyItemRemoved(index);
     }
 
     @Override
@@ -102,7 +95,7 @@ public class ChatViewAdapter extends RecyclerView
         return mDataset.size();
     }
 
-    public interface MyClickListener {
+    interface MyClickListener {
         void onItemClick(int position, View v);
     }
 }

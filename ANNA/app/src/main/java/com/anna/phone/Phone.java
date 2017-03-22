@@ -74,8 +74,8 @@ public class Phone extends Fragment {
             EndCallListener callListener = new EndCallListener();
             TelephonyManager mTM = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
             mTM.listen(callListener, PhoneStateListener.LISTEN_CALL_STATE);
-            if (ActivityCompat.checkSelfPermission(MyApplication.getAppContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                MyApplication.getAppContext().startActivity(callIntent);
+            if (ActivityCompat.checkSelfPermission(super.getContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                super.getContext().startActivity(callIntent);
             }
         }
     }
@@ -101,7 +101,7 @@ public class Phone extends Fragment {
         if (number != null) {
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(number, null, message, null, null);
-            Toast.makeText(MyApplication.getAppContext().getApplicationContext(), "SMS sent.",
+            Toast.makeText(super.getContext().getApplicationContext(), "SMS sent.",
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -119,7 +119,7 @@ public class Phone extends Fragment {
         ContentResolver contentResolver = getContext().getContentResolver();
         cursor = contentResolver.query(CONTENT_URI, null, null, null, null);
         // Iterate every contact in the phone
-        if (cursor.getCount() > 0) {
+        if (cursor != null && cursor.getCount() > 0) {
             counter = 0;
             while (cursor.moveToNext()) {
                 // Update the progress message
@@ -134,10 +134,13 @@ public class Phone extends Fragment {
                 if (hasPhoneNumber > 0) {
                     //This is to read multiple phone numbers associated with the same contact
                     Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[]{contact_id}, null);
-                    while (phoneCursor.moveToNext()) {
-                        phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
+                    if (phoneCursor != null) {
+                        while (phoneCursor.moveToNext()) {
+                            phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
+                        }
+                        phoneCursor.close();
                     }
-                    phoneCursor.close();
+
                 }
                 // Add the contact to the ArrayList
                 if (name != null && !name.contains("@") && phoneNumber != null) {
@@ -160,7 +163,7 @@ public class Phone extends Fragment {
                     pDialog.cancel();
                 }
             }, 500);
-            DictionaryExtender dictionaryEnhancer = new DictionaryExtender();
+            DictionaryExtender dictionaryEnhancer = new DictionaryExtender(getContext());
             dictionaryEnhancer.createContactsGrammar(contactList);
         }
     }

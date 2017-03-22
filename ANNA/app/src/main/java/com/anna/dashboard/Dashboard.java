@@ -12,7 +12,6 @@ import android.view.WindowManager;
 
 import com.anna.R;
 import com.anna.util.Module;
-import com.anna.util.MyApplication;
 import com.anna.voice.VoiceControl;
 import com.anna.voice.VoiceOutput;
 
@@ -35,7 +34,6 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        MyApplication.dashboard = this;
         voiceOutput = new VoiceOutput(this);
         voiceControl = new VoiceControl(this);
         initDashBoard();
@@ -143,7 +141,9 @@ public class Dashboard extends AppCompatActivity {
 
     public void switchTab(String tabName) {
         TabLayout.Tab tab = tabLayout.getTabAt(tabOrder.indexOf(tabName));
-        tab.select();
+        if (tab != null) {
+            tab.select();
+        }
     }
 
     private static class FullscreenHandler extends Handler {

@@ -25,14 +25,13 @@ public class Module {
     public static List<Module> modules = new ArrayList<>();
     public static List<String> messengerNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
     private static List<String> supportedModuleNames = messengerNames;
-    private static List<String> packageNames = new ArrayList<>();
     public static List<String> enabledAppNames = new ArrayList<>();
-    public static List<String> disabledAppNames = new ArrayList<>();
+    private static List<String> disabledAppNames = new ArrayList<>();
     private static List<String> moduleNames = new ArrayList<>();
     private boolean active;
     private final String name;
     private final String packageName;
-    private static final PreferencesHelper sharedPreferences = new PreferencesHelper();
+    private static final PreferencesHelper sharedPreferences = new PreferencesHelper(MyApplication.dashboard.getApplicationContext());
 
     public String getPackageName() {
         return packageName;
@@ -41,7 +40,6 @@ public class Module {
     private Module(String name, String packageName) {
         this.name = name;
         this.packageName = packageName;
-        Module.packageNames.add(packageName);
         this.active = false;
 
         Module.modules.add(this);
@@ -58,7 +56,7 @@ public class Module {
 
     private static void initializePhoneApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
-        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        PackageManager pm = MyApplication.dashboard.getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(mainIntent, 0);
         supportedModuleNames.add(mInfo.loadLabel(pm).toString());
     }
@@ -66,7 +64,7 @@ public class Module {
     private static void initializeSMSApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MESSAGING);
-        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        PackageManager pm = MyApplication.dashboard.getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
             supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
@@ -76,7 +74,7 @@ public class Module {
     private static void initializeMusicApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MUSIC);
-        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        PackageManager pm = MyApplication.dashboard.getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
             supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
@@ -89,7 +87,7 @@ public class Module {
     }
 
     private static void initializeOthers() {
-        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        PackageManager pm = MyApplication.dashboard.getPackageManager();
         List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
         for (ApplicationInfo info : appsInfos) {
@@ -119,12 +117,12 @@ public class Module {
     }
 
     public Drawable getIcon() {
-        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        PackageManager pm = MyApplication.dashboard.getPackageManager();
         try {
             return pm.getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
             if ("Here Maps".equals(name)) {
-                return MyApplication.getAppContext().getResources().getDrawable(R.drawable.here_maps);
+                return MyApplication.dashboard.getResources().getDrawable(R.drawable.here_maps);
             } else if (BuildConfig.DEBUG) {
                 Log.e("NameNotFoundException", e.getMessage());
             }
@@ -132,14 +130,14 @@ public class Module {
         }
     }
 
-    public void enable() {
+    private void enable() {
         this.active = true;
         Module.enabledAppNames.add(this.getName());
         Module.disabledAppNames.remove(this.getName());
         save();
     }
 
-    public void disable() {
+    private void disable() {
         this.active = false;
         Module.disabledAppNames.add(this.getName());
         Module.enabledAppNames.remove(this.getName());
@@ -168,7 +166,6 @@ public class Module {
                 Module module = (Module) sharedPreferences.getPreferences(moduleName, Module.class);
                 if (module != null) {
                     Module.modules.add(module);
-                    Module.packageNames.add(module.getPackageName());
                     if (module.isEnabled()) {
                         Module.enabledAppNames.add(module.getName());
                     } else {

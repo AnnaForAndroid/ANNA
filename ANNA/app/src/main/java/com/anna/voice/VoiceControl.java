@@ -4,7 +4,6 @@ package com.anna.voice;
  * Created by PARSEA on 14.11.2016.
  */
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.anna.R;
-import com.anna.util.MyApplication;
+import com.anna.dashboard.Dashboard;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,15 +36,15 @@ public class VoiceControl implements RecognitionListener {
     private static final String KEYPHRASE = "hey anna";
 
     private SpeechRecognizer recognizer;
-    private Context context;
     private String userAnswer;
     private String grammarDir;
+    private Dashboard dashboard;
 
     private String currentSearch;
 
-    public VoiceControl(Context context) {
-        this.context = context;
-        NAVIGATION_SEARCH = context.getString(R.string.navigation);
+    public VoiceControl(Dashboard dashboard) {
+        this.dashboard = dashboard;
+        NAVIGATION_SEARCH = dashboard.getApplicationContext().getString(R.string.navigation);
         runRecognizerSetup();
     }
 
@@ -56,7 +55,7 @@ public class VoiceControl implements RecognitionListener {
         if (searchName.equals(KWS_SEARCH)) {
             recognizer.startListening(searchName);
         } else {
-            RelativeLayout relativeLayout = (RelativeLayout) MyApplication.dashboard.findViewById(R.id.voice_overlay);
+            RelativeLayout relativeLayout = (RelativeLayout) dashboard.findViewById(R.id.voice_overlay);
             relativeLayout.setVisibility(View.VISIBLE);
             recognizer.startListening(searchName, 10000);
         }
@@ -84,7 +83,7 @@ public class VoiceControl implements RecognitionListener {
             grammarDir = "/grammars-de/";
             recognizer.addListener(this);
         } else {
-            Toast.makeText(context, "Sorry your language is not supported yet", Toast.LENGTH_LONG).show();
+            Toast.makeText(dashboard.getApplicationContext(), "Sorry your language is not supported yet", Toast.LENGTH_LONG).show();
         }
 
         // Create keyword-activation search.
@@ -111,7 +110,7 @@ public class VoiceControl implements RecognitionListener {
             @Override
             protected Exception doInBackground(Void... params) {
                 try {
-                    Assets assets = new Assets(context);
+                    Assets assets = new Assets(dashboard.getApplicationContext());
                     File assetDir = assets.syncAssets();
                     setupRecognizer(assetDir);
                 } catch (IOException e) {
@@ -123,7 +122,7 @@ public class VoiceControl implements RecognitionListener {
             @Override
             protected void onPostExecute(Exception result) {
                 if (result != null) {
-                    Toast.makeText(context, "Failed to init recognizer " + result, Toast.LENGTH_LONG).show();
+                    Toast.makeText(dashboard.getApplicationContext(), "Failed to init recognizer " + result, Toast.LENGTH_LONG).show();
                 } else {
                     switchSearch(KWS_SEARCH);
                 }
@@ -141,7 +140,7 @@ public class VoiceControl implements RecognitionListener {
      */
     @Override
     public void onEndOfSpeech() {
-        RelativeLayout relativeLayout = (RelativeLayout) MyApplication.dashboard.findViewById(R.id.voice_overlay);
+        RelativeLayout relativeLayout = (RelativeLayout) dashboard.findViewById(R.id.voice_overlay);
         relativeLayout.setVisibility(View.INVISIBLE);
 
         if (!recognizer.getSearchName().equals(KWS_SEARCH))
@@ -188,14 +187,14 @@ public class VoiceControl implements RecognitionListener {
             } else if (NAVIGATION_SEARCH.equals(currentSearch)) {
                 navigateTo(text);
             }
-            Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+            Toast.makeText(dashboard.getApplicationContext(), text, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void navigateTo(String text) {
-        MyApplication.dashboard.switchTab("Here Maps");
-        TextView to = (TextView) MyApplication.dashboard.findViewById(R.id.navigationTo);
-        String[] result = text.split(context.getString(R.string.navigation));
+        dashboard.switchTab("Here Maps");
+        TextView to = (TextView) dashboard.findViewById(R.id.navigationTo);
+        String[] result = text.split(dashboard.getApplicationContext().getString(R.string.navigation));
         if (result.length >= 1) {
             to.setText(result[0]);
         }
@@ -204,7 +203,7 @@ public class VoiceControl implements RecognitionListener {
 
     @Override
     public void onError(Exception e) {
-        Toast.makeText(context,
+        Toast.makeText(dashboard.getApplicationContext(),
                 e.getMessage(), Toast.LENGTH_LONG).show();
         Log.e("Error", e.toString());
     }

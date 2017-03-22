@@ -187,16 +187,16 @@ public class HereMapsFragment extends Fragment {
 
     public void startNavigation() {
 
-        LinearLayout ll = (LinearLayout) getView().findViewById(R.id.navigation_adress_fields);
+        LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.navigation_adress_fields);
         ll.setVisibility(View.INVISIBLE);
 
-        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.directionsbutton);
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.directionsbutton);
         fab.setVisibility(View.INVISIBLE);
 
-        CardView infos = (CardView) getView().findViewById(R.id.card_navigation_info);
+        CardView infos = (CardView) getActivity().findViewById(R.id.card_navigation_info);
         infos.setVisibility(View.VISIBLE);
 
-        pm.addListener(new WeakReference<PositioningManager.OnPositionChangedListener>(positionListener));
+        pm.addListener(new WeakReference<>(positionListener));
 
         navigationManager = NavigationManager.getInstance();
         map.setMapScheme(Map.Scheme.CARNAV_TRAFFIC_DAY);
@@ -206,11 +206,11 @@ public class HereMapsFragment extends Fragment {
         navigationManager.setRoute(mapRoute.getRoute());
         navigationManager.setNaturalGuidanceMode(EnumSet.of(NavigationManager.NaturalGuidanceMode.TRAFFIC_LIGHT, NavigationManager.NaturalGuidanceMode.STOP_SIGN, NavigationManager.NaturalGuidanceMode.JUNCTION));
         navigationManager.setTrafficAvoidanceMode(NavigationManager.TrafficAvoidanceMode.DYNAMIC);
-        navigationManager.addRerouteListener(new WeakReference<NavigationManager.RerouteListener>(rerouteListener));
+        navigationManager.addRerouteListener(new WeakReference<>(rerouteListener));
 
         navigationManager.setRealisticViewMode(NavigationManager.RealisticViewMode.DAY);
         navigationManager.addRealisticViewAspectRatio(NavigationManager.AspectRatio.AR_4x3);
-        navigationManager.addRealisticViewListener(new WeakReference<NavigationManager.RealisticViewListener>(realisticViewListener));
+        navigationManager.addRealisticViewListener(new WeakReference<>(realisticViewListener));
 
         navigationManager.setMap(map);
         navigationManager.setMapUpdateMode(NavigationManager.MapUpdateMode.ROADVIEW);
@@ -305,12 +305,13 @@ public class HereMapsFragment extends Fragment {
         Thread speedThread = new Thread() {
             @Override
             public void run() {
-                TextView speedView = (TextView) getView().findViewById(R.id.navigation_speed);
+                TextView speedView = (TextView) getActivity().findViewById(R.id.navigation_speed);
                 double speed = getCurrentPosition().getSpeed();
                 while (true) {
                     if (speed != getCurrentPosition().getSpeed()) {
                         speed = getCurrentPosition().getSpeed();
-                        speedView.setText(speed + " km/h");
+                        String text = speed + " km/h";
+                        speedView.setText(text);
                     }
                     try {
                         Thread.sleep(1000);
@@ -330,7 +331,7 @@ public class HereMapsFragment extends Fragment {
                 Bitmap bmpImage = junction.getBitmap((int) (junction.getWidth() * 0.5),
                         (int) (junction.getHeight() * 0.5));
                 if (bmpImage != null) {
-                    ImageView imageView = (ImageView) getView().findViewById(R.id.navigation_images);
+                    ImageView imageView = (ImageView) getActivity().findViewById(R.id.navigation_images);
                     imageView.setImageBitmap(bmpImage);
                     imageView.setVisibility(View.VISIBLE);
                 }

@@ -1,7 +1,8 @@
 package com.anna.voice;
 
+import android.content.Context;
+
 import com.anna.phone.Contact;
-import com.anna.util.MyApplication;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,16 +18,23 @@ import edu.cmu.pocketsphinx.Assets;
 
 public class DictionaryExtender {
 
+    private Context context;
+
+    public DictionaryExtender(Context context) {
+        this.context = context;
+    }
+
     public void createContactsGrammar(List<Contact> contacts) {
-        Assets assets = null;
+
         try {
-            assets = new Assets(MyApplication.getAppContext());
+            Assets assets = new Assets(context);
             File assetDir = assets.syncAssets();
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(assetDir, "contacts.gram"), true));
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("public <contact> = ");
             for (Contact contact : contacts) {
-                sb.append(contact.getName().toLowerCase() + " | ");
+                sb.append(contact.getName().toLowerCase());
+                sb.append(" | ");
                 addToDictionary(contact.getName().toLowerCase());
             }
             sb.replace(sb.lastIndexOf("|"), sb.lastIndexOf("|") + 1, ";");
@@ -38,16 +46,19 @@ public class DictionaryExtender {
         }
     }
 
-    public void addToDictionary(String word) {
+    private void addToDictionary(String word) {
         String[] parts = word.split(" ");
         try {
-            Assets assets = new Assets(MyApplication.getAppContext());
+            Assets assets = new Assets(context);
             File assetDir = assets.syncAssets();
             BufferedWriter writer = new BufferedWriter(new FileWriter(new File(assetDir, "cmusphinx-voxforge-de.dic"), true));
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (String part : parts) {
                 String phonetic = getPhonetic(part);
-                sb.append("\n" + part + " " + phonetic);
+                sb.append("\n");
+                sb.append(part);
+                sb.append(" ");
+                sb.append(phonetic);
             }
             writer.append(sb.toString());
             writer.flush();
@@ -57,7 +68,7 @@ public class DictionaryExtender {
         }
     }
 
-    public String getPhonetic(String word) {
+    private String getPhonetic(String word) {
         String result = "";
         for (int i = 0; i < word.length(); i++) {
             result += word.toUpperCase().charAt(i) + " ";

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.anna.util.MyApplication;
 import com.google.gson.Gson;
 
 import java.util.Set;
@@ -15,16 +14,9 @@ import java.util.Set;
 
 public class PreferencesHelper {
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     public PreferencesHelper(Context context) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        this.editor = sharedPreferences.edit();
-    }
-
-    public PreferencesHelper() {
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
-        this.editor = sharedPreferences.edit();
     }
 
     public Object getPreferences(String key, Class objectType) {
@@ -59,6 +51,7 @@ public class PreferencesHelper {
 
 
     public void savePreferences(String key, Object value, Class objectType) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         switch (objectType.getSimpleName().toLowerCase()) {
             case "boolean":
                 editor.putBoolean(key, (Boolean) value);
@@ -84,7 +77,7 @@ public class PreferencesHelper {
                 editor.putString(key, json);
                 break;
         }
-        editor.commit();
+        editor.apply();
     }
 
 }

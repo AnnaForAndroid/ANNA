@@ -18,8 +18,6 @@ import java.util.ArrayList;
 
 public class ContactsAdapter extends ArrayAdapter<Contact> {
 
-    private int lastPosition = -1;
-
     // View lookup cache
     private static class ViewHolder {
         private TextView contactName;
@@ -31,7 +29,7 @@ public class ContactsAdapter extends ArrayAdapter<Contact> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // Get the data item for this position
         Contact contact = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
@@ -49,9 +47,9 @@ public class ContactsAdapter extends ArrayAdapter<Contact> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        lastPosition = position;
-
-        viewHolder.contactName.setText(contact.getName());
+        if (contact != null) {
+            viewHolder.contactName.setText(contact.getName());
+        }
         return convertView;
     }
 }

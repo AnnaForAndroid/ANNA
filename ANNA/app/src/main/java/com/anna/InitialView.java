@@ -124,7 +124,7 @@ public class InitialView extends AppCompatActivity {
             if (tempConvertView == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
-                tempConvertView = vi.inflate(R.layout.listitem, null);
+                tempConvertView = vi.inflate(R.layout.listitem, parent, false);
 
                 holder = new ViewHolder();
                 holder.text = (TextView) tempConvertView.findViewById(R.id.initialView_installedApps);
@@ -184,7 +184,7 @@ public class InitialView extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             responseText, Toast.LENGTH_LONG).show();
                     setupFinished = true;
-                    sharedPrefs.savePreferences("setupFinished", setupFinished, Boolean.class);
+                    sharedPrefs.savePreferences("setupFinished", true, Boolean.class);
                     if (!(NotificationService.isNotificationAccessEnabled)) {
                         startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
                     } else {

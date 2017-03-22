@@ -116,8 +116,8 @@ public class ChatViewActivity extends Fragment {
             MyApplication.dashboard.voiceOutput.read(notificationData.getText().toString());
             MyApplication.dashboard.voiceOutput.read(getString(R.string.ask_to_answer));
             if (MyApplication.dashboard.voiceControl.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
-                MyApplication.dashboard.voiceOutput.promptSpeechInput();
-                answerMessage(notificationData, MyApplication.dashboard.voiceOutput.getVoiceInput());
+                //MyApplication.dashboard.voiceOutput.promptSpeechInput();
+                //answerMessage(notificationData, MyApplication.dashboard.voiceOutput.getVoiceInput());
             }
         }
     }

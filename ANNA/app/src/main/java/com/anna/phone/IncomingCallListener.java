@@ -31,11 +31,11 @@ public class IncomingCallListener extends BroadcastReceiver {
             String stateStr = intent.getExtras().getString(TelephonyManager.EXTRA_STATE);
             String number = intent.getExtras().getString(TelephonyManager.EXTRA_INCOMING_NUMBER);
             int state = 0;
-            if (stateStr.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
+            if (TelephonyManager.EXTRA_STATE_IDLE.equals(stateStr)) {
                 state = TelephonyManager.CALL_STATE_IDLE;
-            } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+            } else if (TelephonyManager.EXTRA_STATE_OFFHOOK.equals(stateStr)) {
                 state = TelephonyManager.CALL_STATE_OFFHOOK;
-            } else if (stateStr.equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+            } else if (TelephonyManager.EXTRA_STATE_RINGING.equals(stateStr)) {
                 state = TelephonyManager.CALL_STATE_RINGING;
             }
 
