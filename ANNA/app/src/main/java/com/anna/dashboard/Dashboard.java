@@ -41,13 +41,6 @@ public class Dashboard extends AppCompatActivity {
         initDashBoard();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        voiceOutput.killService();
-        voiceControl.killService();
-    }
-
     public void updateDashBoard() {
         tabLayout.removeAllTabs();
         tabOrder.clear();
