@@ -110,12 +110,12 @@ public class ChatViewActivity extends Fragment {
         Message msg = handler.obtainMessage();
         msg.obj = mAdapter;
         handler.sendMessage(msg);
-        MyApplication.dashboard.voiceOutput.read(notificationData.getTitle());
-        MyApplication.dashboard.voiceOutput.read(getString(R.string.read_message));
-        if (MyApplication.dashboard.voiceControl.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
-            MyApplication.dashboard.voiceOutput.read(notificationData.getText().toString());
-            MyApplication.dashboard.voiceOutput.read(getString(R.string.ask_to_answer));
-            if (MyApplication.dashboard.voiceControl.getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
+        MyApplication.application.getVoiceOutput().read(notificationData.getTitle());
+        MyApplication.application.getVoiceOutput().read(getString(R.string.read_message));
+        if (MyApplication.application.getVoiceControl().getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
+            MyApplication.application.getVoiceOutput().read(notificationData.getText().toString());
+            MyApplication.application.getVoiceOutput().read(getString(R.string.ask_to_answer));
+            if (MyApplication.application.getVoiceControl().getUserAnswer().equalsIgnoreCase(getString(R.string.yes))) {
                 //MyApplication.dashboard.voiceOutput.promptSpeechInput();
                 //answerMessage(notificationData, MyApplication.dashboard.voiceOutput.getVoiceInput());
             }

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import com.anna.R;
 import com.anna.util.Module;
+import com.anna.util.MyApplication;
 import com.anna.voice.VoiceControl;
 import com.anna.voice.VoiceOutput;
 
@@ -34,8 +35,9 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        voiceOutput = new VoiceOutput(this);
-        voiceControl = new VoiceControl(this);
+        MyApplication.application.setDashboard(this);
+        voiceOutput = MyApplication.application.getVoiceOutput();
+        voiceControl = MyApplication.application.getVoiceControl();
         initDashBoard();
     }
 

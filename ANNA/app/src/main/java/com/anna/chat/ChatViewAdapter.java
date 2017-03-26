@@ -49,7 +49,7 @@ public class ChatViewAdapter extends RecyclerView
         }
     }
 
-    void setOnItemClickListener(MyClickListener myClickListener) {
+    protected void setOnItemClickListener(MyClickListener myClickListener) {
         ChatViewAdapter.myClickListener = myClickListener;
     }
 
@@ -69,7 +69,7 @@ public class ChatViewAdapter extends RecyclerView
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         if (mDataset.getValueAt(position).getIcon() == null) {
-            Drawable defaultProfile = MyApplication.dashboard.getResources().getDrawable(R.drawable.default_profile);
+            Drawable defaultProfile = MyApplication.application.getApplicationContext().getResources().getDrawable(R.drawable.default_profile);
             holder.profileImg.setImageDrawable(defaultProfile);
         }
         if (holder.profileImg.getDrawable() == null) {
@@ -85,7 +85,7 @@ public class ChatViewAdapter extends RecyclerView
         }
     }
 
-    void addItem(NotificationData dataObj, String index) {
+    protected void addItem(NotificationData dataObj, String index) {
         mDataset.put(index, dataObj);
         notifyItemInserted(mDataset.getPositionOfKey(index));
     }

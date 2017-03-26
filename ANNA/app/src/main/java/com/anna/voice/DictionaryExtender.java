@@ -65,7 +65,7 @@ public class DictionaryExtender {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("", e.toString());
         }
     }
 

@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.anna.BuildConfig;
 import com.anna.R;
-import com.anna.preferences.PreferencesHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +30,6 @@ public class Module {
     private boolean active;
     private final String name;
     private final String packageName;
-    private static final PreferencesHelper sharedPreferences = new PreferencesHelper(MyApplication.dashboard.getApplicationContext());
 
     public String getPackageName() {
         return packageName;
@@ -56,7 +54,7 @@ public class Module {
 
     private static void initializePhoneApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
-        PackageManager pm = MyApplication.dashboard.getPackageManager();
+        PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(mainIntent, 0);
         supportedModuleNames.add(mInfo.loadLabel(pm).toString());
     }
@@ -64,7 +62,7 @@ public class Module {
     private static void initializeSMSApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MESSAGING);
-        PackageManager pm = MyApplication.dashboard.getPackageManager();
+        PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
             supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
@@ -74,7 +72,7 @@ public class Module {
     private static void initializeMusicApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MUSIC);
-        PackageManager pm = MyApplication.dashboard.getPackageManager();
+        PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
             supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
@@ -87,7 +85,7 @@ public class Module {
     }
 
     private static void initializeOthers() {
-        PackageManager pm = MyApplication.dashboard.getPackageManager();
+        PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         List<ApplicationInfo> appsInfos = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
         for (ApplicationInfo info : appsInfos) {
@@ -117,12 +115,12 @@ public class Module {
     }
 
     public Drawable getIcon() {
-        PackageManager pm = MyApplication.dashboard.getPackageManager();
+        PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         try {
             return pm.getApplicationIcon(packageName);
         } catch (PackageManager.NameNotFoundException e) {
             if ("Here Maps".equals(name)) {
-                return MyApplication.dashboard.getResources().getDrawable(R.drawable.here_maps);
+                return MyApplication.application.getApplicationContext().getResources().getDrawable(R.drawable.here_maps);
             } else if (BuildConfig.DEBUG) {
                 Log.e("NameNotFoundException", e.getMessage());
             }
@@ -157,13 +155,13 @@ public class Module {
     }
 
     private void save() {
-        sharedPreferences.savePreferences(this.getName(), this, Module.class);
+        MyApplication.application.getSharedPreferences().savePreferences(this.getName(), this, Module.class);
     }
 
     public static void loadModules() {
         if (Module.modules.isEmpty()) {
             for (String moduleName : Module.moduleNames) {
-                Module module = (Module) sharedPreferences.getPreferences(moduleName, Module.class);
+                Module module = (Module) MyApplication.application.getSharedPreferences().getPreferences(moduleName, Module.class);
                 if (module != null) {
                     Module.modules.add(module);
                     if (module.isEnabled()) {

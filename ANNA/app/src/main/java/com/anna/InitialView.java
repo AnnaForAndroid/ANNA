@@ -30,6 +30,7 @@ import com.anna.notification.NotificationService;
 import com.anna.preferences.PreferencesHelper;
 import com.anna.util.LayoutConfig;
 import com.anna.util.Module;
+import com.anna.util.MyApplication;
 import com.anna.voice.VoiceOutput;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class InitialView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPrefs = new PreferencesHelper(getApplicationContext());
+        sharedPrefs = MyApplication.application.getSharedPreferences();
         setupFinished = (boolean) sharedPrefs.getPreferences("setupFinished", Boolean.class);
         checkForFirstUse();
     }
@@ -58,7 +59,7 @@ public class InitialView extends AppCompatActivity {
             setContentView(R.layout.activity_initial);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-            this.voiceOutput = new VoiceOutput(this);
+            voiceOutput = MyApplication.application.getVoiceOutput();
             Module.initializeModules();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -229,14 +230,6 @@ public class InitialView extends AppCompatActivity {
             String[] permissionArray = new String[permissions.size()];
             permissions.toArray(permissionArray);
             requestPermissions(permissionArray, 1234567);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (voiceOutput != null) {
-            voiceOutput.killService();
         }
     }
 }

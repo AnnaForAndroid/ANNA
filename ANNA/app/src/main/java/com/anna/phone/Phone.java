@@ -148,7 +148,7 @@ public class Phone extends Fragment {
                 }
             }
             // ListView has to be updated using a ui thread
-            MyApplication.dashboard.runOnUiThread(new Runnable() {
+            MyApplication.application.getDashboard().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     ContactsAdapter adapter = new ContactsAdapter(contactList, getContext());

@@ -71,7 +71,7 @@ public class Preferences extends PreferenceFragmentCompat {
                     Module module = Module.modules.get(Integer.parseInt(s));
                     module.toogleStatus();
                 }
-                MyApplication.dashboard.updateDashBoard();
+                MyApplication.application.getDashboard().updateDashBoard();
                 return false;
             }
         });
