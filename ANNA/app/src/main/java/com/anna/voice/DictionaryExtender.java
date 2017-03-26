@@ -1,6 +1,7 @@
 package com.anna.voice;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.anna.phone.Contact;
 
@@ -42,7 +43,7 @@ public class DictionaryExtender {
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("DictionaryExtender: ", e.toString());
         }
     }
 
@@ -55,9 +56,9 @@ public class DictionaryExtender {
             StringBuilder sb = new StringBuilder();
             for (String part : parts) {
                 String phonetic = getPhonetic(part);
-                sb.append("\n");
+                sb.append('\n');
                 sb.append(part);
-                sb.append(" ");
+                sb.append(' ');
                 sb.append(phonetic);
             }
             writer.append(sb.toString());
@@ -69,10 +70,11 @@ public class DictionaryExtender {
     }
 
     private String getPhonetic(String word) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < word.length(); i++) {
-            result += word.toUpperCase().charAt(i) + " ";
+            result.append(word.toUpperCase().charAt(i));
+            result.append(' ');
         }
-        return result;
+        return result.toString();
     }
 }

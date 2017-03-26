@@ -159,7 +159,6 @@ public class HereMapsFragment extends Fragment {
     public void getDirections() {
         if (map != null && mapRoute != null) {
             map.removeMapObject(mapRoute);
-            mapRoute = null;
         }
 
         CoreRouter coreRouter = new CoreRouter();
@@ -265,7 +264,6 @@ public class HereMapsFragment extends Fragment {
             pm.removeListener(
                     positionListener);
         }
-        map = null;
         super.onDestroy();
     }
 
