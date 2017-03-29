@@ -7,7 +7,7 @@
     <string name="title_activity_whats_app_screen">Chat Übersicht</string>
     <string name="title_activity_card_view">CardViewActivity</string>
     <string name="title_activity_maps">Karte</string>
-    <string name="speech_prompt">Sag etwas...</string>
+    <string name="speech_prompt">Sag etwas…</string>
     <string name="speech_not_supported">Tut mir leid! Leider unterstützt dein Gerät keine Spracheingabe</string>
     <string name="read_message">Soll die Nachricht vorgelesen werden?</string>
     <string name="ask_to_answer">Möchtest du darauf antworten?</string>
@@ -29,4 +29,10 @@
     <string name="current_position">Mein Standort</string>
     <string name="preferences_modules_description">Wähle die Module aus die du benutzen willst</string>
     <string name="navigation">führe mich nach</string>
+    <string name="music">spiel musik</string>
+    <string name="phone">ruf</string>
+    <string name="sms">schick eine sms an</string>
+    <string name="listener_notification">Was kann ich für dich tun?</string>
+    <string name="voice_recognition">Spracherkennung</string>
+    <string name="voice_recognition_feedback">Spracherkennungs Rückmeldung</string>
 </resources>

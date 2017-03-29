@@ -30,7 +30,11 @@ public class VoiceControl implements RecognitionListener {
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
     private static final String YES_NO_SEARCH = "answer";
-    private String NAVIGATION_SEARCH;
+    private static String NAVIGATION_SEARCH;
+    private static final String MESSAGE_ANSWER = "messageAnswer";
+    private static String PHONE_SEARCH;
+    private static String SMS_SEARCH;
+    private static String MUSIC_SEARCH;
     private static final String MENU_SEARCH = "menu";
 
     /* Keyword we are looking for to activate menu */
@@ -46,6 +50,9 @@ public class VoiceControl implements RecognitionListener {
 
     public VoiceControl() {
         NAVIGATION_SEARCH = MyApplication.application.getApplicationContext().getString(R.string.navigation);
+        MUSIC_SEARCH = MyApplication.application.getApplicationContext().getString(R.string.music);
+        PHONE_SEARCH = MyApplication.application.getApplicationContext().getString(R.string.phone);
+        SMS_SEARCH = MyApplication.application.getApplicationContext().getString(R.string.sms);
         this.context = MyApplication.application.getApplicationContext();
         runRecognizerSetup();
     }
@@ -57,6 +64,7 @@ public class VoiceControl implements RecognitionListener {
         if (searchName.equals(KWS_SEARCH)) {
             recognizer.startListening(searchName);
         } else {
+            MyApplication.application.getVoiceOutput().read(MyApplication.application.getApplicationContext().getString(R.string.listener_notification));
             RelativeLayout relativeLayout = (RelativeLayout) MyApplication.application.getDashboard().findViewById(R.id.voice_overlay);
             relativeLayout.setVisibility(View.VISIBLE);
             recognizer.startListening(searchName, 10000);
@@ -97,6 +105,15 @@ public class VoiceControl implements RecognitionListener {
 
         File navigationGrammar = new File(assetsDir, grammarDir + "language-model.lm.bin");
         recognizer.addNgramSearch(NAVIGATION_SEARCH, navigationGrammar);
+
+        File smsGrammar = new File(assetsDir, grammarDir + "language-model.lm.bin");
+        recognizer.addNgramSearch(SMS_SEARCH, smsGrammar);
+
+        File phoneGrammar = new File(assetsDir, grammarDir + "language-model.lm.bin");
+        recognizer.addNgramSearch(PHONE_SEARCH, phoneGrammar);
+
+        File messageAnswerGrammar = new File(assetsDir, grammarDir + "language-model.lm.bin");
+        recognizer.addNgramSearch(MESSAGE_ANSWER, messageAnswerGrammar);
 
         File menuGrammar = new File(assetsDir, grammarDir + "menu.gram");
         recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
@@ -164,12 +181,17 @@ public class VoiceControl implements RecognitionListener {
         if (text.equals(KEYPHRASE)) {
             currentSearch = MENU_SEARCH;
             switchSearch(MENU_SEARCH);
-        } else if (text.equals(YES_NO_SEARCH)) {
-            currentSearch = YES_NO_SEARCH;
-            switchSearch(YES_NO_SEARCH);
         } else if (text.equals(NAVIGATION_SEARCH)) {
             currentSearch = NAVIGATION_SEARCH;
             switchSearch(NAVIGATION_SEARCH);
+        } else if (text.equals(MUSIC_SEARCH)) {
+            currentSearch = MUSIC_SEARCH;
+        } else if (text.equals(SMS_SEARCH)) {
+            currentSearch = SMS_SEARCH;
+            switchSearch(SMS_SEARCH);
+        } else if (text.equals(PHONE_SEARCH)) {
+            currentSearch = PHONE_SEARCH;
+            switchSearch(PHONE_SEARCH);
         }
     }
 
@@ -181,10 +203,9 @@ public class VoiceControl implements RecognitionListener {
 
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
-            if (YES_NO_SEARCH.equals(currentSearch)) {
-                synchronized (this) {
+            if (YES_NO_SEARCH.equals(currentSearch) || MESSAGE_ANSWER.equals(currentSearch)) {
+                synchronized (userAnswer) {
                     userAnswer = text;
-                    this.notify();
                 }
             } else if (NAVIGATION_SEARCH.equals(currentSearch)) {
                 navigateTo(text);
@@ -215,22 +236,24 @@ public class VoiceControl implements RecognitionListener {
         switchSearch(KWS_SEARCH);
     }
 
-    public void killService() {
-        if (recognizer != null) {
-            recognizer.cancel();
-            recognizer.shutdown();
+    private String getAnswer(String search) {
+        switchSearch(search);
+        String answer;
+        synchronized (userAnswer) {
+            while (!"".equals(userAnswer)) {
+                // wait
+            }
+            answer = userAnswer;
+            userAnswer = "";
         }
+        return answer;
     }
 
     public String getUserAnswer() {
-        switchSearch(YES_NO_SEARCH);
-        synchronized (this) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                Log.e("InterruptedException", e.toString());
-            }
-            return userAnswer;
-        }
+        return getAnswer(YES_NO_SEARCH);
+    }
+
+    public String getMessageAnswer() {
+        return getAnswer(MESSAGE_ANSWER);
     }
 }

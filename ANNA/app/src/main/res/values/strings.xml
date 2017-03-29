@@ -6,17 +6,17 @@
     <string name="title_activity_whats_app_screen">Chat Overview</string>
     <string name="title_activity_card_view">CardViewActivity</string>
     <string name="title_activity_maps">Map</string>
-    <string name="speech_prompt">Say something...</string>
+    <string name="speech_prompt">Say something…</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
     <string name="read_message">Would you like to hear the message?</string>
     <string name="ask_to_answer">Would you like to answer?</string>
     <string name="audio_record_permission_denied">You denied record audio permission. So, the feature will be disabled. To enable it, go on settings and grant record audio for the application</string>
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="reply">reply</string>
-    <string name="selected">The following were selected...\n</string>
+    <string name="selected">The following were selected…\n</string>
     <string name="audio_denied">Record Audio permission denied</string>
     <string name="record_audio">Record Audio</string>
-    <string name="record_audio_denied_text">You need to grant record audio permission to use speach recognition feature. Retry and grant it !</string>
+    <string name="record_audio_denied_text">You need to grant record audio permission to use speech recognition feature. Retry and grant it !</string>
     <string name="initial_view_button">Next</string>
     <string name="select_one_module">You have to select at least one module to proceed</string>
     <string name="yes">yes</string>
@@ -28,4 +28,10 @@
     <string name="current_position">My location</string>
     <string name="preferences_modules_description">Choose which modules you want to use</string>
     <string name="navigation">navigate me to</string>
+    <string name="music">play music</string>
+    <string name="phone">call</string>
+    <string name="sms">send a sms to</string>
+    <string name="listener_notification">What can I do for you?</string>
+    <string name="voice_recognition">Voice Recognition</string>
+    <string name="voice_recognition_feedback">Voice recognition feedback</string>
 </resources>

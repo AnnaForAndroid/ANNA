@@ -2,7 +2,8 @@
 
 grammar menu;
 
-public <item> = <navigation> | <call> | <sms>;
+public <item> = <navigation> | <call> | <sms> | <music>;
 <navigation> = führe mich nach | navigier mich nach;
 <call> = ruf;
 <sms> = schick eine sms an;
+<music> = spiel musik;

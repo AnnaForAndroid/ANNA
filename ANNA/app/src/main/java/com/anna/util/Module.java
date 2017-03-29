@@ -49,6 +49,7 @@ public class Module {
         initializeMusicApp();
         initializeHereMaps();
         initializeOthers();
+        MyApplication.application.getSharedPreferences().savePreferences("moduleNames", moduleNames, ArrayList.class);
         disabledAppNames = moduleNames;
     }
 
@@ -56,7 +57,7 @@ public class Module {
         final Intent mainIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
         PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(mainIntent, 0);
-        supportedModuleNames.add(mInfo.loadLabel(pm).toString());
+        supportedModuleNames.add(pm.getApplicationLabel(mInfo.activityInfo.applicationInfo).toString());
     }
 
     private static void initializeSMSApp() {
@@ -95,15 +96,6 @@ public class Module {
                 moduleNames.add(appLabel);
             }
         }
-    }
-
-    public static Module getModule(String moduleName) {
-        for (Module module : modules) {
-            if (module.getName().equals(moduleName)) {
-                return module;
-            }
-        }
-        return null;
     }
 
     public boolean isEnabled() {
@@ -160,6 +152,7 @@ public class Module {
 
     public static void loadModules() {
         if (Module.modules.isEmpty()) {
+            moduleNames = (ArrayList) MyApplication.application.getSharedPreferences().getPreferences("moduleNames", ArrayList.class);
             for (String moduleName : Module.moduleNames) {
                 Module module = (Module) MyApplication.application.getSharedPreferences().getPreferences(moduleName, Module.class);
                 if (module != null) {

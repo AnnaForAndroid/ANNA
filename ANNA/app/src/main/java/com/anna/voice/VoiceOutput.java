@@ -57,8 +57,4 @@ public class VoiceOutput implements TextToSpeech.OnInitListener {
         return this.initialized;
     }
 
-    public void killService() {
-        this.tts.shutdown();
-    }
-
 }
