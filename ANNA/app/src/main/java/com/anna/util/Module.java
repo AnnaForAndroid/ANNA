@@ -22,11 +22,10 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<>();
-    public static List<String> messengerNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
-    private static List<String> supportedModuleNames = messengerNames;
+    public static final List<String> messengerNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
     public static List<String> enabledAppNames = new ArrayList<>();
     private static List<String> disabledAppNames = new ArrayList<>();
-    private static List<String> moduleNames = new ArrayList<>();
+    private static List<String> moduleNames = messengerNames;
     private boolean active;
     private final String name;
     private final String packageName;
@@ -44,39 +43,39 @@ public class Module {
     }
 
     public static void initializeModules() {
-        initializePhoneApp();
-        initializeSMSApp();
-        initializeMusicApp();
-        initializeHereMaps();
+        findPhoneApp();
+        findSMSApp();
+        findMusicApp();
         initializeOthers();
+        initializeHereMaps();
         MyApplication.application.getSharedPreferences().savePreferences("moduleNames", moduleNames, ArrayList.class);
         disabledAppNames = moduleNames;
     }
 
-    private static void initializePhoneApp() {
+    private static void findPhoneApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
         PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(mainIntent, 0);
-        supportedModuleNames.add(pm.getApplicationLabel(mInfo.activityInfo.applicationInfo).toString());
+        moduleNames.add(pm.getApplicationLabel(mInfo.activityInfo.applicationInfo).toString());
     }
 
-    private static void initializeSMSApp() {
+    private static void findSMSApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MESSAGING);
         PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
-            supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
+            moduleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
         }
     }
 
-    private static void initializeMusicApp() {
+    private static void findMusicApp() {
         final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_APP_MUSIC);
         PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final List<ResolveInfo> pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo info : pkgAppsList) {
-            supportedModuleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
+            moduleNames.add(pm.getApplicationLabel(info.activityInfo.applicationInfo).toString());
         }
     }
 
@@ -91,9 +90,8 @@ public class Module {
 
         for (ApplicationInfo info : appsInfos) {
             String appLabel = pm.getApplicationLabel(info).toString();
-            if (Module.supportedModuleNames.contains(appLabel)) {
+            if (Module.moduleNames.contains(appLabel)) {
                 new Module(appLabel, info.packageName);
-                moduleNames.add(appLabel);
             }
         }
     }
@@ -152,7 +150,7 @@ public class Module {
 
     public static void loadModules() {
         if (Module.modules.isEmpty()) {
-            moduleNames = (ArrayList) MyApplication.application.getSharedPreferences().getPreferences("moduleNames", ArrayList.class);
+            moduleNames.addAll((ArrayList) MyApplication.application.getSharedPreferences().getPreferences("moduleNames", ArrayList.class));
             for (String moduleName : Module.moduleNames) {
                 Module module = (Module) MyApplication.application.getSharedPreferences().getPreferences(moduleName, Module.class);
                 if (module != null) {

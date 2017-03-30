@@ -25,7 +25,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sharedPreferences = new PreferencesHelper(getApplicationContext());
-        MyApplication.application=this;
+        MyApplication.application = this;
         voiceOutput = new VoiceOutput(this);
     }
 
@@ -33,7 +33,7 @@ public class MyApplication extends Application {
         return dashboard;
     }
 
-    public void setDashboard(Dashboard dashboard){
+    public void setDashboard(Dashboard dashboard) {
         this.dashboard = dashboard;
         voiceControl = new VoiceControl();
     }

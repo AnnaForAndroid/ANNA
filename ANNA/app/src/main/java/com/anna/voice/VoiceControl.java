@@ -28,14 +28,14 @@ import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 public class VoiceControl implements RecognitionListener {
 
     /* Named searches allow to quickly reconfigure the decoder */
-    private static final String KWS_SEARCH = "wakeup";
-    private static final String YES_NO_SEARCH = "answer";
-    private static String NAVIGATION_SEARCH;
-    private static final String MESSAGE_ANSWER = "messageAnswer";
-    private static String PHONE_SEARCH;
-    private static String SMS_SEARCH;
-    private static String MUSIC_SEARCH;
-    private static final String MENU_SEARCH = "menu";
+    private final String KWS_SEARCH = "wakeup";
+    private final String YES_NO_SEARCH = "answer";
+    private String NAVIGATION_SEARCH;
+    private final String MESSAGE_ANSWER = "messageAnswer";
+    private String PHONE_SEARCH;
+    private String SMS_SEARCH;
+    private String MUSIC_SEARCH;
+    private final String MENU_SEARCH = "menu";
 
     /* Keyword we are looking for to activate menu */
     private static final String KEYPHRASE = "hey anna";
