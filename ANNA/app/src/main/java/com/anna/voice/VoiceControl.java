@@ -64,7 +64,6 @@ public class VoiceControl implements RecognitionListener {
         if (searchName.equals(KWS_SEARCH)) {
             recognizer.startListening(searchName);
         } else {
-            MyApplication.application.getVoiceOutput().read(MyApplication.application.getApplicationContext().getString(R.string.listener_notification));
             RelativeLayout relativeLayout = (RelativeLayout) MyApplication.application.getDashboard().findViewById(R.id.voice_overlay);
             relativeLayout.setVisibility(View.VISIBLE);
             recognizer.startListening(searchName, 10000);
@@ -180,6 +179,9 @@ public class VoiceControl implements RecognitionListener {
 
         if (text.equals(KEYPHRASE)) {
             currentSearch = MENU_SEARCH;
+            MyApplication.application.getVoiceOutput().read(MyApplication.application.getApplicationContext().getString(R.string.listener_notification));
+            while (MyApplication.application.getVoiceOutput().speaking()) {
+            }
             switchSearch(MENU_SEARCH);
         } else if (text.equals(NAVIGATION_SEARCH)) {
             currentSearch = NAVIGATION_SEARCH;

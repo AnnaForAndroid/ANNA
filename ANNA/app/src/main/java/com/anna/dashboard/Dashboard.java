@@ -50,9 +50,14 @@ public class Dashboard extends AppCompatActivity {
     public void initDashBoard() {
         tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_settings)));
         tabOrder.add("Settings");
+
         Module.loadModules();
         boolean messenger = true;
         for (String name : Module.enabledAppNames) {
+            if("Music".equals(name)){
+                tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_navigation)));
+                tabOrder.add(name);
+            }
             if ("Here Maps".equals(name)) {
                 tabLayout.addTab(tabLayout.newTab().setIcon(getResources().getDrawable(R.drawable.ic_navigation)));
                 tabOrder.add(name);

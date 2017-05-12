@@ -49,6 +49,10 @@ public class VoiceOutput implements TextToSpeech.OnInitListener {
         }
     }
 
+    public boolean speaking() {
+        return tts.isSpeaking();
+    }
+
     private synchronized void setInitialized(boolean status) {
         this.initialized = status;
     }

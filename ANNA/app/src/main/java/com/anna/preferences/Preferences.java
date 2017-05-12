@@ -2,7 +2,9 @@ package com.anna.preferences; /**
  * Created by PARSEA on 13.02.2017.
  */
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v14.preference.MultiSelectListPreference;
 import android.support.v7.preference.Preference;
@@ -29,6 +31,7 @@ public class Preferences extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences);
 
         addModulesToPreferenceScreen();
+        addVoiceRecognitionFeedbackSetting();
     }
 
     public PreferenceCategory createCategory(String categoryTitle) {
@@ -52,7 +55,7 @@ public class Preferences extends PreferenceFragmentCompat {
 
     public void addModulesToPreferenceScreen() {
 
-        MultiSelectListPreference listPreference = (MultiSelectListPreference) findPreference("modules");
+        final MultiSelectListPreference listPreference = (MultiSelectListPreference) findPreference("modules");
         String[] keys = new String[Module.modules.size()];
         String[] values = new String[Module.modules.size()];
 
@@ -60,10 +63,8 @@ public class Preferences extends PreferenceFragmentCompat {
             keys[i] = Module.modules.get(i).getName();
             values[i] = Integer.toString(i);
         }
-
         listPreference.setEntries(keys);
         listPreference.setEntryValues(values);
-
         listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -75,7 +76,10 @@ public class Preferences extends PreferenceFragmentCompat {
                 return false;
             }
         });
+    }
 
+    public void addVoiceRecognitionFeedbackSetting(){
+        PreferenceCategory preferenceCategory = createCategory(getString(R.string.voice_recognition));
     }
 
 }

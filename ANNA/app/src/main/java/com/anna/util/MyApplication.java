@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.anna.dashboard.Dashboard;
+import com.anna.music.MusicPlayer;
 import com.anna.preferences.PreferencesHelper;
 import com.anna.voice.VoiceControl;
 import com.anna.voice.VoiceOutput;
@@ -20,6 +21,7 @@ public class MyApplication extends Application {
     public static MyApplication application;
     private VoiceOutput voiceOutput;
     private VoiceControl voiceControl;
+    private MusicPlayer musicPlayer;
 
 
     public void onCreate() {
@@ -48,5 +50,9 @@ public class MyApplication extends Application {
 
     public VoiceControl getVoiceControl() {
         return voiceControl;
+    }
+
+    public MusicPlayer getMusicPlayer() {
+        return musicPlayer;
     }
 }

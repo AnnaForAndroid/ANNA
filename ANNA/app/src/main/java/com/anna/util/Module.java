@@ -1,11 +1,13 @@
 package com.anna.util;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.anna.BuildConfig;
@@ -22,10 +24,10 @@ import java.util.List;
 public class Module {
 
     public static List<Module> modules = new ArrayList<>();
-    public static final List<String> messengerNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema"));
+    public static final List<String> messengerNames = new ArrayList(Arrays.asList("WhatsApp", "Hangouts", "Messenger", "Telegram", "Viber", "Wire", "Signal", "Threema","Pushbullet"));
     public static List<String> enabledAppNames = new ArrayList<>();
     private static List<String> disabledAppNames = new ArrayList<>();
-    private static List<String> moduleNames = messengerNames;
+    private static List<String> moduleNames = new ArrayList<>(messengerNames);
     private boolean active;
     private final String name;
     private final String packageName;
@@ -53,7 +55,7 @@ public class Module {
     }
 
     private static void findPhoneApp() {
-        final Intent mainIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"));
+        final Intent mainIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"));
         PackageManager pm = MyApplication.application.getApplicationContext().getPackageManager();
         final ResolveInfo mInfo = pm.resolveActivity(mainIntent, 0);
         moduleNames.add(pm.getApplicationLabel(mInfo.activityInfo.applicationInfo).toString());

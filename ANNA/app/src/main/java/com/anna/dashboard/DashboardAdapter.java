@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.anna.chat.ChatViewActivity;
 import com.anna.maps.HereMapsFragment;
+import com.anna.music.MusicPlayer;
 import com.anna.phone.Phone;
 import com.anna.preferences.Preferences;
 
@@ -32,6 +33,8 @@ public class DashboardAdapter extends FragmentStatePagerAdapter {
                 return new Preferences();
             case "Phone":
                 return new Phone();
+            case "Music":
+                return new MusicPlayer();
             default:
                 return null;
         }
